@@ -22,7 +22,8 @@ public class SmokeTest {
 		// Preconditions.
 		WebDriver driver = new FirefoxDriver();
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		driver.get("http://localhost:8080/resources/login");
+		//driver.get("http://localhost:8080/resources/login");
+		driver.get("http://java.training.local:8080/registrator/login");
 		// Test Steps.
 		LoginPage loginPage = new LoginPage(driver);
 		AdminHomePage adminHomePage = loginPage
@@ -47,12 +48,13 @@ public class SmokeTest {
                 };
     }
  
-	@Test(dataProvider = "adminUsers")
+	//@Test(dataProvider = "adminUsers")
 	public void adminLogin1(IUser admin) throws Exception {
 		// Preconditions.
 		WebDriver driver = new FirefoxDriver();
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		driver.get("http://localhost:8080/resources/login");
+		//driver.get("http://localhost:8080/resources/login");
+		driver.get("http://java.training.local:8080/registrator/login");
 		// Test Steps.
 		AdminHomePage adminHomePage = new LoginPage(driver)
 				.successAdminLogin(admin); 
@@ -62,6 +64,25 @@ public class SmokeTest {
 				adminHomePage.getLoginAccountText());
 		// Return to previous state.
 		adminHomePage.logout();
+		//
+		Thread.sleep(2000);
+		driver.quit();
+	}
+
+	@Test(dataProvider = "adminUsers")
+	public void adminLogin12(IUser admin) throws Exception {
+		// Preconditions.
+		WebDriver driver = new FirefoxDriver();
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		//driver.get("http://localhost:8080/resources/login");
+		driver.get("http://java.training.local:8080/registrator/login");
+		// Test Steps.
+		try {
+			new LoginPage(driver).successAdminLogin(admin);
+		} catch(Exception e) {}
+		// Checking.
+		Thread.sleep(2000);
+		driver.get("http://java.training.local:8080/registrator/logout");
 		//
 		Thread.sleep(2000);
 		driver.quit();
