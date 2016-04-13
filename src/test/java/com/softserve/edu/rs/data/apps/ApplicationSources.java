@@ -5,10 +5,7 @@ public final class ApplicationSources {
 	private String logoutUrl;
 	private long implicitTimeOut;
 	private String browserName;
-	// private String browserPath;
-	// Implicit and Explicit Waits
-	// private String searchStrategy;
-	// TODO Logger Strategy
+	
 	// TODO Sleep for Demo
 
 	public ApplicationSources() {
