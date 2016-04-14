@@ -13,6 +13,7 @@ import com.softserve.edu.rs.data.users.IUser;
 import com.softserve.edu.rs.data.users.UserRepository;
 import com.softserve.edu.rs.pages.AdminHomePage;
 import com.softserve.edu.rs.pages.Application;
+import com.softserve.edu.rs.pages.TopPage.ChangeLanguageFields;
 
 public class SmokeAppSuiteTest {
 
@@ -41,16 +42,32 @@ public class SmokeAppSuiteTest {
         //
         Application application = new Application(applicationSources);
         return new Object[][] {
-                { application, UserRepository.get().getAdmin() },
+                { application, UserRepository.get().getAdmin(), ChangeLanguageFields.UKRAINIAN },
                 //{ application, UserRepository.get().getCommissioner() },
                 //{ application, UserRepository.get().getAdmin() },
                 };
     }
- 
-	@Test(dataProvider = "adminUsers")
-	public void adminLogin1(Application application, IUser admin) throws Exception {
+    
+    @Test(dataProvider = "adminUsers")
+	public void adminLogin2(Application application, IUser admin, ChangeLanguageFields language) throws Exception {
         System.out.println("@Test adminLogin1, Thread Id = "
                 + Thread.currentThread().getId());
+        System.out.println("Language. = " + language);
+        System.out.println("Language.toString() = " + language.toString());
+        if (language == ChangeLanguageFields.UKRAINIAN) {
+        	System.out.println("UKRAINIAN found");
+        }
+        for (ChangeLanguageFields all : language.values()) {
+        	System.out.println("all = "+all);
+        }
+	}
+	
+	//@Test(dataProvider = "adminUsers")
+	public void adminLogin1(Application application, IUser admin, ChangeLanguageFields language) throws Exception {
+        System.out.println("@Test adminLogin1, Thread Id = "
+                + Thread.currentThread().getId());
+        System.out.println("Language. = " + language);
+        System.out.println("Language.toString() = " + language.toString());
 		// Preconditions.
 		// Test Steps.
 		AdminHomePage adminHomePage = application.load()
