@@ -3,25 +3,30 @@ package com.softserve.edu.rs.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class CommonPage extends TopPage {
-	//protected WebDriver driver;
-	//
-	private WebElement loginAccount;
+public abstract class CommonPage extends BasePage {
+	@FindBy(xpath = "//button[@class='btn btn-primary btn-sm']")
+	private WebElement labelUserLogin;
+	@FindBy(xpath = "//button[@data-toggle='dropdown']")
+	private WebElement dropdownButton;
+	@FindBy(xpath = "//a[contains(@href,'/logout')]")
 	private WebElement logout;
 
-	public CommonPage(WebDriver driver) {
-		super(driver);
-		//this.driver = driver;
-		//
-		this.loginAccount=driver.findElement(By.cssSelector(".col-md-7 label"));
-		this.logout=driver.findElement(By.xpath("//a[contains(@href,'/logout')]"));
+	public CommonPage(WebDriver webDriver) {
+		super(webDriver);
+		PageFactory.initElements(webDriver, this);
 	}
 
-	// Get Elements
+	public WebElement getLabelUserLogin() {
+		return this.labelUserLogin;
+	}
 	
-	public WebElement getLoginAccount() {
-		return this.loginAccount;
+	public WebElement getButtonDropdown() {
+		return this.dropdownButton;
 	}
 	
 	public WebElement getLogout() {
@@ -29,13 +34,18 @@ public abstract class CommonPage extends TopPage {
 	}
 
 	public String getLoginAccountText() {
-		return this.loginAccount.getText();
+		return this.labelUserLogin.getText();
 	}
 	
-	// Set Data
+	public void clickDropdown() {
+		getButtonDropdown().click();
+	}
 	
-	public void clickLogout() {
+	public LoginPage logout() {
+		clickDropdown();
 		getLogout().click();
+		(new WebDriverWait(webDriver, 5)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']")));
+		return new LoginPage(webDriver);
 	}
 
 }

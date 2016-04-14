@@ -1,29 +1,23 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import com.softserve.edu.entity.IUser;
 
-import com.softserve.edu.rs.data.users.IUser;
-
-public class LoginPage extends TopPage {
-	//private WebDriver driver;
-	//
+public class LoginPage extends BasePage {
+	@FindBy(id = "login")
 	private WebElement login;
+	@FindBy(id = "password")
 	private WebElement password;
-	private WebElement signin;
+	@FindBy(xpath = "//button[@type='submit']")
+	private WebElement signIn;
 
-	public LoginPage(WebDriver driver) {
-		super(driver);
-		//this.driver = driver;
-		//
-		this.login = driver.findElement(By.id("login"));
-		this.password = driver.findElement(By.id("password"));
-		this.signin = driver.findElement(By.cssSelector("button.btn.btn-primary"));
+	public LoginPage(WebDriver webDriver) {
+		super(webDriver);
+		PageFactory.initElements(webDriver, this);
 	}
-
-	// Page Object - - - - - - - - - -
-	// Get Elements
 
 	public WebElement getLogin() {
 		return this.login;
@@ -33,19 +27,17 @@ public class LoginPage extends TopPage {
 		return this.password;
 	}
 
-	public WebElement getSignin() {
-		return this.signin;
+	public WebElement getSignIn() {
+		return this.signIn;
 	}
 
 	public String getLoginText() {
-		return this.login.getText();
+		return getLogin().getText();
 	}
 
 	public String getPasswordText() {
-		return this.password.getText();
+		return getPassword().getText();
 	}
-
-	// Set Data
 
 	public void setLogin(String login) {
 		getLogin().sendKeys(login);
@@ -71,50 +63,38 @@ public class LoginPage extends TopPage {
 		getPassword().click();
 	}
 
-	public void clickSignin() {
-		getSignin().click();
+	public void clickSignIn() {
+		getSignIn().click();
 	}
 
-	// Business Logic
-	// Functional
-	
-    public LoginPage changeLanguage(ChangeLanguageFields language) {
-    	setChangeLanguage(language);
-        // Return a new page object representing the destination.
-        return new LoginPage(driver);
-    }
+	public LoginPage changeLanguage(ChangeLanguageFields language) {
+		setChangeLanguage(language);
+		return new LoginPage(webDriver);
+	}
 
-    private void setLoginData(IUser user) {
+	private void setLoginData(IUser user) {
 		clickLogin();
 		clearLogin();
 		setLogin(user.getAccount().getLogin());
 		clickPassword();
 		clearPassword();
 		setPassword(user.getAccount().getPassword());
-		clickSignin();
+		clickSignIn();
 	}
 
-    public HomePage successUserLogin(IUser user) {
-        setLoginData(user);
-        // Return a new page object representing the destination.
-        return new HomePage(driver);
-    }
+	public HomeUserPage successUserLogin(IUser user) {
+		setLoginData(user);
+		return new HomeUserPage(webDriver);
+	}
 
-    public AdminHomePage successAdminLogin(IUser admin) {
+	public CommonAdminCommissionerHomePage successAdminCommissionerLogin(IUser admin) {
 		setLoginData(admin);
-		// Return a new page object representing the destination.
-		return new AdminHomePage(driver);
-	}
-
-	public RegistratorHomePage successRegistratorLogin(IUser registrator) {
-		setLoginData(registrator);
-		// Return a new page object representing the destination.
-		return new RegistratorHomePage(driver);
+		return new CommonAdminCommissionerHomePage(webDriver);
 	}
 
 	public LoginValidatorPage unsuccessfulLogin(IUser invalidUser) {
 		setLoginData(invalidUser);
-		return new LoginValidatorPage(driver); // return this;
+		return new LoginValidatorPage(webDriver);
 	}
 
 }
