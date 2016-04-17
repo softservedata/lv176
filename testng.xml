@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="My test suite">
+  <test name="testing">
+    <classes>
+       <class name="com.softserve.edu.rs.tests.SmokeLoginTest" />
+       <class name="com.softserve.edu.rs.tests.ComponentTest" />
+       <class name="com.softserve.edu.rs.tests.CreateNewSubclassTest" />
+       <class name="com.softserve.edu.rs.tests.DeleteSubclassTest" />
+    </classes>
+  </test>
+</suite>
+
+
+
+
+	
