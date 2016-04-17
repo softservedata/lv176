@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite_regisrator">	
+	<!-- 3 ERROR 5 WARNING 7 INFO -->
+	<test verbose="5" name="Test">
+		<parameter name="number" value="2" />
+		<classes>
+			<class name="com.softserve.edu.rs.tests.TestRegistrator">
+				<methods>
+					<include name="registratorLogin" />
+					<include name="procurationOneClick" />
+					<include name="procurationTwoClick" />
+					<include name="mapInstructionVerify" />
+					<include name="passportoneClick" />
+					<include name="addNewResource" />	
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
