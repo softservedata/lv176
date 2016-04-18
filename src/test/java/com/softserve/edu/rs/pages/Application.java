@@ -8,17 +8,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import com.softserve.edu.rs.data.apps.ApplicationSources;
 
 public class Application {
-    //private final String START_PAGE_UNDEFINED = "ApplicationSources Undefined.";
-    //
+	
     ApplicationSources applicationSources;
     WebDriver driver;
     
     public Application(ApplicationSources applicationSources) {
     	this.applicationSources= applicationSources;
-    	System.out.println("\t*** Application Sources");
-    	System.out.println("\t" + applicationSources.getLoginUrl());
-    	System.out.println("\t" + applicationSources.getLogoutUrl());
-    	System.out.println("\t" + applicationSources.getBrowserName());
     }
 
     private void initBrowser() {
@@ -65,4 +60,10 @@ public class Application {
     	}
     }
     
+    public void reload() {
+    	if (driver != null){
+    		driver.navigate().refresh();
+    	}
+    }
+
 }

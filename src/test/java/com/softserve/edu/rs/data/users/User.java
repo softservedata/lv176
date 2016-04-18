@@ -23,14 +23,6 @@ public class User implements IPersonUser, IAccountUser, IBuildUser, IUserExt {
 		this.address = Address.get();
 		this.passport = Passport.get();
 	}
-	
-	// Delete
-//	public User(Person person, Account account, Address adress, Passport passport) {
-//		this.person = person;
-//		this.account = account;
-//		this.adress = adress;
-//		this.passport = passport;
-//	}
 
 	// static factory - - - - - - - - - -
 	
@@ -39,10 +31,6 @@ public class User implements IPersonUser, IAccountUser, IBuildUser, IUserExt {
 	}
 
 	// set - - - - - - - - - -
-
-//	public IFirstname setPerson() {
-//		return Person.get();
-//	}
 	
 	public IAccountUser setPerson(IPerson person) {
 		this.person = person;

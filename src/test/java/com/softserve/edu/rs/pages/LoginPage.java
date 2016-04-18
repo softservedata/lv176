@@ -1,25 +1,27 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.softserve.edu.rs.data.users.IUser;
+import com.softserve.edu.rs.pages.admin.AdminHomePage;
+import com.softserve.edu.rs.pages.registrator.RegistratorHomePage;
 
-public class LoginPage extends TopPage {
-	//private WebDriver driver;
-	//
+public class LoginPage extends TopPage {	
+
 	private WebElement login;
 	private WebElement password;
 	private WebElement signin;
+	private WebElement loginLabel;
+	private WebElement passwordLabel;
 
 	public LoginPage(WebDriver driver) {
 		super(driver);
-		//this.driver = driver;
-		//
-		this.login = driver.findElement(By.id("login"));
-		this.password = driver.findElement(By.id("password"));
-		this.signin = driver.findElement(By.cssSelector("button.btn.btn-primary"));
+		this.login = findById("login");
+		this.password = findById("password");
+		this.signin = findByCss("button.btn.btn-primary");
+		this.loginLabel = findByXpath("//label[@for = 'inputEmail']");
+		this.passwordLabel = findByXpath("//label[@for = 'inputPassword']");
 	}
 
 	// Page Object - - - - - - - - - -
@@ -37,12 +39,28 @@ public class LoginPage extends TopPage {
 		return this.signin;
 	}
 
+	public WebElement getLoginLabel() {
+		return this.loginLabel;
+	}
+
+	public WebElement getPasswordLabel() {
+		return this.passwordLabel;
+	}
+
 	public String getLoginText() {
-		return this.login.getText();
+		return getLogin().getText();
 	}
 
 	public String getPasswordText() {
-		return this.password.getText();
+		return getPassword().getText();
+	}
+
+	public String getLoginLabelText() {
+		return getLoginLabel().getText();
+	}
+
+	public String getPasswordLabelText() {
+		return getPasswordLabel().getText();
 	}
 
 	// Set Data
@@ -80,7 +98,6 @@ public class LoginPage extends TopPage {
 	
     public LoginPage changeLanguage(ChangeLanguageFields language) {
     	setChangeLanguage(language);
-        // Return a new page object representing the destination.
         return new LoginPage(driver);
     }
 
@@ -96,25 +113,22 @@ public class LoginPage extends TopPage {
 
     public HomePage successUserLogin(IUser user) {
         setLoginData(user);
-        // Return a new page object representing the destination.
         return new HomePage(driver);
     }
 
     public AdminHomePage successAdminLogin(IUser admin) {
 		setLoginData(admin);
-		// Return a new page object representing the destination.
 		return new AdminHomePage(driver);
 	}
 
 	public RegistratorHomePage successRegistratorLogin(IUser registrator) {
 		setLoginData(registrator);
-		// Return a new page object representing the destination.
 		return new RegistratorHomePage(driver);
 	}
 
 	public LoginValidatorPage unsuccessfulLogin(IUser invalidUser) {
 		setLoginData(invalidUser);
-		return new LoginValidatorPage(driver); // return this;
+		return new LoginValidatorPage(driver);
 	}
 
 }

@@ -1,16 +1,17 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-public abstract class TopPage {
 
+public abstract class TopPage extends AbstractAppPage {
+	
 	public static enum ChangeLanguageFields {
         UKRAINIAN("українська"),
         RUSSIAN("русский"),
         ENGLISH("english");
-        //
+        
         private String field;
 
         private ChangeLanguageFields(String field) {
@@ -22,25 +23,23 @@ public abstract class TopPage {
             return this.field;
         }
     }
-	
-	protected WebDriver driver;
-	//
-	private Select changeLanguage;
+
+	private WebElement changeLanguage;
 
 	public TopPage(WebDriver driver) {
-		this.driver = driver;
-		//
-		this.changeLanguage = new Select(driver.findElement(By.id("changeLanguage")));
+		super(driver);
+		this.changeLanguage = findById("changeLanguage");
 	}
+	
 
 	// Get Elements
 
 	public Select getChangeLanguage() {
-		return this.changeLanguage;
+		return new Select(changeLanguage);
 	}
 
 	public String getChangeLanguageSelectedText() {
-		return this.changeLanguage.getFirstSelectedOption().getText();
+		return getChangeLanguage().getFirstSelectedOption().getText();
 	}
 
 	// Set Data
@@ -48,5 +47,17 @@ public abstract class TopPage {
 	public void setChangeLanguage(ChangeLanguageFields language) {
 		getChangeLanguage().selectByVisibleText(language.toString());
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
