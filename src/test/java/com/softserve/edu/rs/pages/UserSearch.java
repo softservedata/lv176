@@ -47,12 +47,12 @@ public class UserSearch extends AbstractAppPage {
 		this.communitySearchField = findById("inputIndex4");
 		this.emailSearchField = findById("inputIndex5");
 		this.roleDropDownBox = findById("inputIndex6");
-		this.firstNamesFromSearchTable = findCollectionByCss("tbody td:nth-of-type(2)");
-		this.lastNamesFromSearchTable = findCollectionByCss("tbody td:nth-of-type(3)");
-		this.loginsFromSearchTable = findCollectionByCss("tbody td:nth-of-type(4)");
-		this.communitiesFromSearchTable = findCollectionByCss("tbody td:nth-of-type(5)");
-		this.emailsFromSearchTable = findCollectionByCss("tbody td:nth-of-type(6)");
-		this.rolesFromSearchTable = findCollectionByCss("tbody td:nth-of-type(7)");
+		this.firstNamesFromSearchTable = findCollectionByCss("td.firstName");
+		this.lastNamesFromSearchTable = findCollectionByCss("td.lastName");
+		this.loginsFromSearchTable = findCollectionByCss("td.login.sorting_1");
+		this.communitiesFromSearchTable = findCollectionByCss("td.territorialCommunity_name");
+		this.emailsFromSearchTable = findCollectionByCss("td.email");
+		this.rolesFromSearchTable = findCollectionByCss("td.role_type");
 		this.itemsPerPage = findByXpath("//select[@name='example_length']");
 	}
 
