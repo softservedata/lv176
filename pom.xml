@@ -4,19 +4,26 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.softserve.edu</groupId>
-	<artifactId>rs176</artifactId>
+	<artifactId>lv176</artifactId>
 	<version>1.0</version>
 
 	<packaging>jar</packaging>
 
-	<name>rs176</name>
+	<name>lv176</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<org.slf4j.version>1.7.20</org.slf4j.version>
+		<org.testng.version>6.9.10</org.testng.version>
 		<org.seleniumhq.selenium.version>2.53.0</org.seleniumhq.selenium.version>
+		<org.slf4j.version>1.7.20</org.slf4j.version>
+		<org.apache.poi.version>3.14</org.apache.poi.version>
+		<xerces.xercesImpl.version>2.11.0</xerces.xercesImpl.version>
+		<net.sourceforge.jtds.version>1.2.4</net.sourceforge.jtds.version>
+		<mysql-connector-java.version>5.1.38</mysql-connector-java.version>
+		<org.mockito.version>1.10.19</org.mockito.version>
 		<testng.reports.directory>./target/surefire-reports/test-output</testng.reports.directory>
+		<testng.exec.path>./target/test-classes/</testng.exec.path>
 	</properties>
 
 	<dependencies>
@@ -24,7 +31,7 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.9.10</version>
+			<version>${org.testng.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- - - - Logger - - - -->
@@ -40,12 +47,40 @@
 			<version>${org.slf4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- - - - Read from Excel formats, etc. - - - -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${org.apache.poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>${xerces.xercesImpl.version}</version>
+		</dependency>
+		<!-- - - - DB Access - - - -->
+		<dependency>
+			<groupId>net.sourceforge.jtds</groupId>
+			<artifactId>jtds</artifactId>
+			<version>${net.sourceforge.jtds.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.38</version>
+		</dependency>
+		<!-- - - - Mock Object - - - -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${org.mockito.version}</version>
+		</dependency>
 		<!-- - - - Automation Framework - - - -->
-	    <dependency>
-	        <groupId>org.seleniumhq.selenium</groupId>
-	        <artifactId>selenium-server</artifactId>
-	        <version>${org.seleniumhq.selenium.version}</version>
-	    </dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<version>${org.seleniumhq.selenium.version}</version>
+		</dependency>
 
 	</dependencies>
 
@@ -65,8 +100,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
@@ -86,16 +121,16 @@
 						</selenium-version>
 					</systemPropertyVariables>
 					<suiteXmlFiles>
-						<suiteXmlFile>testngUnit.xml</suiteXmlFile>
+						<suiteXmlFile>testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
 					<reportsDirectory>${testng.reports.directory}</reportsDirectory>
 				</configuration>
 			</plugin>
 			<!-- - - - Integration Testing - - - -->
-		    <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-failsafe-plugin</artifactId>
-		        <version>2.19.1</version>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.19.1</version>
 				<configuration>
 					<systemPropertyVariables>
 						<surefire.reports.directory>
@@ -106,7 +141,7 @@
 						</selenium-version>
 					</systemPropertyVariables>
 					<suiteXmlFiles>
-						<suiteXmlFile>testngIntegration.xml</suiteXmlFile>
+						<suiteXmlFile>testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
 					<reportsDirectory>${testng.reports.directory}</reportsDirectory>
 				</configuration>
@@ -118,7 +153,7 @@
 						</goals>
 					</execution>
 				</executions>
-		    </plugin>
+			</plugin>
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -130,42 +165,41 @@
 						<goals>
 							<goal>exec</goal>
 						</goals>
-						<phase>test</phase>
-<!-- 						<phase>pre-integration-test</phase> -->
+						<phase>pre-integration-test</phase>
+						<!-- <phase>pre-integration-test</phase> -->
 						<configuration>
-<!-- 							<executable>calc.exe</executable> -->
-							<executable>exec.bat</executable>
+							<!-- <executable>calc.exe</executable> -->
+							<executable>${testng.exec.path}/exec.bat</executable>
 							<arguments>
 								<argument>PreIntegration</argument>
 							</arguments>
 						</configuration>
 					</execution>
-				    <execution>
-				        <id>post-integration-test</id>
-				        <goals>
-				            <goal>exec</goal>
-				        </goals>
-				        <phase>test</phase>
-<!-- 				        <phase>post-integration-test</phase> -->
-				        <configuration>
-				            <executable>java</executable>
-				            <arguments>
-				                <argument>-classpath</argument>
-				                <argument>target/classes</argument>
-				                <argument>
-				                    com.softserve.edu.App
-				                </argument>
-				                <argument>
-				                    post-integration-test</argument>
-				            </arguments>
-				        </configuration>
-				    </execution>
-					
+					<execution>
+						<id>post-integration-test</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>post-integration-test</phase>
+						<!-- <phase>post-integration-test</phase> -->
+						<configuration>
+							<executable>java</executable>
+							<arguments>
+								<argument>-classpath</argument>
+								<argument>target/classes</argument>
+								<argument>
+									com.softserve.edu.App
+								</argument>
+								<argument>
+									post-integration-test</argument>
+							</arguments>
+						</configuration>
+					</execution>
+
 				</executions>
 			</plugin>
 
 		</plugins>
 	</build>
-
 
 </project>
