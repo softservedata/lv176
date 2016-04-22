@@ -16,6 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.testng.version>6.9.10</org.testng.version>
 		<org.seleniumhq.selenium.version>2.53.0</org.seleniumhq.selenium.version>
+		<org.seleniumhq.selenium.htmlunit-driver>2.20</org.seleniumhq.selenium.htmlunit-driver>
 		<org.slf4j.version>1.7.20</org.slf4j.version>
 		<org.apache.poi.version>3.14</org.apache.poi.version>
 		<xerces.xercesImpl.version>2.11.0</xerces.xercesImpl.version>
@@ -81,7 +82,11 @@
 			<artifactId>selenium-server</artifactId>
 			<version>${org.seleniumhq.selenium.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>htmlunit-driver</artifactId>
+			<version>${org.seleniumhq.selenium.htmlunit-driver}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
