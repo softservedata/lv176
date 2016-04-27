@@ -2,8 +2,15 @@ package com.softserve.edu.atqc.tools;
 
 import org.openqa.selenium.WebDriver;
 
+import com.softserve.edu.atqc.data.ApplicationSources;
+
+interface IBrowserFactory {
+	ABrowser getInstance(ApplicationSources applicationSources);
+	String getInstanceName();
+}
+
 abstract class ABrowser {
-	private final String BROWSER_CLOSED = "Browser not found";
+	private final String BROWSER_CLOSED = "Browser not found.";
 	private String browserName; 
 	private WebDriver driver;
 
