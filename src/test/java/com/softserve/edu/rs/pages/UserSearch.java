@@ -155,58 +155,50 @@ public class UserSearch extends AbstractAppPage {
 	public void clearEmail() {
 		getEmail().clear();
 	}
-	public void setAnotherRole(String role) {
+	public UserSearch setAnotherRole(String role) {
 		getRoleDropDownBox().selectByValue(role);
+		return this;
 	}
 	public UserSearch setItemsPerPage(ItemsPerPage items) {
 		getItemsPerPage().selectByValue(items.toString());
 		return new UserSearch(driver);
 	}
-	public UserSearch searchByFirstName(String data) {
+	public UserSearch typeInFirstNameField(String data) {
 		clickFirsName();
 		clearFirsName();
 		setFirstName(data);
-		clickSearchButton();
-		return new UserSearch(driver);
+		return this;
 	}
-	public UserSearch searchByLastName(String data) {
+	public UserSearch typeInLastField(String data) {
 		clickLastName();
 		clearLastName();
 		setLastName(data);
-		clickSearchButton();
-		return new UserSearch(driver);
+		return this;
 	}
-	public UserSearch searchByLogin(String data) {
+	public UserSearch typeInLoginField(String data) {
 		clickLogin();
 		clearLogin();
 		setLogin(data);
-		clickSearchButton();
-		return new UserSearch(driver);
+		return this;
 	}
-	public UserSearch searchByCommunity(String data) {
+	public UserSearch typeInCommunityField(String data) {
 		clickCommunity();
 		clearCommunity();
 		setCommunity(data);
-		clickSearchButton();
-		return new UserSearch(driver);
+		return this;
 	}
-	public UserSearch searchByEmail(String data) {
+	public UserSearch typeInEmailField(String data) {
 		clickEmail();
 		clearEmail();
 		setEmail(data);
-		clickSearchButton();
-		return new UserSearch(driver);
-	}
-	public UserSearch searchByRole(String role) {
-		setAnotherRole(role);
-		clickSearchButton();
-		return new UserSearch(driver);
+		return this;
 	}
 
 	// ----Business logic
 
-	public void clickSearchButton() {
+	public UserSearch clickSearchButton() {
 		getSearchButton().click();
+		return new UserSearch(driver);
 	}
 	
 	public String getItemsQuantityPerPage(){

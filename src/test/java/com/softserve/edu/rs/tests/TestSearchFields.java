@@ -51,9 +51,9 @@ public class TestSearchFields {
 				.convertToMultidimensionalArray(SearchDataRepository.getDataForLoginField());
 	}
 	
-	@Test(dataProvider = "loginData", enabled = true)
+	@Test(dataProvider = "loginData", enabled = false)
 	public void loginSearchTest(String input) {
-		activeUserSearchPage.setUserSearch(activeUserSearchPage.getUserSearch().searchByLogin(input));
+		activeUserSearchPage.setUserSearch(activeUserSearchPage.getUserSearch().typeInLoginField(input).clickSearchButton());
 		boolean result = VerifyInfo
 							.compareSearchResults(activeUserSearchPage.getUserSearch().getLoginsFromSearchTable(),input);
 		Assert.assertTrue(result, "Search result doesn't contains input data");
@@ -67,7 +67,10 @@ public class TestSearchFields {
 
 	@Test (dataProvider = "rolesData", enabled = false)
 	public void roleSearchTest(String input){
-		activeUserSearchPage.setUserSearch(activeUserSearchPage.getUserSearch().searchByRole(input));		
+		activeUserSearchPage.setUserSearch(
+				activeUserSearchPage.getUserSearch()
+									.setAnotherRole(input)
+									.clickSearchButton());		
 		boolean result = VerifyInfo
 							.compareSearchResults(activeUserSearchPage.getUserSearch().getRolesFromSearchTable(), 
 										activeUserSearchPage.getUserSearch().getChangeRoleFieldSelectedText());
@@ -83,7 +86,7 @@ public class TestSearchFields {
 
 	@Test (dataProvider = "emailTestData", enabled = false)
 	public void emailSearchTest(String input) {
-		activeUserSearchPage.setUserSearch(activeUserSearchPage.getUserSearch().searchByEmail(input));	
+		activeUserSearchPage.setUserSearch(activeUserSearchPage.getUserSearch().typeInEmailField(input).clickSearchButton());	
 		boolean result = VerifyInfo
 							.compareSearchResults(activeUserSearchPage.getUserSearch().getEmailsFromSearchTable(),input);
 		Assert.assertTrue(result, "Search result doesn't contains input data");
