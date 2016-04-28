@@ -2,6 +2,8 @@ package com.softserve.edu.atqc.tools;
 
 import java.util.HashMap;
 
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 import com.softserve.edu.atqc.data.ApplicationSources;
 import com.softserve.edu.atqc.tools.BrowserRepository.BrowserList;
 
@@ -36,14 +38,12 @@ public final class BrowserUtils {
 
 	public static void quitAll() {
 		if (instance != null) {
-			System.out.println("quitAll Start");
 			for (Long threadId : instance.browsers.keySet()) {
 			//for (ABrowser browser : instance.browsers.values()) {
-				//System.out.println("browser != null " + ( browser != null));
-				//System.out.println("getBrowser() != null " + ( instance.getBrowser() != null));
 				//browser.quit();
 				if (instance.browsers.get(threadId) != null) {
 					instance.browsers.get(threadId).quit();
+					instance.browsers.put(threadId, null);
 				}
 			}
 		}
@@ -65,8 +65,10 @@ public final class BrowserUtils {
 		*		+		-			new
 		**		-		+			-
 		*		- 		-			new
+				+/-		+(-)		new
 		*/		
-		if (getBrowser() == null) {
+		if ((getBrowser() == null)
+				|| (!getBrowser().isEnabled())) {
 			startBrowser(getBrowserList(applicationSources), applicationSources);
 		} else if ((applicationSources != null)
 				&& (applicationSources.getBrowserName() != null)
