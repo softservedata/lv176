@@ -1,5 +1,6 @@
 package com.softserve.edu.rs.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -8,55 +9,39 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class ShowAllCommn extends CommonPage {
+	
+	private  String Verify = "Lviv";
+	//private  final String sss = "TTTT";
 
-	@FindBy(xpath = "//td[contains(text(),'122:22:22:222:22222')]/following-sibling::td[1]/descendant::div[2]/a[@id ='deletecommunity']")
+	@FindBy(xpath = "//td[contains(text(),'Житомирська')]/following-sibling::td[2]/descendant::div[2]/a[@id ='deletecommunity']")
 	private WebElement DeleteButton;
 
-	@FindBy(xpath = ".//*[@id='body']/p/a")
+	//@FindBy(xpath = ".//*[@id='body']/p/a")
+	@FindBy(css = ".btn.btn-success[href='addCommunity']")
 	private WebElement AddNewCommunitySecond;
 
-	@FindBy(xpath = "")
+	//@FindBy(xpath = "//td[1]")
+	@FindBy(css = "td:nth-of-type(1)")
 	private List<WebElement> ElementsOfTable;
 
 	@FindBy(xpath = "//td[contains(text(),'Черкаська')]/following-sibling::td[2]/descendant::div[1]/a[@id ='editcommunity']")
 	private WebElement EditButton;
 
-	@FindBy(xpath = ".//*[@id='body']/div/h4")
+	//@FindBy(xpath = ".//*[@id='body']/div/h4")
+	@FindBy(css = "div[style='text-align: center;'] h4")
 	private WebElement NameOfTable;
 
-	@FindBy(xpath = "//td[contains(text(),'Тернопільська')]/following-sibling::td[2]/descendant::div[2]/a[@id ='deletecommunity']")
-	private WebElement DeleteTempEditCommn;
 
-	@FindBy(xpath = "//td[contains(text(),'12345')]/following-sibling::td[2]/descendant::div[2]/a[@id ='deletecommunity']")
-	private WebElement DeleteTempNumericalCommn;
-
-	@FindBy(xpath = "//td[contains(text(),'Poltava')]/following-sibling::td[2]/descendant::div[2]/a[@id ='deletecommunity']")
-	private WebElement DeleteTempAlhabeticalCommn;
-
-	@FindBy(xpath = "//td[contains(text(),'Винники')]/following-sibling::td[2]/descendant::div[2]/a[@id ='deletecommunity']")
-	private WebElement DeleteTempCyrillicCommn;
 
 	public ShowAllCommn(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 
-	public WebElement getDeleteTempEditCommn() {
-		return this.DeleteTempEditCommn;
-	}
 
-	public WebElement getDeleteTempNumericalCommn() {
-		return this.DeleteTempNumericalCommn;
+	public String getVer(){
+		return this.Verify;
 	}
-
-	public WebElement getDeleteTempAlhabeticalCommn() {
-		return this.DeleteTempAlhabeticalCommn;
-	}
-
-	public WebElement getDeleteTempCyrillicCommn() {
-		return this.DeleteTempCyrillicCommn;
-	}
-
 	public WebElement getNameOfTable() {
 		return this.NameOfTable;
 	}
@@ -77,23 +62,7 @@ public class ShowAllCommn extends CommonPage {
 		return this.ElementsOfTable;
 	}
 
-	public void clickDeleteTempEditCommn() {
-		getDeleteTempEditCommn().click();
-		;
-	}
-
-	public void clickDeleteTempNumericalCommn() {
-		getDeleteTempNumericalCommn().click();
-		;
-	}
-
-	public void clickDeleteTempAlhabeticalCommn() {
-		getDeleteTempAlhabeticalCommn().click();
-	}
-
-	public void clickDeleteTempCyrillicCommn() {
-		getDeleteTempCyrillicCommn().click();
-	}
+	
 
 	public void clickDeleteButton() {
 		getDeleteButton().click();
@@ -122,27 +91,14 @@ public class ShowAllCommn extends CommonPage {
 		return new ConfirmDecisionPage(driver);
 	}
 
-	public ConfirmDecisionPage gotoConfirmDecisionPageTempCommnEdit() {
-		clickDeleteTempEditCommn();
-
-		return new ConfirmDecisionPage(driver);
-	}
-
-	public ConfirmDecisionPage gotoConfirmDecisionPageTempCommnNumerical() {
-
-		clickDeleteTempNumericalCommn();
-
-		return new ConfirmDecisionPage(driver);
-	}
-
-	public ConfirmDecisionPage gotoConfirmDecisionPageTempCommnAlhabetical() {
-		clickDeleteTempAlhabeticalCommn();
-		return new ConfirmDecisionPage(driver);
-	}
-
-	public ConfirmDecisionPage gotoConfirmDecisionPageTempCommnCyrillicl() {
-		clickDeleteTempCyrillicCommn();
-		return new ConfirmDecisionPage(driver);
+	public static boolean NewCheckComm(List<WebElement> searchResult, String expected) {
+		boolean result = true;
+		for (WebElement element : searchResult) {
+			if (element.getText().contains(expected) == false) {
+				result = false;
+			}
+		}
+		return result;
 	}
 
 }

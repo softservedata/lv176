@@ -23,13 +23,13 @@ import com.softserve.edu.rs.pages.ShowAllCommn;
 public class MyTestCommunity {
 	private Application application;
 	private AdminHomePage adminHomePage;
-	private static final String VerifyValueForCommunityCyrillic = "Винники";
-	private static final String VerifyValueForCommunityDelete = "Житомирська";
-	private static final String VerifyValuesForCommunityNumeric = "12345";
-	private static final String VerifyValuesForCommunityAlphabetical = "Poltava";
-
-	private static final String VerifyValuesCreateCommunityForEdit = "Черкаська";
-	private static final String VerifyEditedrCommunity = "Тернопільська";
+	private static final String expectedCyrillicCommunity = "Винники";
+	private static final String expectedCommunityForDelete = "Житомирська";
+	private static final String expectedNumericCommunity = "12345";
+	private static final String expectedAlphabeticalCommunity = "Poltava";
+	private static final String expectedCommunityForCleaning = "Ланівецька";
+	private static final String expectedCommunityForEdit = "Черкаська";
+	private static final String expectedCommunityAfterEdit = "Тернопільська";
 	private ShowAllCommn showAllCommunity;
 	private AddNewCommunityPage addNewCommunityPage;
 
@@ -46,6 +46,7 @@ public class MyTestCommunity {
 	@BeforeMethod()
 	public void setUp() {
 		adminHomePage = application.load().successAdminLogin(UserRepository.get().getAdmin());
+
 	}
 
 	@AfterMethod
@@ -53,20 +54,19 @@ public class MyTestCommunity {
 		application.logout();
 	}
 
-	@Test(priority = 1)
+	 @Test
 	public void GeneralAdminSmokeTest() {
 		Assert.assertEquals(adminHomePage.getAllCommunities().isEnabled(), true);
 	}
 
-	@Test(priority = 2)
+	@Test
 	public void SmokeShowAll() {
-
 		showAllCommunity = adminHomePage.gotoAllCommunitiesSecond();
-		Assert.assertEquals(showAllCommunity.getNameOfTable().isEnabled(), true);
+		//Assert.assertEquals(showAllCommunity.getNameOfTable().isEnabled(), true);
 
 	}
 
-	@Test(priority = 3)
+	 @Test
 	public void SmokeShowAddCommunityPage() {
 		addNewCommunityPage = adminHomePage.gotoAllCommunitiesSecond().gotoAddNewCommunityPageSecond();
 		Assert.assertEquals(addNewCommunityPage.getHeadPageAddNewCommunity().isDisplayed(), true);
@@ -75,24 +75,27 @@ public class MyTestCommunity {
 
 	}
 
-	@DataProvider
+	/*@DataProvider
 	public Object[][] AddCommunityForDelete() {
 		return new Object[][] { { AddNewCommunityRepository.get().getNewCommunityForDelete(), } };
 	}
-	
-	
-	@Test(dataProvider = "AddCommunityForDelete", priority = 4)
+
+	 @Test
 	public void AddLastCommunity(AddNewCommunity DataForDeleteCommunity) {
-		adminHomePage.gotoAllCommunitiesSecond().gotoAddNewCommunityPageSecond()
+		showAllCommunity = adminHomePage.gotoAllCommunitiesSecond().gotoAddNewCommunityPageSecond()
 				.successInputData(DataForDeleteCommunity).gotoShowAllCommunitiesPageSaveSecond();
-		boolean result = VerifyEnabledOfCommunity.VerifyOfCommunity(VerifyValueForCommunityDelete);
-		Assert.assertEquals(result, true);
+		boolean CheckTestResult = VerifyEnabledOfCommunity.CheckComm(showAllCommunity.getElementsOfTable(),
+				expectedCommunityForDelete);
+		Assert.assertTrue(CheckTestResult, "Community for delete is not present");
 	}
 
-	@Test(priority = 5)
-	public void DeleteLastCommunity() {
+	 @Test
+	public void DeleteLastCommunity() throws InterruptedException {
 		showAllCommunity = adminHomePage.gotoAllCommunitiesSecond().gotoConfirmDecisionPage().clickConfirmButtonOk();
-		 Assert.assertTrue(showAllCommunity.getDeleteButton().isDisplayed());
+		Thread.sleep(2000);
+		boolean CheckTestResult = VerifyEnabledOfCommunity.CheckComm(showAllCommunity.getElementsOfTable(),
+				expectedCommunityForDelete);
+		Assert.assertTrue(CheckTestResult, "Community for delete is not present");
 	}
 
 	@DataProvider
@@ -101,22 +104,18 @@ public class MyTestCommunity {
 		return new Object[][] { { AddNewCommunityRepository.get().getNewCommunityForClear(), } };
 	}
 
-	@Test(dataProvider = "clearCommunityField", priority = 6)
+	 @Test(dataProvider = "clearCommunityField", priority = 6)
 	public void ClearCommunity(AddNewCommunity CommunityForClear) {
 		AddNewCommunityPage addNewCommunityPage = adminHomePage.gotoAllCommunitiesSecond()
 				.gotoAddNewCommunityPageSecond().successInputData(CommunityForClear);
-
-		Assert.assertEquals(addNewCommunityPage.getcleanButton().isEnabled(), true);
-
+		Assert.assertTrue(addNewCommunityPage.getcleanButton().isEnabled(), "Button for cleaning is disenabled");
 		addNewCommunityPage.clickcleanButton();
-
 		boolean resultCommunityField = addNewCommunityPage.getnewCommunity().getText().isEmpty();
-		Assert.assertEquals(resultCommunityField, true);
+		Assert.assertTrue(resultCommunityField, "Add community field is not empty");
 		boolean resultRegisteredField = addNewCommunityPage.getregisterNumber().getText().isEmpty();
-		Assert.assertEquals(resultRegisteredField, true);
+		Assert.assertTrue(resultRegisteredField, "Add registered number is not empty");
 	}
 
-	
 	@DataProvider
 	public Object[][] createCommunityForEdit() {
 		return new Object[][] { { AddNewCommunityRepository.get().getCreateNewCommunityForEdit(), }
@@ -124,12 +123,14 @@ public class MyTestCommunity {
 		};
 	}
 
-	@Test(dataProvider = "createCommunityForEdit", groups = "VerifyEditOfCommunity", priority = 7)
+	 @Test(dataProvider = "createCommunityForEdit")
 	public void CreateForEditCommunity(AddNewCommunity dataCreateForEdit) {
-		adminHomePage.gotoAllCommunitiesSecond().gotoAddNewCommunityPageSecond().successInputData(dataCreateForEdit)
-				.gotoShowAllCommunitiesPageSaveSecond();
-		boolean result = VerifyEnabledOfCommunity.VerifyOfCommunity(VerifyValuesCreateCommunityForEdit);
-		Assert.assertEquals(result, true);
+		showAllCommunity = adminHomePage.gotoAllCommunitiesSecond().gotoAddNewCommunityPageSecond()
+				.successInputData(dataCreateForEdit).gotoShowAllCommunitiesPageSaveSecond();
+
+		boolean CheckTestResultEdit = VerifyEnabledOfCommunity.CheckComm(showAllCommunity.getElementsOfTable(),
+				expectedCommunityForEdit);
+		Assert.assertTrue(CheckTestResultEdit, "Community for edit is not present in the list");
 
 	}
 
@@ -140,12 +141,18 @@ public class MyTestCommunity {
 		};
 	}
 
-	@Test(dataProvider = "editCommunity", groups = "VerifyEditOfCommunity", priority = 8)
+	 @Test(dataProvider = "editCommunity")
 	public void EditCreatedCommunity(EditCommunity dataEditCommunity) {
-		adminHomePage.gotoAllCommunitiesSecond().gotoEditCommunityPage().successInputData(dataEditCommunity)
-				.gotoShowAllCommunitiesPageSaveEditSecond();
-		boolean result = VerifyEnabledOfCommunity.VerifyOfCommunity(VerifyEditedrCommunity);
-		Assert.assertEquals(result, true);
+		showAllCommunity = adminHomePage.gotoAllCommunitiesSecond().gotoEditCommunityPage()
+				.successInputData(dataEditCommunity).gotoShowAllCommunitiesPageSaveEditSecond();
+		boolean CheckTestResultChange = VerifyEnabledOfCommunity.CheckComm(showAllCommunity.getElementsOfTable(),
+				expectedCommunityForEdit);
+		Assert.assertFalse(CheckTestResultChange, "Community for edit is not present in the list");
+
+		boolean CheckTestResult = VerifyEnabledOfCommunity.CheckComm(showAllCommunity.getElementsOfTable(),
+				expectedCommunityAfterEdit);
+		Assert.assertTrue(CheckTestResult, "Edited community is not present in the list");
+
 	}
 
 	@DataProvider
@@ -155,32 +162,27 @@ public class MyTestCommunity {
 				AddNewCommunityRepository.get().getNewCommunityNumber(), } };
 	}
 
-	@Test(dataProvider = "addDifferentSymbolsTypeCommunity", priority = 9)
+	@Test(dataProvider = "addDifferentSymbolsTypeCommunity")
 	public void AddCommunities(AddNewCommunity dataForCyrillicCommunity, AddNewCommunity dataForAlphabeticalCommunity,
 			AddNewCommunity dataForNumericalCommunity) {
-
-		adminHomePage.gotoAllCommunitiesSecond().gotoAddNewCommunityPageSecond()
+		showAllCommunity = adminHomePage.gotoAllCommunitiesSecond().gotoAddNewCommunityPageSecond()
 				.successInputData(dataForCyrillicCommunity).gotoShowAllCommunitiesPageSaveSecond()
 				.gotoAddNewCommunityPageSecond().successInputData(dataForAlphabeticalCommunity)
 				.gotoShowAllCommunitiesPageSaveSecond().gotoAddNewCommunityPageSecond()
 				.successInputData(dataForNumericalCommunity).gotoShowAllCommunitiesPageSaveSecond();
-		boolean resultCommunityCyrillic = VerifyEnabledOfCommunity.VerifyOfCommunity(VerifyValueForCommunityCyrillic);
-		Assert.assertEquals(resultCommunityCyrillic, true);
-		boolean resultCommunityAlphabetical = VerifyEnabledOfCommunity
-				.VerifyOfCommunity(VerifyValuesForCommunityAlphabetical);
-		Assert.assertEquals(resultCommunityAlphabetical, true);
-		boolean resultCommunityNumeric = VerifyEnabledOfCommunity.VerifyOfCommunity(VerifyValuesForCommunityNumeric);
-		Assert.assertEquals(resultCommunityNumeric, true);
-	
-	}
 
+		boolean CheckTestResultCyrillicCommunity = VerifyEnabledOfCommunity
+				.CheckComm(showAllCommunity.getElementsOfTable(), expectedCyrillicCommunity);
+		Assert.assertTrue(CheckTestResultCyrillicCommunity, "Cyrillic community is not present in the list");
 
-	/*@Test(priority = 10)
-	public void DeleteCreatedData() {
-		showAllCommunity = adminHomePage.gotoAllCommunitiesSecond().gotoConfirmDecisionPageTempCommnEdit()
-				.clickConfirmButtonOk().gotoConfirmDecisionPageTempCommnNumerical().clickConfirmButtonOk()
-				.gotoConfirmDecisionPageTempCommnAlhabetical().clickConfirmButtonOk()
-				.gotoConfirmDecisionPageTempCommnCyrillicl().clickConfirmButtonOk();
+		boolean CheckTestResultAlphabeticalCommunity = VerifyEnabledOfCommunity
+				.CheckComm(showAllCommunity.getElementsOfTable(), expectedAlphabeticalCommunity);
+		Assert.assertTrue(CheckTestResultAlphabeticalCommunity, "Alphabetical community is not present in the list");
+
+		boolean CheckTestResultNumericCommunity = VerifyEnabledOfCommunity
+				.CheckComm(showAllCommunity.getElementsOfTable(), expectedNumericCommunity);
+		Assert.assertTrue(CheckTestResultNumericCommunity, "Numeric community is not present in the list");
+
 	}*/
 
 }

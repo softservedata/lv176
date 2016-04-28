@@ -15,7 +15,7 @@ public abstract class CommonPage extends TopPage {
 		this.loginAccount=driver.findElement(By.cssSelector(".btn.btn-primary.btn-sm"));
 		this.PreLogoutButtn = driver.findElement(By.cssSelector(".btn.btn-primary.btn-sm.dropdown-toggle"));
 		this.logout = driver.findElement(By.xpath(".//*[@id='header']/div[2]/div[1]/div/ul/li[4]/a"));
-		
+		  //this.logout = driver.findElement(By.cssSelector("dropdown-menu li:nth-of-type(4)"));
 	}
 
 	// Get Elements

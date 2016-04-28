@@ -11,7 +11,8 @@ public class LoginValidatorPage extends LoginPage {
 
 	public LoginValidatorPage(WebDriver driver) {
 		super(driver);
-		this.validator = driver.findElement(By.xpath("//div[@style='color: red;']"));
+		//this.validator = driver.findElement(By.xpath("//div[@style='color: red;']"));
+		this.validator = driver.findElement(By.cssSelector("#loginForm div[style='color: red;']"));
 	}
 
 	// Get Elements

@@ -13,14 +13,19 @@ public class AddNewCommunityPage extends CommonPage {
 	private WebElement saveButtonCommunity;
 	private WebElement cleanButton;
 	private WebElement HeadPageAddNewCommunity;
+	private WebElement VerifyFieldForEmpty;
 
 	public AddNewCommunityPage(WebDriver driver) {
 		super(driver);
-		this.newCommunityName = driver.findElement(By.xpath(".//*[@id='newCommunity']/div[1]/div/input"));
-		this.registerNumberCommunity = driver.findElement(By.xpath(".//*[@id='newCommunity']/div[2]/div/input"));
+		//this.newCommunityName = driver.findElement(By.xpath(".//*[@id='newCommunity']/div[1]/div/input"));
+		this.newCommunityName = driver.findElement(By.cssSelector(".col-sm-3 .form-control[required]"));
+		//this.registerNumberCommunity = driver.findElement(By.xpath(".//*[@id='newCommunity']/div[2]/div/input"));
+		this.registerNumberCommunity = driver.findElement(By.cssSelector(".col-sm-3  .form-control[name='registrationNumber']"));
 		this.saveButtonCommunity = driver.findElement(By.cssSelector(".btn.btn-success"));
 		this.cleanButton = driver.findElement(By.cssSelector(".btn.btn-default"));
-		this.HeadPageAddNewCommunity = driver.findElement(By.xpath(".//*[@id='body']/h2"));
+		
+		this.HeadPageAddNewCommunity = driver.findElement(By.cssSelector("div#body h2"));
+		this.VerifyFieldForEmpty = driver.findElement(By.cssSelector("[placeholder='¬вед≥ть']"));
 
 	}
 

@@ -14,8 +14,10 @@ public class EditCommunityPage extends CommonPage {
 
 	public EditCommunityPage(WebDriver driver) {
 		super(driver);
-		this.newCommunityNameEdit = driver.findElement(By.xpath(".//*[@id='communityDTO']/div[1]/div/input[1]"));
-		this.registerNumberCommunityEdit = driver.findElement(By.xpath(".//*[@id='communityDTO']/div[2]/div/input"));
+		//this.newCommunityNameEdit = driver.findElement(By.xpath(".//*[@id='communityDTO']/div[1]/div/input[1]"));
+		this.newCommunityNameEdit = driver.findElement(By.cssSelector(".col-sm-3 .form-control[name='name']"));
+		//this.registerNumberCommunityEdit = driver.findElement(By.xpath(".//*[@id='communityDTO']/div[2]/div/input"));
+		this.registerNumberCommunityEdit = driver.findElement(By.cssSelector(".col-sm-3 .form-control[name='registrationNumber']"));
 		this.saveButtonCommunityEdit = driver.findElement(By.cssSelector(".btn.btn-success"));
 
 	}

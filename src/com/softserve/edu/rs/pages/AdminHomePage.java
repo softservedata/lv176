@@ -11,7 +11,8 @@ public class AdminHomePage extends CommonPage {
 	public AdminHomePage(WebDriver driver) {
 		super(driver);
 
-		this.ShowAllComm = driver.findElement(By.xpath(".//*[@id='menubaradmin']/div/div/ul/li[4]/a"));
+		//this.ShowAllComm = driver.findElement(By.xpath(".//*[@id='menubaradmin']/div/div/ul/li[4]/a"));
+		this.ShowAllComm = driver.findElement(By.cssSelector(".nav.navbar-nav li:nth-of-type(4)"));
 	}
 
 	public WebElement getAllCommunities() {

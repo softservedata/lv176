@@ -14,6 +14,7 @@ public class LoginPage extends TopPage {
 	public LoginPage(WebDriver driver) {
 		super(driver);
 		this.login = driver.findElement(By.id("login"));
+		//this.login = driver.findElement(By.cssSelector(".form-control[type = text ]"));
 		this.password = driver.findElement(By.id("password"));
 		this.signin = driver.findElement(By.cssSelector("button.btn.btn-primary"));
 	}
