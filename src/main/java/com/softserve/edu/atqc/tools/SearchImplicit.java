@@ -193,6 +193,7 @@ class SearchImplicit extends ASearchContext {
             try {
                 Thread.sleep(ASearchContext.ONE_SECOND / 2);
             } catch (Exception e) {
+            	// TODO Change Exception
 //                throw new ScreenCapturingCustomException(
 //                        String.format(ASearchContext.ERROR_TITLE_INVISIBLE, partialTitle));
                 throw new RuntimeException(
