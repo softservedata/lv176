@@ -3,7 +3,7 @@ package com.softserve.edu.atqc.tools;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.softserve.edu.atqc.data.ApplicationSources;
+import com.softserve.edu.atqc.data.apps.ApplicationSources;
 
 final class FirefoxTemporary extends ABrowser {
 

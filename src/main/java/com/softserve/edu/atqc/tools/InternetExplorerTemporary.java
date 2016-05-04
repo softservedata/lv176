@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.softserve.edu.atqc.data.ApplicationSources;
+import com.softserve.edu.atqc.data.apps.ApplicationSources;
 
 public class InternetExplorerTemporary extends ABrowser {
 

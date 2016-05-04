@@ -9,8 +9,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.softserve.edu.atqc.data.ApplicationSources;
-import com.softserve.edu.atqc.data.ApplicationSourcesRepository;
+import com.softserve.edu.atqc.data.apps.ApplicationSources;
+import com.softserve.edu.rs.data.apps.ApplicationSourcesRepository;
 
 public class SmokeTest {
 

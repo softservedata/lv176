@@ -1,6 +1,6 @@
 package com.softserve.edu.atqc.controls;
 
-public interface ITextField extends ILabelClickable {
+public interface ITextField extends IButton {
 
     void clear();
 

@@ -1,5 +1,6 @@
-package com.softserve.edu.atqc.data;
+package com.softserve.edu.atqc.data.apps;
 
+// TODO Use Builder
 public final class ApplicationSources {
 	// Browser Data
 	private String browserName;

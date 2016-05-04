@@ -1,6 +1,6 @@
 package com.softserve.edu.atqc.controls;
 
-abstract class ATextField<TComponent> extends ALabelClickable<TComponent>implements ITextField {
+abstract class ATextField<TComponent> extends AButton<TComponent>implements ITextField {
 
     // implements constructor
     protected ATextField() {

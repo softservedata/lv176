@@ -2,9 +2,7 @@ package com.softserve.edu.atqc.tools;
 
 import java.util.HashMap;
 
-import javax.swing.plaf.synth.SynthSpinnerUI;
-
-import com.softserve.edu.atqc.data.ApplicationSources;
+import com.softserve.edu.atqc.data.apps.ApplicationSources;
 import com.softserve.edu.atqc.tools.BrowserRepository.BrowserList;
 
 public final class BrowserUtils {

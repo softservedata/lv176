@@ -5,7 +5,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.internal.ProfilesIni;
 
-import com.softserve.edu.atqc.data.ApplicationSources;
+import com.softserve.edu.atqc.data.apps.ApplicationSources;
 
 final class FirefoxDefault extends ABrowser {
 

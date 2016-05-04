@@ -1,6 +1,6 @@
 package com.softserve.edu.atqc.tools;
 
-import com.softserve.edu.atqc.data.ApplicationSources;
+import com.softserve.edu.atqc.data.apps.ApplicationSources;
 import com.softserve.edu.atqc.tools.ChromeTemporary.ChromeTemporaryFactory;
 import com.softserve.edu.atqc.tools.FirefoxDefault.FirefoxDefaultFactory;
 import com.softserve.edu.atqc.tools.FirefoxTemporary.FirefoxTemporaryFactory;
