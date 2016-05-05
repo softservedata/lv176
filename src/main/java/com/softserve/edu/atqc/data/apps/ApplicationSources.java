@@ -2,6 +2,10 @@ package com.softserve.edu.atqc.data.apps;
 
 // TODO Use Builder
 public final class ApplicationSources {
+	private final String SLASH = "/";
+	private final String SEPARATOR = "://";
+	private final int AFTER_SEPARATOR = 3;
+	//
 	// Browser Data
 	private String browserName;
 	private String driverPath;
@@ -15,28 +19,38 @@ public final class ApplicationSources {
 	// URLs
 	private String loginUrl;
 	private String logoutUrl;
+	private String serverUrl;
 	// TODO Logger Strategy
 	// TODO Sleep for Demo
 
 	public ApplicationSources(String loginUrl, String logoutUrl) {
-		this.browserName="";
-		this.driverPath="";
-		this.browserPath="";
-		this.defaulProfile="";
+		this.browserName = "";
+		this.driverPath = "";
+		this.browserPath = "";
+		this.defaulProfile = "";
 		// Implicit and Explicit Waits
-		this.implicitTimeOut=5;
-		this.explicitTimeOut=5;
+		this.implicitTimeOut = 5;
+		this.explicitTimeOut = 5;
 		// Search Strategy
-		this.searchStrategy="";
+		this.searchStrategy = "";
 		// URLs
-		this.loginUrl=loginUrl;
-		this.logoutUrl=logoutUrl;
+		this.loginUrl = loginUrl;
+		this.logoutUrl = logoutUrl;
+		//
+		this.serverUrl = parseServerUrl();
 	}
 
 	// TODO Builder
-//	public static ApplicationSources get() {
-//		return new ApplicationSources();
-//	}
+	// public static ApplicationSources get() {
+	// return new ApplicationSources();
+	// }
+
+	private String parseServerUrl() {
+		String result = loginUrl.substring(loginUrl.indexOf(SEPARATOR) < 0 ? 0 : loginUrl.indexOf(SEPARATOR) + AFTER_SEPARATOR);
+		return result.substring(0, result.indexOf(SLASH));
+	}
+
+	// get
 
 	public String getBrowserName() {
 		return browserName;
@@ -108,6 +122,10 @@ public final class ApplicationSources {
 
 	public void setLogoutUrl(String logoutUrl) {
 		this.logoutUrl = logoutUrl;
+	}
+
+	public String getServerUrl() {
+		return serverUrl;
 	}
 
 }

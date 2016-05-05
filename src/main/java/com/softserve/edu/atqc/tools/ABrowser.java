@@ -9,7 +9,6 @@ interface IBrowserFactory {
 	String getInstanceName();
 }
 
-// TODO delete public
 public abstract class ABrowser {
 	private final String BROWSER_CLOSED = "Browser not found.";
 	private String browserName; 
