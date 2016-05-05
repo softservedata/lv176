@@ -5,12 +5,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.softserve.edu.atqc.data.apps.ApplicationSources;
-import com.softserve.edu.atqc.tools.BrowserUtils;
+import com.softserve.edu.rs.data.apps.Application;
 import com.softserve.edu.rs.data.apps.ApplicationSourcesRepository;
 import com.softserve.edu.rs.data.users.IUser;
 import com.softserve.edu.rs.data.users.UserRepository;
 import com.softserve.edu.rs.pages.AdminHomePage;
-import com.softserve.edu.rs.pages.LoginPage;
 
 public class SmokeAppTest {
 
@@ -24,9 +23,9 @@ public class SmokeAppTest {
 	@Test(dataProvider = "getApplicationSources")
 	public void adminLogin(ApplicationSources applicationSources, IUser admin) throws Exception {
 		// Preconditions.
-		BrowserUtils.get(applicationSources).getBrowser().loadPage(applicationSources.getLoginUrl());;
+		Application application = Application.get(applicationSources);
 		// Test Steps.
-		AdminHomePage adminHomePage = new LoginPage().successAdminLogin(admin); 
+		AdminHomePage adminHomePage = application.load().successAdminLogin(admin); 
 		// Checking.
 		Thread.sleep(2000);
 		Assert.assertEquals(admin.getAccount().getLogin(),
@@ -36,7 +35,7 @@ public class SmokeAppTest {
 		//
 		Thread.sleep(2000);
 		//application.quit();
-		BrowserUtils.get().quitBrowser();
+		application.quit();
 	}
 
 }
