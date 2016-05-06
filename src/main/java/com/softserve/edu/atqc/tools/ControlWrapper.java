@@ -17,10 +17,9 @@ public final class ControlWrapper {
 		this.webElement = webElement;
 	}
 	
-	// TODO
-	// static ControlWrapper get(WebElement webElement) {
-	// return new ControlWrapper(webElement);
-	// }
+	static ControlWrapper get(WebElement webElement) {
+		return new ControlWrapper(webElement);
+	}
 
 	public static ControlWrapper getVisibleWebElement(ControlLocation controlLocation) {
 		return new ControlWrapper(ControlSearch.get().getVisibleWebElement(controlLocation));
