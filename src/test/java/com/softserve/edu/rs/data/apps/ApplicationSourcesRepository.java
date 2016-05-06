@@ -70,4 +70,20 @@ public final class ApplicationSourcesRepository {
 		return applicationSources;
 	}
 
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	public ApplicationSources getHerokuByDefaultBrowser() {
+		ApplicationSources applicationSources = new ApplicationSources("http://registrator.herokuapp.com/login",
+				"http://registrator.herokuapp.com/logout");
+		applicationSources.setBrowserName("Browser default");
+		return applicationSources;
+	}
+
+	public ApplicationSources getHerokuByFirefoxTemporary() {
+		ApplicationSources applicationSources = new ApplicationSources("http://registrator.herokuapp.com/login",
+				"http://registrator.herokuapp.com/logout");
+		applicationSources.setBrowserName("Firefox temporary");
+		return applicationSources;
+	}
+
 }

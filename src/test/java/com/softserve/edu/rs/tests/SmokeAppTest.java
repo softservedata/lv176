@@ -17,6 +17,7 @@ public class SmokeAppTest {
     public Object[][] getApplicationSources() {
         return new Object[][] {
                 { ApplicationSourcesRepository.get().getJavaTrainingLocalByFirefoxTemporary(), UserRepository.get().getAdmin() },
+                //{ ApplicationSourcesRepository.get().getHerokuByFirefoxTemporary(), UserRepository.get().getAdmin() },
                 };
     }
  
@@ -30,6 +31,10 @@ public class SmokeAppTest {
 		Thread.sleep(2000);
 		Assert.assertEquals(admin.getAccount().getLogin(),
 				adminHomePage.getLoginAccountText());
+		// Test Steps.
+		//adminHomePage.setFocusUsers();
+		adminHomePage.clickUsers(); 
+		Thread.sleep(2000);
 		// Return to previous state.
 		adminHomePage.logout();
 		//
