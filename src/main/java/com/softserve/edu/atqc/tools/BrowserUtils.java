@@ -6,11 +6,6 @@ import com.softserve.edu.atqc.data.apps.ApplicationSources;
 import com.softserve.edu.atqc.tools.BrowserRepository.BrowserList;
 
 public final class BrowserUtils {
-	private final String NO_SUCH_METHOD = "No such method.";
-	private final String DEFAULT_BROWSER = "getDefaultBrowser";
-	private final String EXPLICIT = "explicit";
-	private final String IMPLICIT = "implicit";
-	//
 	private static volatile BrowserUtils instance = null;
 	private final HashMap<Long, ABrowser> browsers;
 

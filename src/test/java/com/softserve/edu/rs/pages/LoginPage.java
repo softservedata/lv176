@@ -2,11 +2,14 @@ package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.Button;
 import com.softserve.edu.atqc.controls.IButton;
+import com.softserve.edu.atqc.controls.ILabel;
 import com.softserve.edu.atqc.controls.ITextField;
+import com.softserve.edu.atqc.controls.Label;
 import com.softserve.edu.atqc.controls.TextField;
 import com.softserve.edu.entity.IUser;
 
-public class LoginPage extends BasePage {
+public class LoginPage {
+	public final String VALIDATOR_MESSAGE = "You have entered wrong login or password.";
 	
 	private class LoginPageUIMap {
 		public final ITextField login;
@@ -20,23 +23,31 @@ public class LoginPage extends BasePage {
 		}
 	}
 	
-	private LoginPageUIMap controls;
+	private class LoginValidatorPageUIMap {
+		public final ILabel validator;
+
+		public LoginValidatorPageUIMap() {
+			this.validator = Label.get().getByXpath("//div[@style='color: red;']");
+		}
+	}
+	
+	private LoginPageUIMap loginControls;
+	private LoginValidatorPageUIMap validatorControls;
 	
 	public LoginPage() {
-		//super();
-		controls = new LoginPageUIMap();
+		loginControls = new LoginPageUIMap();
 	}
 	
 	public ITextField getLogin() {
-		return this.controls.login;
+		return this.loginControls.login;
 	}
 
 	public ITextField getPassword() {
-		return this.controls.password;
+		return this.loginControls.password;
 	}
 
 	public IButton getSignin() {
-		return this.controls.signin;
+		return this.loginControls.signin;
 	}
 
 	public String getLoginText() {
@@ -45,6 +56,14 @@ public class LoginPage extends BasePage {
 
 	public String getPasswordText() {
 		return getPassword().getText();
+	}
+	
+	public ILabel getValidator() {
+		return this.validatorControls.validator;
+	}
+
+	public String getValidatorText() {
+		return getValidator().getText();
 	}
 	
 	public void setLogin(String login) {
@@ -83,11 +102,6 @@ public class LoginPage extends BasePage {
 		getSignin().click();
 	}
 
-	public LoginPage changeLanguage(ChangeLanguageFields language) {
-		setChangeLanguage(language);
-		return new LoginPage();
-	}
-
 	private void setLoginData(IUser user) {
 		setLoginClear(user.getAccount().getLogin());
 		setPasswordClear(user.getAccount().getPassword());
@@ -99,15 +113,16 @@ public class LoginPage extends BasePage {
 		return new CommonAdminCommissionerHomePage();
 	}
 
-
 	public HomeUserPage successUserLogin(IUser user) {
 		setLoginData(user);
 		return new HomeUserPage();
 	}
 
-	public LoginValidatorPage unsuccessfulLogin(IUser invalidUser) {
+	public LoginPage unsuccessfulLogin(IUser invalidUser) {
 		setLoginData(invalidUser);
-		return new LoginValidatorPage();
+		loginControls = new LoginPageUIMap();
+		validatorControls = new LoginValidatorPageUIMap();
+		return this;
 	}
 
 }

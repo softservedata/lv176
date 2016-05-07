@@ -5,7 +5,7 @@ import com.softserve.edu.atqc.controls.ILink;
 import com.softserve.edu.atqc.controls.LabelClickable;
 import com.softserve.edu.atqc.controls.Link;
 
-public abstract class CommonPage extends BasePage {
+public abstract class CommonPage {
 	
 	private class CommonPageUIMap {
     	public final ILabelClickable labelUserLogin;

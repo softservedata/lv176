@@ -1,7 +1,6 @@
 package com.softserve.edu.atqc.data.apps;
 
 import com.softserve.edu.atqc.tools.BrowserUtils;
-import com.softserve.edu.rs.pages.NonConfirmedUsersPage;
 
 public abstract class ABaseApplication<TApplication> {
 	private ApplicationSources applicationSources;
@@ -30,11 +29,6 @@ public abstract class ABaseApplication<TApplication> {
 	public TApplication logout() {
 		BrowserUtils.get().getBrowser().loadPage(applicationSources.getLogoutUrl());
 		return getStartPage();
-	}
-	
-	public NonConfirmedUsersPage loadNonConfirmedUsersPage() {
-		BrowserUtils.get().getBrowser().loadPage("http://localhost:8080/resources/administrator/users/get-all-users?statusType=notcomfirmed");
-		return new NonConfirmedUsersPage();
 	}
 
 	public void quit() {

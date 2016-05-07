@@ -45,9 +45,9 @@ public final class UserRepository {
 
 	public IUser getUser() {
 		return User.get()
-				.setPerson(Person.get().setFirstName("ivanko").setLastName("ivanko")
-						.setEmail("ivanko" + System.currentTimeMillis() + "@gmail.com").build().setMiddlename("ivanko").setPhonenumber("+380980000000"))
-				.setAccount(Account.get().setLogin("ivanko" + System.currentTimeMillis()).setPassword("ivanko").setRole("CO-OWNER")
+				.setPerson(Person.get().setFirstName("newuser").setLastName("newuser")
+						.setEmail("newuser@gmail.com").build().setMiddlename("newuser").setPhonenumber("+380980000000"))
+				.setAccount(Account.get().setLogin("newuser").setPassword("newuser").setRole("CO-OWNER")
 						.setStatus("ACTIVE").setCommunity("Україна").build().setDate(new Date().toString()).setRegisterNumber("0")
 						.setRegistratorNumber("0").setVolumeNumber("0")).build()
 				.setAddress(Address.get().setRegion("Lviv").setDistrict("Lviv").setCity("Lviv")

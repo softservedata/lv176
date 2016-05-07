@@ -19,7 +19,6 @@ public final class ContextRepository {
 
 	public ASearchContext getSearchDefault() {
 		return SearchExplicit.get();
-		// return SearchImplicit.get();
 	}
 
 	public ASearchContext getSearchImplicit() {

@@ -10,10 +10,7 @@ public class ControlSearch {
     private ASearchContext context;
 
     private ControlSearch() {
-        // Set Strategy by Default.
     	this.context = ContextRepository.get().getSearchDefault();
-        //this.context = ContextRepository.get().getSearchExplicit();
-        //this.context = ContextRepository.get().getSearchImplicit();
     }
 
     public static ControlSearch get() {
@@ -46,7 +43,6 @@ public class ControlSearch {
     // TODO
     private boolean isLoadComplete() {
         return true;
-        //return PageObserveLoad.get().isLoadComplete();
     }
     
     /**

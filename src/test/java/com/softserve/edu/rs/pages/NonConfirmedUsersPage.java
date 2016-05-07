@@ -14,17 +14,11 @@ public class NonConfirmedUsersPage extends CommonAdminCommissionerHomePage {
 		public final ILabel title;
 		public final ITextField inputLogin;
 		public final IButton buttonSearch;
-		//public final ILabel labelEmptyTable;
-		//public final ILabel firstRow;
 		
 		public NonConfirmedUsersPageUIMap() {
 			this.title = Label.get().getByXpath("//h4");
 			this.inputLogin = TextField.get().getById("inputIndex3");
 			this.buttonSearch = Button.get().getById("bth-search");
-			//this.labelEmptyTable = Label.get().getByXpath("//td[@class='dataTables_empty']");
-			
-			//this.firstRow = Label.get().getByXpath("//tbody/tr[1]");
-			//this.buttonEdit = Button.get().getByXpath(xpath)
 		}
 		
 		public IButton getXpathForProfilButton(String login) {
@@ -32,41 +26,37 @@ public class NonConfirmedUsersPage extends CommonAdminCommissionerHomePage {
 		}
 	}
 	
-	private class InvisibleElementUIMap {
+	private class EmptyTableUIMap {
 		public final ILabel labelEmptyTable;
 		
-		public InvisibleElementUIMap() {
+		public EmptyTableUIMap() {
 			this.labelEmptyTable = Label.get().getByXpath("//td[@class='dataTables_empty']");
 		}
 	}
 	
-	private NonConfirmedUsersPageUIMap controls;
-	private InvisibleElementUIMap in;
+	private NonConfirmedUsersPageUIMap nonConfirmedPageControls;
+	private EmptyTableUIMap emptyTableControls;
 	
 	public NonConfirmedUsersPage() {
-		controls = new NonConfirmedUsersPageUIMap();
+		nonConfirmedPageControls = new NonConfirmedUsersPageUIMap();
 	}
 	
 	public ILabel getTitle() {
-		return this.controls.title;
+		return this.nonConfirmedPageControls.title;
 	}
 	
 	public ITextField getInputLogin() {
-		return this.controls.inputLogin;
+		return this.nonConfirmedPageControls.inputLogin;
 	}
 
 	public IButton getButtonSearch() {
-		return this.controls.buttonSearch;
+		return this.nonConfirmedPageControls.buttonSearch;
 	}
 	
 	public ILabel getLabelEmptyTable() {
-		in = new InvisibleElementUIMap();
-		return this.in.labelEmptyTable;
+		emptyTableControls = new EmptyTableUIMap();
+		return this.emptyTableControls.labelEmptyTable;
 	}
-	
-//	public ILabel getFirstRow() {
-//		return this.controls.firstRow;
-//	}
 
 	public void clickInputLogin() {
 		getInputLogin().click();
@@ -88,15 +78,11 @@ public class NonConfirmedUsersPage extends CommonAdminCommissionerHomePage {
 		clickInputLogin();
 		setInputLoginClear(user.getAccount().getLogin());
 		getButtonSearch().click();
-		//in = new InvisibleElementUIMap();
-		//getLabelEmptyTable();
-		//ControlSearch.get().isStatelessOfWebElement(getFirstRow().);
-		//(new WebDriverWait(webDriver, 2)).until(ExpectedConditions.stalenessOf(firstRowOfTable));
 		return new NonConfirmedUsersPage();
 	}
 
 	public void clickProfilButton(IUser user) {
-		controls.getXpathForProfilButton(user.getAccount().getLogin()).click();
+		nonConfirmedPageControls.getXpathForProfilButton(user.getAccount().getLogin()).click();
 	}
 
 	public ProfilUserPage gotoProfilUser(IUser user) {

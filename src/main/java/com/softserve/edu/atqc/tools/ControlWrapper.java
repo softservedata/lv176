@@ -47,6 +47,10 @@ public final class ControlWrapper {
 	public String getAttribute(String attribute) {
 		return getWebElement().getAttribute(attribute);
 	}
+	
+	public String getCssValue(String value) {
+		return getWebElement().getCssValue(value);
+	}
 
 	public String getAttributeName() {
 		return getWebElement().getAttribute(ATTRIBUTE_NAME);

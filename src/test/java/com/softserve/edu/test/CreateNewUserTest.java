@@ -7,17 +7,20 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import com.softserve.edu.application.Application;
 import com.softserve.edu.application.ApplicationSourcesRepository;
+import com.softserve.edu.db.OperationWithDB;
 import com.softserve.edu.entity.IUser;
 import com.softserve.edu.entity.UserRepository;
+import com.softserve.edu.listener.TestListener;
 import com.softserve.edu.rs.pages.CreateNewUserPage;
 import com.softserve.edu.rs.pages.EditProfilUserPage;
 import com.softserve.edu.rs.pages.HomeUserPage;
 import com.softserve.edu.rs.pages.LoginPage;
-import com.softserve.edu.rs.pages.LoginValidatorPage;
 import com.softserve.edu.rs.pages.NonConfirmedUsersPage;
+@Listeners(TestListener.class)
 
 public class CreateNewUserTest {
 	private Application application;
@@ -34,6 +37,7 @@ public class CreateNewUserTest {
 	
 	@AfterMethod
 	public void afterMethod() {
+		OperationWithDB.deleteActiveUser(UserRepository.getInstance().getUser());
 		application.logout();
 	}
 
@@ -46,9 +50,12 @@ public class CreateNewUserTest {
 
 	@Test(dataProvider = "TypeOfUser")
 	public void testPageLoadsCorectly(IUser adminOrCommissioner) {
-		CreateNewUserPage createNewUserPage =  application.load().successAdminCommissionerLogin(adminOrCommissioner).gotoCreateNewUserPage();
+		CreateNewUserPage createNewUserPage =  application.load()
+				.successAdminCommissionerLogin(adminOrCommissioner)
+				.gotoCreateNewUserPage();
 		Assert.assertTrue(createNewUserPage.verifyPageForCreateUserIsLoadedCorrectly());
-		Assert.assertEquals(createNewUserPage.getValueForDateOfAccession(),(new SimpleDateFormat("dd.MM.yyy")).format((new Date())));
+		Assert.assertEquals(createNewUserPage.getValueFromDateOfAccession(),
+				(new SimpleDateFormat("dd.MM.yyy")).format((new Date())));
 	}
 
 	@Test(dataProvider = "TypeOfUser")
@@ -62,38 +69,36 @@ public class CreateNewUserTest {
 	
 	@Test(dataProvider = "TypeOfUser")
 	public void testButtonCancelWorksCorectly(IUser adminOrCommissioner) {
-		IUser newUser = UserRepository.getInstance().getUser();
 		application.load().successAdminCommissionerLogin(adminOrCommissioner)
 				.gotoCreateNewUserPage()
-				.typeAllFields(newUser)
+				.typeAllFields(UserRepository.getInstance().getUser())
 				.clickButtonCancel();
-		NonConfirmedUsersPage nonConfirmedUsersPage = application.loadNonConfirmedUsersPage().searchByLogin(newUser);
+		NonConfirmedUsersPage nonConfirmedUsersPage = application.loadNonConfirmedUsersPage()
+				.searchByLogin(UserRepository.getInstance().getUser());
 		Assert.assertTrue(nonConfirmedUsersPage.getLabelEmptyTable().isDisplayed());
 	}
 
 	@Test(dataProvider = "TypeOfUser")
 	public void testCreateNewUser(IUser adminOrCommissioner) {
-		IUser newUser = UserRepository.getInstance().getUser();
-		
 		//create new user
 		LoginPage loginPage = application.load().successAdminCommissionerLogin(adminOrCommissioner)
-				.gotoCreateNewUserPage().successCreateUser(newUser).clickLogout();
+				.gotoCreateNewUserPage().successCreateUser(UserRepository.getInstance().getUser())
+				.clickLogout().unsuccessfulLogin(UserRepository.getInstance().getUser());
 		
 		//verify that not confirmed user can not login 
-		LoginValidatorPage loginValidatorPage = loginPage.unsuccessfulLogin(newUser);
-		Assert.assertEquals(loginValidatorPage.getValidatorText(), LoginValidatorPage.VALIDATOR_MESSAGE);
+		Assert.assertEquals(loginPage.getValidatorText(), loginPage.VALIDATOR_MESSAGE);
 		
 		//activate new user
-		EditProfilUserPage editProfilUserPage = loginValidatorPage.successAdminCommissionerLogin(UserRepository.getInstance().getAdmin())
+		EditProfilUserPage editProfilUserPage = loginPage.successAdminCommissionerLogin(UserRepository.getInstance().getAdmin())
 				.gotoNonConfirmedUsersPage()
-				.gotoProfilUser(newUser)
+				.gotoProfilUser(UserRepository.getInstance().getUser())
 				.clickButtonEdit()
-				.changeStatusToActive(newUser);
+				.changeStatusToActive(UserRepository.getInstance().getUser());
 		editProfilUserPage.clickButtonOk();
 		
 		//verify that confirmed user can login
-		HomeUserPage homePage = application.logout().successUserLogin(newUser);
-		Assert.assertEquals(homePage.getLoginAccountText(), newUser.getAccount().getLogin());
+		HomeUserPage homePage = application.logout().successUserLogin(UserRepository.getInstance().getUser());
+		Assert.assertEquals(homePage.getLoginAccountText(), UserRepository.getInstance().getUser().getAccount().getLogin());
 	}
 
 }

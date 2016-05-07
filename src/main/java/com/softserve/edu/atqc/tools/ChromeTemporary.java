@@ -66,8 +66,6 @@ final class ChromeTemporary extends ABrowser {
 		for (ChromeSettings chromeSettings : ChromeSettings.values()) {
 			options.addArguments(chromeSettings.toString());
 		}
-		// options.addArguments(ChromeSettings.NO_PROXY_SERVER.toString());
-		// options.addArguments(ChromeSettings.IGNORE_CERTIFICATE_ERRORS.toString());
 		return new ChromeTemporary(new ChromeDriver(options), browserName);
 	}
 
