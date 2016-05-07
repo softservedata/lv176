@@ -1,9 +1,6 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+
 import org.openqa.selenium.support.ui.Select;
 
 public abstract class BasePage {
@@ -24,18 +21,28 @@ public abstract class BasePage {
 			return this.language;
 		}
 	}
+	
+	private class BasePageUIMap {
+    	//public final Select changeLanguage;
+    	// TODO Develop select component
+    	public Select changeLanguage;
+    	
+    	public BasePageUIMap() {
+    		//this.changeLanguage = new Select(driver.findElement(By.id("changeLanguage")));
+    	}
+    }
 
-	protected WebDriver webDriver;
-	@FindBy(id = "changeLanguage")
-	private WebElement changeLanguage;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	
+    // Elements
+    private BasePageUIMap controls;
 
-	public BasePage(WebDriver webDriver) {
-		this.webDriver = webDriver;
-		PageFactory.initElements(webDriver, this);
+	public  BasePage() {
+		this.controls = new BasePageUIMap();
 	}
 
 	public Select getChangeLanguage() {
-		return new Select(changeLanguage);
+		return this.controls.changeLanguage;
 	}
 
 	public String getChangeLanguageSelectedText() {
@@ -45,5 +52,4 @@ public abstract class BasePage {
 	public void setChangeLanguage(ChangeLanguageFields language) {
 		getChangeLanguage().selectByVisibleText(language.toString());
 	}
-
 }

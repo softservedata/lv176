@@ -1,6 +1,8 @@
 package com.softserve.edu.application;
 
-public class ApplicationSourcesRepository {
+import com.softserve.edu.atqc.data.apps.ApplicationSources;
+
+public final class ApplicationSourcesRepository {
 	private static volatile ApplicationSourcesRepository instance = null;
 
 	private ApplicationSourcesRepository() {
@@ -16,13 +18,56 @@ public class ApplicationSourcesRepository {
 		}
 		return instance;
 	}
+	
+	public ApplicationSources getLocalHostByDefaultBrowser() {
+		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources/login",
+				"http://localhost:8080/resources/logout");
+		applicationSources.setBrowserName("Browser default");
+		return applicationSources;
+	}
 
-	public ApplicationSources getLocalHostByFirefox() {
-		return ApplicationSources.get()
-				.setLoginUrl("http://localhost:8080/resources/login")
-				.setLogoutUrl("http://localhost:8080/resources/logout")
-				.setImplicitTimeOut(5)
-				.setBrowserName("firefox");
+	public ApplicationSources getLocalHostByFirefoxTemporary() {
+		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources/login",
+				"http://localhost:8080/resources/logout");
+		applicationSources.setBrowserName("Firefox temporary");
+		return applicationSources;
+	}
+
+	public ApplicationSources getLocalHostByFirefoxDefault() {
+		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources/login",
+				"http://localhost:8080/resources/logout");
+		applicationSources.setBrowserName("Firefox default");
+		return applicationSources;
+	}
+
+	public ApplicationSources getLocalHostByChromeTemporary() {
+		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources/login",
+				"http://localhost:8080/resources/logout");
+		applicationSources.setBrowserName("Chrome temporary");
+		return applicationSources;
+	}
+
+	public ApplicationSources getLocalHostByIETemporary() {
+		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources/login",
+				"http://localhost:8080/resources/logout");
+		applicationSources.setBrowserName("Internet Explorer temporary");
+		return applicationSources;
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	public ApplicationSources getJavaTrainingLocalByDefaultBrowser() {
+		ApplicationSources applicationSources = new ApplicationSources("http://java.training.local:8080/registrator/login",
+				"http://java.training.local:8080/registrator/logout");
+		applicationSources.setBrowserName("Browser default");
+		return applicationSources;
+	}
+
+	public ApplicationSources getJavaTrainingLocalByFirefoxTemporary() {
+		ApplicationSources applicationSources = new ApplicationSources("http://java.training.local:8080/registrator/login",
+				"http://java.training.local:8080/registrator/logout");
+		applicationSources.setBrowserName("Firefox temporary");
+		return applicationSources;
 	}
 
 }

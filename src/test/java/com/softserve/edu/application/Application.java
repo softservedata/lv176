@@ -1,52 +1,21 @@
 package com.softserve.edu.application;
 
-import java.util.concurrent.TimeUnit;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.internal.ProfilesIni;
-
+import com.softserve.edu.atqc.data.apps.ABaseApplication;
+import com.softserve.edu.atqc.data.apps.ApplicationSources;
 import com.softserve.edu.rs.pages.LoginPage;
 
-public class Application {
-	ApplicationSources applicationSources;
-	WebDriver webDriver;
+public final class Application extends ABaseApplication<LoginPage> {
 
-	public Application(ApplicationSources applicationSources) {
-		this.applicationSources = applicationSources;
+	protected Application(ApplicationSources applicationSources) {
+		super(applicationSources);
 	}
 
-	private void initBrowser() {
-		if (webDriver == null) {
-			webDriver = new FirefoxDriver(new ProfilesIni().getProfile("default"));
-			webDriver.manage().timeouts().implicitlyWait(applicationSources.getImplicitTimeOut(), TimeUnit.SECONDS);
-		}
+	public static Application get(ApplicationSources applicationSources) {
+		return new Application(applicationSources);
 	}
 
-	public LoginPage load() {
-		initBrowser();
-		webDriver.get(applicationSources.getLoginUrl());
-		return new LoginPage(webDriver);
+	protected LoginPage getStartPage() {
+		return new LoginPage();
 	}
 
-	public LoginPage login() {
-		if (webDriver == null) {
-			return load();
-		}
-		webDriver.get(applicationSources.getLoginUrl());
-		return new LoginPage(webDriver);
-	}
-
-	public LoginPage logout() {
-		if (webDriver == null) {
-			return load();
-		}
-		webDriver.get(applicationSources.getLogoutUrl());
-		return new LoginPage(webDriver);
-	}
-
-	public void quit() {
-		if (webDriver != null) {
-			webDriver.quit();
-		}
-	}
 }

@@ -9,7 +9,17 @@
 				<methods>
 					<include name="testPageLoadsCorectly" />
 					<include name="testButtonClearWorksCorectly" />
+					<include name="testButtonCancelWorksCorectly" />
 					<include name="testCreateNewUser" />
+				</methods>
+			</class>
+			<class name="com.softserve.edu.test.EditUserTest">
+				<methods>
+					<include name="testUnsuccessfulEditFirstName" />
+					<include name="testUnsuccessfulEditLasttName" />
+					<include name="testUnsuccessfulEditEmail" />
+					<include name="testUnsuccessfulEditPassportSeria" />
+					<include name="testUnsuccessfulEditPassportNumber" />
 				</methods>
 			</class>
 		</classes>

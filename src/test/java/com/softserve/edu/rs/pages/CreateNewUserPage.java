@@ -1,394 +1,408 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
-
 import com.softserve.edu.application.CheckResult;
+import com.softserve.edu.atqc.controls.Button;
+import com.softserve.edu.atqc.controls.IButton;
+import com.softserve.edu.atqc.controls.ILabel;
+import com.softserve.edu.atqc.controls.ISelect;
+import com.softserve.edu.atqc.controls.ITextField;
+import com.softserve.edu.atqc.controls.Label;
+import com.softserve.edu.atqc.controls.SelectField;
+import com.softserve.edu.atqc.controls.TextField;
+import com.softserve.edu.atqc.tools.JSInjection;
 import com.softserve.edu.entity.IUser;
 
-public class CreateNewUserPage extends CommonAdminCommissionerHomePage {
+public class CreateNewUserPage extends CommonPage {
 	private final String EMPTY_STRING = "";
 	private final String DEFAULT_COMMUNITY = "Виберіть громаду";
-	// for main information
-	@FindBy(xpath = "//div[@class ='personal_header col-lg-4']/h4")
-	private WebElement labelMainInformation;
-	@FindBy(xpath = "//label[@for='firstName']")
-	private WebElement labelFirstName;
-	@FindBy(xpath = "//label[@for='lastName']")
-	private WebElement labelLastName;
-	@FindBy(xpath = "//label[@for='middleName']")
-	private WebElement labelMiddleName;
-	@FindBy(xpath = "//label[@for='email']")
-	private WebElement labelEmail;
-	@FindBy(xpath = "//label[@for='login']")
-	private WebElement labelLogin;
-	@FindBy(xpath = "//label[@for='password']")
-	private WebElement labelPassword;
-	@FindBy(xpath = "//label[@for='confirmPassword']")
-	private WebElement labelConfirmPassword;
-	@FindBy(id = "firstName")
-	private WebElement fieldForFirstName;
-	@FindBy(id = "lastName")
-	private WebElement fieldForLastName;
-	@FindBy(id = "middleName")
-	private WebElement fieldForMiddleName;
-	@FindBy(id = "email")
-	private WebElement fieldForEmail;
-	@FindBy(id = "login")
-	private WebElement fieldForLogin;
-	@FindBy(id = "password")
-	private WebElement fieldForPassword;
-	@FindBy(id = "confirmPassword")
-	private WebElement fieldForConfirmPassword;
-
-	// for address data
-	@FindBy(xpath = "//div[@class ='address_header col-lg-4']/h4")
-	private WebElement labelAddressData;
-	@FindBy(xpath = "//label[text()='Місто']")
-	private WebElement labelCity;
-	@FindBy(xpath = "//label[@for='region']")
-	private WebElement labelRegion;
-	@FindBy(xpath = "//label[@for='district']")
-	private WebElement  labelDistrict;
-	@FindBy(xpath = "//label[@for='street']")
-	private WebElement  labelStreet;
-	@FindBy(xpath = "//label[@for='building']")
-	private WebElement labelBuilding;
-	@FindBy(xpath = "//label[@for='flat']")
-	private WebElement labelFlat;
-	@FindBy(xpath = "//label[@for='postcode']")
-	private WebElement labelPostcode;
-	@FindBy(id = "city")
-	private WebElement fieldForCity;
-	@FindBy(id = "region")
-	private WebElement fieldForRegion;
-	@FindBy(id = "district")
-	private WebElement fieldForDistrict;
-	@FindBy(id = "street")
-	private WebElement fieldForStreet;
-	@FindBy(id = "building")
-	private WebElement fieldForBuilding;
-	@FindBy(id = "flat")
-	private WebElement fieldForFlat;
-	@FindBy(id = "postcode")
-	private WebElement fieldForPostcode;
-
-	// for passport data
-	@FindBy(xpath = "//h4[contains(text(),'Паспортні дані')]")
-	private WebElement labelPassportData;
-	@FindBy(xpath = "//label[@for='passport_seria']")
-	private WebElement labelPassportSeria;
-	@FindBy(xpath = "//label[@for='passport_number']")
-	private WebElement labelPassportNumber;
-	@FindBy(xpath = "//label[@for='published_by_data']")
-	private WebElement labelPublishedByData;
-	@FindBy(id = "passport_seria")
-	private WebElement  fieldForPassportSeria;
-	@FindBy(id = "passport_number")
-	private WebElement fieldForPassportNumber;
-	@FindBy(id = "published_by_data")
-	private WebElement fieldForPublishedByData;
-
-	// for other data
-	@FindBy(xpath = "//h4[contains(text(),'Інші дані')]")
-	private WebElement labelOtherDate;
-	@FindBy(xpath = "//label[@for='phone_number']")
-	private WebElement labelPhoneNumber;
-	@FindBy(xpath = "//label[@for='territorial_Community']")
-	private WebElement labelTerritoryalCommunity;
-	@FindBy(xpath = "//label[@for='dateOfAccession']")
-	private WebElement labelDateOfAccession;
-	@FindBy(id = "phone_number")
-	private WebElement fieldForPhoneNumber;
-	@FindBy(xpath = "//select[@id='territorial_Community']/option[1]")
-	private WebElement fieldForTerritorialCommunityDefault;
-	@FindBy(id = "datepicker")
-	private WebElement fieldForDateOfAccession;
-	@FindBy(id = "territorial_Community")
-	private WebElement territorialCommunity;
-
-	// for buttons
-	@FindBy(id = "submit")
-	private WebElement buttonSend;
-	@FindBy(xpath = "//button[@type='reset']")
-	private WebElement buttonReset;
-
-	public CreateNewUserPage (WebDriver webDriver) {
-		super(webDriver);
-		PageFactory.initElements(webDriver, this);
+	
+	private class CreateNewUserPageUIMap {
+		// for main data
+		public final ILabel labelMainInformation;
+		public final ILabel labelFirstName;
+		public final ILabel labelLastName;
+		public final ILabel labelMiddleName;
+		public final ILabel labelEmail;
+		public final ILabel labelLogin;
+		public final ILabel labelPassword;
+		public final ILabel labelConfirmPassword;
+		public final ITextField fieldForFirstName;
+		public final ITextField fieldForLastName;
+		public final ITextField fieldForMiddleName;
+		public final ITextField fieldForEmail;
+		public final ITextField fieldForLogin;
+		public final ITextField fieldForPassword;
+		public final ITextField fieldForConfirmPassword;
+		
+		// for address data
+		public final ILabel labelAddressData;
+		public final ILabel labelCity;
+		public final ILabel labelRegion;
+		public final ILabel labelDistrict;
+		public final ILabel labelStreet;
+		public final ILabel labelBuilding;
+		public final ILabel labelFlat;
+		public final ILabel labelPostcode;
+		public final ITextField fieldForCity;
+		public final ITextField fieldForRegion;
+		public final ITextField fieldForDistrict;
+		public final ITextField fieldForStreet;
+		public final ITextField fieldForBuilding;
+		public final ITextField fieldForFlat;
+		public final ITextField fieldForPostcode;
+		
+		// for passport data
+		public final ILabel labelPassportData;
+		public final ILabel labelPassportSeria;
+		public final ILabel labelPassportNumber;
+		public final ILabel labelPublishedByData;
+		public final ITextField fieldForPassportSeria;
+		public final ITextField fieldForPassportNumber;
+		public final ITextField fieldForPublishedByData;
+		
+		// for other data
+		public final ILabel labelOtherDate;
+		public final ILabel labelPhoneNumber;
+		public final ILabel labelTerritoryalCommunity;
+		public final ILabel labelDateOfAccession;
+		public final ITextField fieldForPhoneNumber;
+		public final ISelect fieldForTerritorialCommunityDefault;
+		public final ITextField fieldForDateOfAccession;
+		public final ISelect territorialCommunity;
+		
+		// for buttons
+		public final IButton buttonSend;
+		public final IButton buttonReset;
+		public final IButton buttonCancel;
+		
+		public CreateNewUserPageUIMap() {
+			this.labelMainInformation = Label.get().getByXpath("//div[@class ='personal_header col-lg-4']/h4");
+			this.labelFirstName  = Label.get().getByXpath("//label[@for='firstName']");
+			this.labelLastName = Label.get().getByXpath("//label[@for='lastName']");
+			this.labelMiddleName = Label.get().getByXpath("//label[@for='middleName']");
+			this.labelEmail = Label.get().getByXpath("//label[@for='email']");
+			this.labelLogin = Label.get().getByXpath("//label[@for='login']");
+			this.labelPassword = Label.get().getByXpath("//label[@for='password']");
+			this.labelConfirmPassword = Label.get().getByXpath("//label[@for='confirmPassword']");
+			this.fieldForFirstName = TextField.get().getById("firstName");
+			this.fieldForLastName = TextField.get().getById("lastName");
+			this.fieldForMiddleName = TextField.get().getById("middleName");
+			this.fieldForEmail = TextField.get().getById("email");
+			this.fieldForLogin = TextField.get().getById("login");
+			this.fieldForPassword = TextField.get().getById("password");
+			this.fieldForConfirmPassword = TextField.get().getById("confirmPassword");
+			this.labelAddressData = Label.get().getByXpath("//div[@class ='address_header col-lg-4']/h4");
+			this.labelCity  = Label.get().getByXpath("//label[text()='Місто']");
+			this.labelRegion = Label.get().getByXpath("//label[@for='region']");
+			this.labelDistrict = Label.get().getByXpath("//label[@for='district']");
+			this.labelStreet = Label.get().getByXpath("//label[@for='street']");
+			this.labelBuilding = Label.get().getByXpath("//label[@for='building']");
+			this.labelFlat = Label.get().getByXpath("//label[@for='flat']");
+			this.labelPostcode= Label.get().getByXpath("//label[@for='postcode']");
+			this.fieldForCity = TextField.get().getById("city");
+			this.fieldForRegion = TextField.get().getById("region");
+			this.fieldForDistrict = TextField.get().getById("district");
+			this.fieldForStreet = TextField.get().getById("street");
+			this.fieldForBuilding = TextField.get().getById("building");
+			this.fieldForFlat = TextField.get().getById("flat");
+			this.fieldForPostcode = TextField.get().getById("postcode");
+			this.labelPassportData = Label.get().getByXpath("//h4[contains(text(),'Паспортні дані')]");
+			this.labelPassportSeria = Label.get().getByXpath("//label[@for='passport_seria']");
+			this.labelPassportNumber = Label.get().getByXpath("//label[@for='passport_number']");
+			this.labelPublishedByData= Label.get().getByXpath("//label[@for='published_by_data']");
+			this.fieldForPassportSeria = TextField.get().getById("passport_seria");
+			this.fieldForPassportNumber = TextField.get().getById("passport_number");
+			this.fieldForPublishedByData = TextField.get().getById("published_by_data");
+			this.labelOtherDate = Label.get().getByXpath("//h4[contains(text(),'Інші дані')]");
+			this.labelPhoneNumber = Label.get().getByXpath("//label[@for='phone_number']");
+			this.labelTerritoryalCommunity = Label.get().getByXpath("//label[@for='territorial_Community']");
+			this.labelDateOfAccession = Label.get().getByXpath("//label[@for='dateOfAccession']");		
+			this.fieldForPhoneNumber = TextField.get().getById("phone_number");
+			this.fieldForTerritorialCommunityDefault = SelectField.get().getByXpath("//select[@id='territorial_Community']/option[1]");
+			this.fieldForDateOfAccession = TextField.get().getById("datepicker");
+			this.territorialCommunity = SelectField.get().getById("territorial_Community");
+			this.buttonSend = Button.get().getById("submit");
+			this.buttonReset = Button.get().getByCssSelector(".btn.btn-warning.reset");
+			this.buttonCancel = Button.get().getByXpath("//button[@class='btn btn-primary']");
+		}
 	}
 	
-	public WebElement getLabelMainInformation() {
-		return this.labelMainInformation;
+	private CreateNewUserPageUIMap controls;
+	
+	public CreateNewUserPage() {
+		controls = new CreateNewUserPageUIMap();
 	}
 
-	public WebElement getLabelFirstName() {
-		return this.labelFirstName;
+	public ILabel getLabelMainInformation() {
+		return this.controls.labelMainInformation;
 	}
 
-	public WebElement getLabelLastName() {
-		return this.labelLastName;
+	public ILabel getLabelFirstName() {
+		return this.controls.labelFirstName;
 	}
 
-	public WebElement getLabelMiddleName() {
-		return this.labelMiddleName;
+	public ILabel getLabelLastName() {
+		return this.controls.labelLastName;
 	}
 
-	public WebElement getLabelEmail() {
-		return this.labelEmail;
+	public ILabel getLabelMiddleName() {
+		return this.controls.labelMiddleName;
 	}
 
-	public WebElement getLabelLogin() {
-		return this.labelLogin;
+	public ILabel getLabelEmail() {
+		return this.controls.labelEmail;
 	}
 
-	public WebElement getLabelPassword() {
-		return this.labelPassword;
+	public ILabel getLabelLogin() {
+		return this.controls.labelLogin;
 	}
 
-	public WebElement getLabelConfirmPassword() {
-		return this.labelConfirmPassword;
+	public ILabel getLabelPassword() {
+		return this.controls.labelPassword;
 	}
 
-	public WebElement getFieldForFirstName() {
-		return this.fieldForFirstName;
+	public ILabel getLabelConfirmPassword() {
+		return this.controls.labelConfirmPassword;
+	}
+
+	public ITextField getFieldForFirstName() {
+		return this.controls.fieldForFirstName;
 	}
 
 	public String getFieldForFirstNameText() {
 		return getFieldForFirstName().getText();
 	}
 	
-	public WebElement getFieldForLastName() {
-		return this.fieldForLastName;
+	public ITextField getFieldForLastName() {
+		return this.controls.fieldForLastName;
 	}
 	
 	public String getFieldForLastNameText() {
 		return getFieldForLastName().getText();
 	}
 
-	public WebElement getFieldForMiddleName() {
-		return this.fieldForMiddleName;
+	public ITextField getFieldForMiddleName() {
+		return this.controls.fieldForMiddleName;
 	}
 	
 	public String getFieldForMiddleNameText() {
 		return getFieldForMiddleName().getText();
 	}
 
-	public WebElement getFieldForEmail() {
-		return this.fieldForEmail;
+	public ITextField getFieldForEmail() {
+		return this.controls.fieldForEmail;
 	}
 	
 	public String getFieldForEmailText() {
 		return getFieldForEmail().getText();
 	}
 
-	public WebElement getFieldForLogin() {
-		return this.fieldForLogin;
+	public ITextField getFieldForLogin() {
+		return this.controls.fieldForLogin;
 	}
 	
 	public String getFieldForLoginText() {
 		return getFieldForLogin().getText();
 	}
 
-	public WebElement getFieldForPassword() {
-		return this.fieldForPassword;
+	public ITextField getFieldForPassword() {
+		return this.controls.fieldForPassword;
 	}
 	
 	public String getFieldForPasswordText() {
 		return getFieldForPassword().getText();
 	}
 
-	public WebElement getFieldForConfirmPassword() {
-		return this.fieldForConfirmPassword;
+	public ITextField getFieldForConfirmPassword() {
+		return this.controls.fieldForConfirmPassword;
 	}
 	
 	public String getFieldForConfirmPasswordText() {
 		return getFieldForConfirmPassword().getText();
 	}
 
-	public WebElement getLabelAddressData() {
-		return this.labelAddressData;
+	public ILabel getLabelAddressData() {
+		return this.controls.labelAddressData;
 	}
 
-	public WebElement getLabelCity() {
-		return this.labelCity;
+	public ILabel getLabelCity() {
+		return this.controls.labelCity;
 	}
 
-	public WebElement getLabelRegion() {
-		return this.labelRegion;
+	public ILabel getLabelRegion() {
+		return this.controls.labelRegion;
 	}
 
-	public WebElement getLabelDistrict() {
-		return this.labelDistrict;
+	public ILabel getLabelDistrict() {
+		return this.controls.labelDistrict;
 	}
 
-	public WebElement getLabelStreet() {
-		return this.labelStreet;
+	public ILabel getLabelStreet() {
+		return this.controls.labelStreet;
 	}
 
-	public WebElement getLabelBuilding() {
-		return this.labelBuilding;
+	public ILabel getLabelBuilding() {
+		return this.controls.labelBuilding;
 	}
 
-	public WebElement getLabelFlat() {
-		return this.labelFlat;
+	public ILabel getLabelFlat() {
+		return this.controls.labelFlat;
 	}
 
-	public WebElement getLabelPostcode() {
-		return this.labelPostcode;
+	public ILabel getLabelPostcode() {
+		return this.controls.labelPostcode;
 	}
 
-	public WebElement getFieldForCity() {
-		return this.fieldForCity;
+	public ITextField getFieldForCity() {
+		return this.controls.fieldForCity;
 	}
 	
 	public String getFieldForCityText() {
 		return getFieldForCity().getText();
 	}
 
-	public WebElement getFieldForRegion() {
-		return this.fieldForRegion;
+	public ITextField getFieldForRegion() {
+		return this.controls.fieldForRegion;
 	}
 	
 	public String getFieldForRegionText() {
 		return getFieldForRegion().getText();
 	}
 
-	public WebElement getFieldForDistrict() {
-		return this.fieldForDistrict;
+	public ITextField getFieldForDistrict() {
+		return this.controls.fieldForDistrict;
 	}
 	
 	public String getFieldForDistrictText() {
 		return getFieldForDistrict().getText();
 	}
 
-	public WebElement getFieldForStreet() {
-		return this.fieldForStreet;
+	public ITextField getFieldForStreet() {
+		return this.controls.fieldForStreet;
 	}
 	
 	public String getFieldForStreetText() {
 		return getFieldForStreet().getText();
 	}
 
-	public WebElement getFieldForBuilding() {
-		return this.fieldForBuilding;
+	public ITextField getFieldForBuilding() {
+		return this.controls.fieldForBuilding;
 	}
 	
 	public String getFieldForBuildingText() {
 		return getFieldForBuilding().getText();
 	}
 
-	public WebElement getFieldForFlat() {
-		return this.fieldForFlat;
+	public ITextField getFieldForFlat() {
+		return this.controls.fieldForFlat;
 	}
 	
 	public String getFieldForFlatText() {
 		return getFieldForFlat().getText();
 	}
 
-	public WebElement getFieldForPostcode() {
-		return this.fieldForPostcode;
+	public ITextField getFieldForPostcode() {
+		return this.controls.fieldForPostcode;
 	}
 	
 	public String getFieldForPostcodeText() {
 		return getFieldForPostcode().getText();
 	}
 
-	public WebElement getLabelPassportData() {
-		return this.labelPassportData;
+	public ILabel getLabelPassportData() {
+		return this.controls.labelPassportData;
 	}
 
-	public WebElement getLabelPassportSeria() {
-		return this.labelPassportSeria;
+	public ILabel getLabelPassportSeria() {
+		return this.controls.labelPassportSeria;
 	}
 
-	public WebElement getLabelPassportNumber() {
-		return this.labelPassportNumber;
+	public ILabel getLabelPassportNumber() {
+		return this.controls.labelPassportNumber;
 	}
 
-	public WebElement getLabelPublishedByData() {
-		return this.labelPublishedByData;
+	public ILabel getLabelPublishedByData() {
+		return this.controls.labelPublishedByData;
 	}
 
-	public WebElement getFieldForPassportSeria() {
-		return this.fieldForPassportSeria;
+	public ITextField getFieldForPassportSeria() {
+		return this.controls.fieldForPassportSeria;
 	}
 	
 	public String getFieldForPassportSeriaText() {
 		return getFieldForPassportSeria().getText();
 	}
 
-	public WebElement getFieldForPassportNumber() {
-		return this.fieldForPassportNumber;
+	public ITextField getFieldForPassportNumber() {
+		return this.controls.fieldForPassportNumber;
 	}
 	
 	public String getFieldForPassportNumberText() {
 		return getFieldForPassportNumber().getText();
 	}
 
-	public WebElement getFieldForPublishedByData() {
-		return this.fieldForPublishedByData;
+	public ITextField getFieldForPublishedByData() {
+		return this.controls.fieldForPublishedByData;
 	}
 	
 	public String getFieldForPublishedByDataText() {
 		return getFieldForPublishedByData().getText();
 	}
 
-	public WebElement getLabelOtherDate() {
-		return this.labelOtherDate;
+	public ILabel getLabelOtherDate() {
+		return this.controls.labelOtherDate;
 	}
 
-	public WebElement getLabelPhoneNumber() {
-		return this.labelPhoneNumber;
+	public ILabel getLabelPhoneNumber() {
+		return this.controls.labelPhoneNumber;
 	}
 
-	public WebElement getLabelTerritoryalCommunity() {
-		return this.labelTerritoryalCommunity;
+	public ILabel getLabelTerritoryalCommunity() {
+		return this.controls.labelTerritoryalCommunity;
 	}
 
-	public WebElement getLabelDateOfAccession() {
-		return this.labelDateOfAccession;
+	public ILabel getLabelDateOfAccession() {
+		return this.controls.labelDateOfAccession;
 	}
 
-	public WebElement getFieldForPhoneNumber() {
-		return this.fieldForPhoneNumber;
+	public ITextField getFieldForPhoneNumber() {
+		return this.controls.fieldForPhoneNumber;
 	}
 	
 	public String getFieldForPhoneNumberText() {
 		return getFieldForPhoneNumber().getText();
 	}
 
-	public WebElement getFieldForTerritorialCommunityDefault() {
-		return this.fieldForTerritorialCommunityDefault;
+	public ISelect getFieldForTerritorialCommunityDefault() {
+		return this.controls.fieldForTerritorialCommunityDefault;
 	}
 	
 	public String getFieldForTerritorialCommunityDefaultText() {
 		return getFieldForTerritorialCommunityDefault().getText();
 	}
 	
-	public WebElement getFieldForDateOfAccession() {
-		return this.fieldForDateOfAccession;
+	public ITextField getFieldForDateOfAccession() {
+		return this.controls.fieldForDateOfAccession;
 	}
 	
-	public Object getFieldForDateOfAccessionValue() {
-		return	((JavascriptExecutor) webDriver)
-				.executeScript("return $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();");
+	public Object getValueForDateOfAccession() {
+		return	new JSInjection().runScript("return $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();");
 	}
 
-	public WebElement getTerritorialCommunity() {
-		return this.territorialCommunity;
+	public ISelect getTerritorialCommunity() {
+		return this.controls.territorialCommunity;
 	}
 
-	public WebElement getButtonSend() {
-		return this.buttonSend;
+	public IButton getButtonSend() {
+		return this.controls.buttonSend;
 	}
 
-	public WebElement getButtonReset() {
-		return this.buttonReset;
+	public IButton getButtonReset() {
+		return this.controls.buttonReset;
+	}
+	
+	public IButton getButtonCancel() {
+		return this.controls.buttonCancel;
 	}
 
 	public void setFieldForFirstName(String firstName) {
@@ -400,7 +414,7 @@ public class CreateNewUserPage extends CommonAdminCommissionerHomePage {
 	}
 
 	public void setFieldForMiddleName(String middleName) {
-		getFieldForPassportNumber().sendKeys(middleName);
+		getFieldForMiddleName().sendKeys(middleName);
 	}
 
 	public void setFieldForEmail(String email) {
@@ -463,16 +477,17 @@ public class CreateNewUserPage extends CommonAdminCommissionerHomePage {
 		getFieldForPhoneNumber().sendKeys(phoneNumber);
 	}
 
-	public void setFieldForTerritorialCommunityDefault(String territorialCommunityDefault) {
-		getFieldForTerritorialCommunityDefault().sendKeys(territorialCommunityDefault);
-	}
+//	public void setFieldForTerritorialCommunityDefault(String territorialCommunityDefault) {
+//		//getFieldForTerritorialCommunityDefault().sendKeys(territorialCommunityDefault);
+//		getFieldForTerritorialCommunityDefault().selectByValue("");
+//	}
 
 	public void setFieldForDateOfAccession(String dateOfAccession) {
 		getFieldForDateOfAccession().sendKeys(dateOfAccession);
 	}
 
 	public void setTerritorialCommunity(String territorialCommunity) {
-		new Select(getTerritorialCommunity()).selectByValue(territorialCommunity);
+		getTerritorialCommunity().selectByValue(territorialCommunity);
 	}
 
 	public void clickButtonSend() {
@@ -483,10 +498,15 @@ public class CreateNewUserPage extends CommonAdminCommissionerHomePage {
 		getButtonReset().click();
 	}
 	
+	public CommonAdminCommissionerHomePage clickButtonCancel() {
+		getButtonCancel().click();
+		return new CommonAdminCommissionerHomePage();
+	}
+	
 	public NonConfirmedUsersPage successCreateUser(IUser user) {
 		typeRequiredFields(user);
 		clickButtonSend();
-		return new NonConfirmedUsersPage(webDriver);
+		return new NonConfirmedUsersPage();
 	}
 	
 	public CreateNewUserPage clearFormForCreateNewUser() {
@@ -577,6 +597,7 @@ public class CreateNewUserPage extends CommonAdminCommissionerHomePage {
 				.add(getLabelDateOfAccession().isEnabled(), true)
 				// for button
 				.add(getButtonSend().isEnabled(), true)
-				.add(getButtonReset().isEnabled(), true).check();
+				.add(getButtonReset().isEnabled(), true)
+				.add(getButtonCancel().isEnabled(), true).check();
 	}
 }

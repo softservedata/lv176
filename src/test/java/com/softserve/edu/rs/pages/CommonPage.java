@@ -1,51 +1,102 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import com.softserve.edu.atqc.controls.ILabelClickable;
+import com.softserve.edu.atqc.controls.ILink;
+import com.softserve.edu.atqc.controls.LabelClickable;
+import com.softserve.edu.atqc.controls.Link;
 
 public abstract class CommonPage extends BasePage {
-	@FindBy(xpath = "//button[@class='btn btn-primary btn-sm']")
-	private WebElement labelUserLogin;
-	@FindBy(xpath = "//button[@data-toggle='dropdown']")
-	private WebElement dropdownButton;
-	@FindBy(xpath = "//a[contains(@href,'/logout')]")
-	private WebElement logout;
-
-	public CommonPage(WebDriver webDriver) {
-		super(webDriver);
-		PageFactory.initElements(webDriver, this);
+	
+	private class CommonPageUIMap {
+    	public final ILabelClickable labelUserLogin;
+    	public final ILabelClickable dropdownButton;
+    	
+    	public CommonPageUIMap() {
+    		this.labelUserLogin = LabelClickable.get().getByXpath("//button[@class='btn btn-primary btn-sm']");
+    		this.dropdownButton = LabelClickable.get().getByXpath("//button[@data-toggle='dropdown']");
+    	}
+    }
+	
+	private class MenuPageUIMap {
+    	public final ILink changePassword;
+    	public final ILink resetPassword;
+    	public final ILink logout;
+    	
+    	public MenuPageUIMap() {
+    		this.changePassword = Link.get().getByCssSelector("a.change-password");
+    		this.resetPassword = Link.get().getByCssSelector("a.reset-my-password");
+    		this.logout = Link.get().getByXpath("//a[contains(@href,'/logout')]");
+    	}
+    }
+	
+	private CommonPageUIMap controls;
+    private MenuPageUIMap menuControls;
+    
+    public CommonPage() {
+		this.controls = new CommonPageUIMap();
 	}
-
-	public WebElement getLabelUserLogin() {
-		return this.labelUserLogin;
+    
+    public ILabelClickable getLoginAccount() {
+		return this.controls.labelUserLogin;
 	}
 	
-	public WebElement getButtonDropdown() {
-		return this.dropdownButton;
-	}
-	
-	public WebElement getLogout() {
-		return this.logout;
-	}
-
 	public String getLoginAccountText() {
-		return this.labelUserLogin.getText();
-	}
-	
-	public void clickDropdown() {
-		getButtonDropdown().click();
-	}
-	
-	public LoginPage logout() {
-		clickDropdown();
-		getLogout().click();
-		(new WebDriverWait(webDriver, 5)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@type='submit']")));
-		return new LoginPage(webDriver);
+		return getLoginAccount().getText();
 	}
 
+	public ILabelClickable getMenuAccount() {
+		return this.controls.dropdownButton;
+	}
+	
+	public ILink getChangePassword() {
+		clickMenuAccount();
+		return this.menuControls.changePassword;
+	}
+
+	public String getChangePasswordText() {
+		return getChangePassword().getText();
+	}
+	
+	public ILink getResetPassword() {
+		clickMenuAccount();
+		return this.menuControls.resetPassword;
+	}
+
+	public String getResetPasswordText() {
+		return getResetPassword().getText();
+	}
+
+	public ILink getLogout() {
+		clickMenuAccount();
+		return this.menuControls.logout;
+	}
+
+	public String getLogoutText() {
+		return getLogout().getText();
+	}
+
+	// Set Data
+
+	public void clickLoginAccount() {
+		getLoginAccount().click();
+	}
+
+	public void clickMenuAccount() {
+		clickLoginAccount();
+		getMenuAccount().click();
+		this.menuControls = new MenuPageUIMap();
+	}
+
+	public void clickChangePassword() {
+		getChangePassword().click();
+	}
+
+	public void clickResetPassword() {
+		getResetPassword().click();
+	}
+
+	public LoginPage clickLogout() {
+		getLogout().click();
+		return new LoginPage();
+	}
 }

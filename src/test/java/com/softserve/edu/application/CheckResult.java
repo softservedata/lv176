@@ -1,7 +1,7 @@
 package com.softserve.edu.application;
 
 public class CheckResult {
-	boolean result = true;
+	private boolean result = true;
 	
 	public CheckResult add(boolean expect, boolean actual) {
 		result = result && (expect == actual);

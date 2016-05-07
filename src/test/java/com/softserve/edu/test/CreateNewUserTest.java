@@ -1,14 +1,13 @@
 package com.softserve.edu.test;
 
-import org.testng.annotations.Test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
-
+import org.testng.annotations.Test;
 import com.softserve.edu.application.Application;
 import com.softserve.edu.application.ApplicationSourcesRepository;
 import com.softserve.edu.entity.IUser;
@@ -18,17 +17,18 @@ import com.softserve.edu.rs.pages.EditProfilUserPage;
 import com.softserve.edu.rs.pages.HomeUserPage;
 import com.softserve.edu.rs.pages.LoginPage;
 import com.softserve.edu.rs.pages.LoginValidatorPage;
+import com.softserve.edu.rs.pages.NonConfirmedUsersPage;
 
 public class CreateNewUserTest {
-	Application application;
+	private Application application;
 
-	@BeforeTest
-	public void beforeTest() {
-		application = new Application(ApplicationSourcesRepository.get().getLocalHostByFirefox());
+	@BeforeClass
+	public void beforeClass() {
+		application = Application.get(ApplicationSourcesRepository.get().getLocalHostByFirefoxTemporary());
 	}
 
-	@AfterTest
-	public void afterTest() {
+	@AfterClass
+	public void afterClass() {
 		application.quit();
 	}
 	
@@ -37,36 +37,47 @@ public class CreateNewUserTest {
 		application.logout();
 	}
 
-	@DataProvider(name = "Type of user")
+	@DataProvider(name = "TypeOfUser")
 	public Object[][] parameterUser() {
 		return new Object[][] { 
-			{ UserRepository.getInstance().getAdmin() },
+			{ UserRepository.getInstance().getAdmin() }, 
 			{ UserRepository.getInstance().getCommissioner() } };
 	}
 
-	@Test(dataProvider = "Type of user")
-	public void testPageLoadsCorectly(IUser user) {
-		CreateNewUserPage createNewUserPage =  application.load().successAdminCommissionerLogin(user).gotoCreateNewUserPage();
+	@Test(dataProvider = "TypeOfUser")
+	public void testPageLoadsCorectly(IUser adminOrCommissioner) {
+		CreateNewUserPage createNewUserPage =  application.load().successAdminCommissionerLogin(adminOrCommissioner).gotoCreateNewUserPage();
 		Assert.assertTrue(createNewUserPage.verifyPageForCreateUserIsLoadedCorrectly());
-		Assert.assertEquals(createNewUserPage.getFieldForDateOfAccessionValue(),(new SimpleDateFormat("dd.MM.yyy")).format((new Date())));
+		Assert.assertEquals(createNewUserPage.getValueForDateOfAccession(),(new SimpleDateFormat("dd.MM.yyy")).format((new Date())));
 	}
 
-	@Test(dataProvider = "Type of user")
-	public void testButtonClearWorksCorectly(IUser user) {
-		CreateNewUserPage createNewUserPage = application.load().successAdminCommissionerLogin(user)
+	@Test(dataProvider = "TypeOfUser")
+	public void testButtonClearWorksCorectly(IUser adminOrCommissioner) {
+		CreateNewUserPage createNewUserPage = application.load().successAdminCommissionerLogin(adminOrCommissioner)
 				.gotoCreateNewUserPage()
 				.typeAllFields(UserRepository.getInstance().getUser())
 				.clearFormForCreateNewUser();
 		Assert.assertTrue(createNewUserPage.verifyPageForCreateUserIsLoadedCorrectly());
 	}
+	
+	@Test(dataProvider = "TypeOfUser")
+	public void testButtonCancelWorksCorectly(IUser adminOrCommissioner) {
+		IUser newUser = UserRepository.getInstance().getUser();
+		application.load().successAdminCommissionerLogin(adminOrCommissioner)
+				.gotoCreateNewUserPage()
+				.typeAllFields(newUser)
+				.clickButtonCancel();
+		NonConfirmedUsersPage nonConfirmedUsersPage = application.loadNonConfirmedUsersPage().searchByLogin(newUser);
+		Assert.assertTrue(nonConfirmedUsersPage.getLabelEmptyTable().isDisplayed());
+	}
 
-	@Test(dataProvider = "Type of user")
+	@Test(dataProvider = "TypeOfUser")
 	public void testCreateNewUser(IUser adminOrCommissioner) {
 		IUser newUser = UserRepository.getInstance().getUser();
 		
 		//create new user
 		LoginPage loginPage = application.load().successAdminCommissionerLogin(adminOrCommissioner)
-				.gotoCreateNewUserPage().successCreateUser(newUser).logout();
+				.gotoCreateNewUserPage().successCreateUser(newUser).clickLogout();
 		
 		//verify that not confirmed user can not login 
 		LoginValidatorPage loginValidatorPage = loginPage.unsuccessfulLogin(newUser);
@@ -75,12 +86,13 @@ public class CreateNewUserTest {
 		//activate new user
 		EditProfilUserPage editProfilUserPage = loginValidatorPage.successAdminCommissionerLogin(UserRepository.getInstance().getAdmin())
 				.gotoNonConfirmedUsersPage()
-				.gotoProfilUser(newUser).clickButtonEdit()
-				.changeStatus(newUser);
+				.gotoProfilUser(newUser)
+				.clickButtonEdit()
+				.changeStatusToActive(newUser);
 		editProfilUserPage.clickButtonOk();
 		
 		//verify that confirmed user can login
-		HomeUserPage homePage = editProfilUserPage.logout().successUserLogin(newUser);
+		HomeUserPage homePage = application.logout().successUserLogin(newUser);
 		Assert.assertEquals(homePage.getLoginAccountText(), newUser.getAccount().getLogin());
 	}
 

@@ -1,69 +1,107 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
+import com.softserve.edu.atqc.controls.Button;
+import com.softserve.edu.atqc.controls.IButton;
+import com.softserve.edu.atqc.controls.ILabel;
+import com.softserve.edu.atqc.controls.ITextField;
+import com.softserve.edu.atqc.controls.Label;
+import com.softserve.edu.atqc.controls.TextField;
 import com.softserve.edu.entity.IUser;
 
 public class NonConfirmedUsersPage extends CommonAdminCommissionerHomePage {
-	@FindBy(xpath = "//h4")
-	private WebElement title;
-	@FindBy(id = "inputIndex3")
-	private WebElement inputLogin;
-	@FindBy(id = "bth-search")
-	private WebElement buttonSearch;
-
-	public NonConfirmedUsersPage(WebDriver webDriver) {
-		super(webDriver);
-		PageFactory.initElements(webDriver, this);
+	
+	private class NonConfirmedUsersPageUIMap {
+		public final ILabel title;
+		public final ITextField inputLogin;
+		public final IButton buttonSearch;
+		//public final ILabel labelEmptyTable;
+		//public final ILabel firstRow;
+		
+		public NonConfirmedUsersPageUIMap() {
+			this.title = Label.get().getByXpath("//h4");
+			this.inputLogin = TextField.get().getById("inputIndex3");
+			this.buttonSearch = Button.get().getById("bth-search");
+			//this.labelEmptyTable = Label.get().getByXpath("//td[@class='dataTables_empty']");
+			
+			//this.firstRow = Label.get().getByXpath("//tbody/tr[1]");
+			//this.buttonEdit = Button.get().getByXpath(xpath)
+		}
+		
+		public IButton getXpathForProfilButton(String login) {
+			return Button.get().getByXpath("//tbody/tr[td[text()='" + login + "']]/td/button[@id ='edit']");
+		}
+	}
+	
+	private class InvisibleElementUIMap {
+		public final ILabel labelEmptyTable;
+		
+		public InvisibleElementUIMap() {
+			this.labelEmptyTable = Label.get().getByXpath("//td[@class='dataTables_empty']");
+		}
+	}
+	
+	private NonConfirmedUsersPageUIMap controls;
+	private InvisibleElementUIMap in;
+	
+	public NonConfirmedUsersPage() {
+		controls = new NonConfirmedUsersPageUIMap();
+	}
+	
+	public ILabel getTitle() {
+		return this.controls.title;
+	}
+	
+	public ITextField getInputLogin() {
+		return this.controls.inputLogin;
 	}
 
-	public WebElement getInputLogin() {
-		return this.inputLogin;
+	public IButton getButtonSearch() {
+		return this.controls.buttonSearch;
 	}
-
-	public WebElement getButtonSearch() {
-		return this.buttonSearch;
+	
+	public ILabel getLabelEmptyTable() {
+		in = new InvisibleElementUIMap();
+		return this.in.labelEmptyTable;
 	}
+	
+//	public ILabel getFirstRow() {
+//		return this.controls.firstRow;
+//	}
 
 	public void clickInputLogin() {
 		getInputLogin().click();
 	}
 
+	public void setInputLogin(String login) {
+		getInputLogin().sendKeys(login);
+	}
+	
+	public void setInputLoginClear(String login) {
+		getInputLogin().sendKeysClear(login);
+	}
+	
 	public void clearInputLogin() {
 		getInputLogin().clear();
 	}
 
-	public void setInputLogin(String login) {
-		getInputLogin().sendKeys(login);
-	}
-
-	public WebElement getXpathForProfilButton(String login) {
-		return webDriver.findElement(By.xpath("//tbody/tr[td[text()='" + login + "']]/td/button[@id ='edit']"));
-	}
-
 	public NonConfirmedUsersPage searchByLogin(IUser user) {
 		clickInputLogin();
-		clearInputLogin();
-		setInputLogin(user.getAccount().getLogin());
-		WebElement firstRowOfTable = webDriver.findElement(By.xpath("//tbody/tr[1]"));
+		setInputLoginClear(user.getAccount().getLogin());
 		getButtonSearch().click();
-		(new WebDriverWait(webDriver, 2)).until(ExpectedConditions.stalenessOf(firstRowOfTable));
-		return new NonConfirmedUsersPage(webDriver);
+		//in = new InvisibleElementUIMap();
+		//getLabelEmptyTable();
+		//ControlSearch.get().isStatelessOfWebElement(getFirstRow().);
+		//(new WebDriverWait(webDriver, 2)).until(ExpectedConditions.stalenessOf(firstRowOfTable));
+		return new NonConfirmedUsersPage();
 	}
 
 	public void clickProfilButton(IUser user) {
-		getXpathForProfilButton(user.getAccount().getLogin()).click();
+		controls.getXpathForProfilButton(user.getAccount().getLogin()).click();
 	}
 
 	public ProfilUserPage gotoProfilUser(IUser user) {
 		searchByLogin(user);
 		clickProfilButton(user);
-		return new ProfilUserPage(webDriver);
+		return new ProfilUserPage();
 	}
 }

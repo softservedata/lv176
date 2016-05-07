@@ -1,22 +1,27 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import com.softserve.edu.atqc.controls.ILabel;
+import com.softserve.edu.atqc.controls.Label;
 
 public class LoginValidatorPage extends LoginPage {
 	public static final String VALIDATOR_MESSAGE = "You have entered wrong login or password.";
-	@FindBy(xpath = "//div[@style='color: red;']")
-	private WebElement validator;
 	
-	public LoginValidatorPage(WebDriver webDriver) {
-		super(webDriver);
-		PageFactory.initElements(webDriver, this);
+	private class LoginValidatorPageUIMap {
+		public final ILabel validator;
+		
+		public LoginValidatorPageUIMap() {
+			this.validator = Label.get().getByXpath("//div[@style='color: red;']");
+		}
 	}
-
-	public WebElement getValidator() {
-		return this.validator;
+	
+	private LoginValidatorPageUIMap controls;
+	
+	public LoginValidatorPage() {
+		controls = new LoginValidatorPageUIMap();
+	}
+	
+	public ILabel getValidator() {
+		return this.controls.validator;
 	}
 
 	public String getValidatorText() {

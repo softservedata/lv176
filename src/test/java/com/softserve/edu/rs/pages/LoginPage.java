@@ -1,34 +1,42 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import com.softserve.edu.atqc.controls.Button;
+import com.softserve.edu.atqc.controls.IButton;
+import com.softserve.edu.atqc.controls.ITextField;
+import com.softserve.edu.atqc.controls.TextField;
 import com.softserve.edu.entity.IUser;
 
 public class LoginPage extends BasePage {
-	@FindBy(id = "login")
-	private WebElement login;
-	@FindBy(id = "password")
-	private WebElement password;
-	@FindBy(xpath = "//button[@type='submit']")
-	private WebElement signIn;
+	
+	private class LoginPageUIMap {
+		public final ITextField login;
+		public final ITextField password;
+		public final IButton signin;
 
-	public LoginPage(WebDriver webDriver) {
-		super(webDriver);
-		PageFactory.initElements(webDriver, this);
+		public LoginPageUIMap() {
+			this.login = TextField.get().getById("login");
+			this.password = TextField.get().getById("password");
+			this.signin = Button.get().getByXpath("//button[@type='submit']");
+		}
+	}
+	
+	private LoginPageUIMap controls;
+	
+	public LoginPage() {
+		//super();
+		controls = new LoginPageUIMap();
+	}
+	
+	public ITextField getLogin() {
+		return this.controls.login;
 	}
 
-	public WebElement getLogin() {
-		return this.login;
+	public ITextField getPassword() {
+		return this.controls.password;
 	}
 
-	public WebElement getPassword() {
-		return this.password;
-	}
-
-	public WebElement getSignIn() {
-		return this.signIn;
+	public IButton getSignin() {
+		return this.controls.signin;
 	}
 
 	public String getLoginText() {
@@ -38,13 +46,21 @@ public class LoginPage extends BasePage {
 	public String getPasswordText() {
 		return getPassword().getText();
 	}
-
+	
 	public void setLogin(String login) {
 		getLogin().sendKeys(login);
 	}
 
+	public void setLoginClear(String login) {
+		getLogin().sendKeysClear(login);
+	}
+
 	public void setPassword(String password) {
 		getPassword().sendKeys(password);
+	}
+
+	public void setPasswordClear(String password) {
+		getPassword().sendKeysClear(password);
 	}
 
 	public void clearLogin() {
@@ -63,38 +79,35 @@ public class LoginPage extends BasePage {
 		getPassword().click();
 	}
 
-	public void clickSignIn() {
-		getSignIn().click();
+	public void clickSignin() {
+		getSignin().click();
 	}
 
 	public LoginPage changeLanguage(ChangeLanguageFields language) {
 		setChangeLanguage(language);
-		return new LoginPage(webDriver);
+		return new LoginPage();
 	}
 
 	private void setLoginData(IUser user) {
-		clickLogin();
-		clearLogin();
-		setLogin(user.getAccount().getLogin());
-		clickPassword();
-		clearPassword();
-		setPassword(user.getAccount().getPassword());
-		clickSignIn();
+		setLoginClear(user.getAccount().getLogin());
+		setPasswordClear(user.getAccount().getPassword());
+		clickSignin();
 	}
+	    
+	public CommonAdminCommissionerHomePage successAdminCommissionerLogin(IUser admin) {
+		setLoginData(admin);
+		return new CommonAdminCommissionerHomePage();
+	}
+
 
 	public HomeUserPage successUserLogin(IUser user) {
 		setLoginData(user);
-		return new HomeUserPage(webDriver);
-	}
-
-	public CommonAdminCommissionerHomePage successAdminCommissionerLogin(IUser admin) {
-		setLoginData(admin);
-		return new CommonAdminCommissionerHomePage(webDriver);
+		return new HomeUserPage();
 	}
 
 	public LoginValidatorPage unsuccessfulLogin(IUser invalidUser) {
 		setLoginData(invalidUser);
-		return new LoginValidatorPage(webDriver);
+		return new LoginValidatorPage();
 	}
 
 }

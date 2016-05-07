@@ -1,26 +1,30 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-
+import com.softserve.edu.atqc.controls.Button;
+import com.softserve.edu.atqc.controls.IButton;
 
 public class ProfilUserPage extends CommonPage {
-	@FindBy(xpath = "//button[@id='edit']")
-	private WebElement buttonEdit;
-
-	public ProfilUserPage(WebDriver webDriver) {
-		super(webDriver);
-		PageFactory.initElements(webDriver, this);
+	
+	private class ProfilUserPageUIMap {
+		public final IButton buttonEdit;
+		
+		public ProfilUserPageUIMap() {
+			this.buttonEdit = Button.get().getById("edit");
+		}
+	}
+	
+	private ProfilUserPageUIMap controls;
+	
+	public ProfilUserPage() {
+		controls = new ProfilUserPageUIMap();
 	}
 
-	public WebElement getButtonEdit() {
-		return this.buttonEdit;
+	public IButton getButtonEdit() {
+		return this.controls.buttonEdit;
 	}
 
 	public EditProfilUserPage clickButtonEdit() {
 		getButtonEdit().click();
-		return new EditProfilUserPage(webDriver);
+		return new EditProfilUserPage();
 	}
 }
