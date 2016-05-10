@@ -43,11 +43,111 @@ public class SubclassRepository {
 				.build();
 	}
 	
+	//------------------------------------------------------------------------------------
+	
 	public ISubclass getResCharsSubclass() {
 		return Subclass.get()
 				.setSubclassName("=/|\\*()_:;#%^?[]")
 				.build();
 	}
+	
+	public ISubclass getEqualCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("=")
+				.build();
+	}
+	
+	public ISubclass getSlashCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("/")
+				.build();
+	}
+	
+	public ISubclass getSeparatorCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("|")
+				.build();
+	}
+	
+	public ISubclass getBackSlashCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("\\")
+				.build();
+	}
+	
+	public ISubclass getSnowflakeCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("*")
+				.build();
+	}
+	
+	public ISubclass getLeftEarCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("(")
+				.build();
+	}
+	
+	public ISubclass getRightEarCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName(")")
+				.build();
+	}
+	
+	public ISubclass getDashCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("_")
+				.build();
+	}
+	
+	public ISubclass getColonCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName(":")
+				.build();
+	}
+	
+	public ISubclass getSemicolonCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName(";")
+				.build();
+	}
+	
+	public ISubclass getSharpCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("#")
+				.build();
+	}
+	
+	public ISubclass getPercentCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("%")
+				.build();
+	}
+	
+	public ISubclass getCircumflexCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("^")
+				.build();
+	}
+	
+	public ISubclass getQuestionMarkCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("?")
+				.build();
+	}
+	
+	public ISubclass getLeftBracketCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("[")
+				.build();
+	}
+	
+	public ISubclass getRightBracketCharsSubclass() {
+		return Subclass.get()
+				.setSubclassName("]")
+				.build();
+	}
+	
+	//------------------------------------------------------------------------------------
 	
 	public ISubclass getRiverSubclass() {
 		return Subclass.get()
@@ -56,6 +156,8 @@ public class SubclassRepository {
 				.setDescriptionParametr("long")
 				.setUnitOfMeasurement("meter");
 	}
+	
+	//------------------------------------------------------------------------------------
 	
 	public ISubclass getRandomSubclassNoParams() {
 		return Subclass.get()

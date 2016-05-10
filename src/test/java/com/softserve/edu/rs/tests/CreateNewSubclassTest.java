@@ -41,8 +41,26 @@ public class CreateNewSubclassTest {
                 { SubclassRepository.get().getOneNumberSubclassName() },
                 { SubclassRepository.get().getNumbersSubclassName() },
                 { SubclassRepository.get().getResCharsSubclass() },
+                /*
+                { SubclassRepository.get().getEqualCharsSubclass() },
+                { SubclassRepository.get().getSlashCharsSubclass() },
+                { SubclassRepository.get().getSeparatorCharsSubclass() },
+                { SubclassRepository.get().getBackSlashCharsSubclass() },
+                { SubclassRepository.get().getSnowflakeCharsSubclass() },
+                { SubclassRepository.get().getLeftEarCharsSubclass() },
+                { SubclassRepository.get().getRightEarCharsSubclass() },
+                { SubclassRepository.get().getDashCharsSubclass() },
+                { SubclassRepository.get().getColonCharsSubclass() },
+                { SubclassRepository.get().getSemicolonCharsSubclass() },
+                { SubclassRepository.get().getSharpCharsSubclass() },
+                { SubclassRepository.get().getPercentCharsSubclass() },
+                { SubclassRepository.get().getCircumflexCharsSubclass() },
+                { SubclassRepository.get().getQuestionMarkCharsSubclass() },
+                { SubclassRepository.get().getLeftBracketCharsSubclass() },
+                { SubclassRepository.get().getRightBracketCharsSubclass() },
+                */
                 { SubclassRepository.get().getRandomSubclassNoParams() },
-                //{ SubclassRepository.get().getRandomSubclassNoParamsMaxLength() },
+                
                 };
     }
 	

@@ -31,7 +31,6 @@ public class ComponentTest {
 	@Test
 	public void showParametersTest() {
 		addSubclassPage.showParameter();
-		//Assert.assertEquals(addSubclassPage.visibleParametrsBlockVisible(), "block");
 		Assert.assertTrue(addSubclassPage.getOptionsTable().isDisplayed());
 	}
 
