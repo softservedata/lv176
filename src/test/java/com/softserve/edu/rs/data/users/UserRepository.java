@@ -66,6 +66,46 @@ public final class UserRepository {
 							);
 	}
 
+	public IUser getRegistrator() {
+		// TODO Read from file
+		return User.get()
+					.setPerson(Person.get()
+									.setFirstname("Олег")
+									.setLastname("Мишкін")
+									.setEmail("mushkin_o@ukr.net")
+									.build()
+									.setMiddlename("Валерійович")
+									.setPhonenumber("")
+							)
+					.setAccount(Account.get()
+									.setLogin("registrator")
+									.setPassword("registrator")
+									.setRole("Регістратор")
+									.setStatus("Активний")
+									.setCommunity("Україна")
+									.build()
+									.setData("")
+									.setRegisterNumber("1")
+									.setRegistratorNumber("1")
+									.setVolumeNumber("1")
+							)
+					.build()
+					.setAddress(Address.get()
+							.setRegion("Львівська")
+							.setDistrict("Львівський")
+							.setCity("Львів")
+							.setStreet("Пасічна")
+							.setBuilding("111")
+							.setFlat("22")
+							.setPostcode("79000")
+							)
+					.setPassport(Passport.get()
+							.setSeria("КС")
+							.setNumber("444444")
+							.setPublished("ЗНМС")
+							);
+	}
+	
 	public IUser getCommissioner() {
 		// TODO Read from file
 		return User.get()

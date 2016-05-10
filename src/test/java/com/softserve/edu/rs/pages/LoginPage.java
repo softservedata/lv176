@@ -4,10 +4,13 @@ import com.softserve.edu.atqc.controls.Button;
 import com.softserve.edu.atqc.controls.IButton;
 import com.softserve.edu.atqc.controls.ITextField;
 import com.softserve.edu.atqc.controls.TextField;
+import com.softserve.edu.atqc.tools.BrowserUtils;
 import com.softserve.edu.rs.data.users.IUser;
 
 public class LoginPage extends TopPage {
-
+	
+	public static final String TITLE = "Login";
+	
 	private class LoginPageUIMap {
 		public final ITextField login;
 		public final ITextField password;
@@ -54,6 +57,9 @@ public class LoginPage extends TopPage {
 		return getPassword().getText();
 	}
 
+	public String getTitle() {
+		return BrowserUtils.get().getBrowser().getWebDriver().getTitle();
+	}
 	// Set Data
 
 	public void setLogin(String login) {
@@ -116,16 +122,14 @@ public class LoginPage extends TopPage {
 
     public AdminHomePage successAdminLogin(IUser admin) {
 		setLoginData(admin);
-		// Return a new page object representing the destination.
 		return new AdminHomePage();
 	}
 
-//	public RegistratorHomePage successRegistratorLogin(IUser registrator) {
-//		setLoginData(registrator);
-//		// Return a new page object representing the destination.
-//		return new RegistratorHomePage();
-//	}
-//
+	public RegistratorHomePage successRegistratorLogin(IUser registrator) {
+		setLoginData(registrator);		
+		return new RegistratorHomePage();
+	}
+
 //	public LoginValidatorPage unsuccessfulLogin(IUser invalidUser) {
 //		setLoginData(invalidUser);
 //		return new LoginValidatorPage(); // return this;

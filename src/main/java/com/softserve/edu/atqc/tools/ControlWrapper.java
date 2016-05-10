@@ -25,6 +25,11 @@ public final class ControlWrapper {
 		return new ControlWrapper(ControlSearch.get().getVisibleWebElement(controlLocation));
 	}
 
+	//TODO check working
+	public String getCssValue(String value) {
+		  return getWebElement().getCssValue(value);
+		 }
+	
 	// TODO
 //	public static List<ControlWrapper> getVisibleWebElements(ControlLocation controlLocation) {
 //		List<ControlWrapper> controlWrappers = new ArrayList<ControlWrapper>();

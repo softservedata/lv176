@@ -24,7 +24,7 @@ public abstract class ABrowser {
 	}
 
 	// TODO +++ Set Package Access
-	WebDriver getWebDriver() {
+	public WebDriver getWebDriver() {
 		if (driver != null) {
 			return driver;
 		} else {
@@ -68,6 +68,8 @@ public abstract class ABrowser {
 		return getWebDriver().getCurrentUrl();
 	}
 
+	
+	
 	public void close() {
 		getWebDriver().close();
 		driver = null;

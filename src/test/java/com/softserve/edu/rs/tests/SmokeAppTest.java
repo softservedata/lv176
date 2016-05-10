@@ -17,29 +17,17 @@ public class SmokeAppTest {
     public Object[][] getApplicationSources() {
         return new Object[][] {
                 { ApplicationSourcesRepository.get().getJavaTrainingLocalByFirefoxTemporary(), UserRepository.get().getAdmin() },
-                //{ ApplicationSourcesRepository.get().getHerokuByFirefoxTemporary(), UserRepository.get().getAdmin() },
+                { ApplicationSourcesRepository.get().getHerokuByFirefoxTemporary(), UserRepository.get().getAdmin() },
                 };
     }
  
 	@Test(dataProvider = "getApplicationSources")
-	public void adminLogin(ApplicationSources applicationSources, IUser admin) throws Exception {
-		// Preconditions.
+	public void adminLogin(ApplicationSources applicationSources, IUser admin) {
 		Application application = Application.get(applicationSources);
-		// Test Steps.
 		AdminHomePage adminHomePage = application.load().successAdminLogin(admin); 
-		// Checking.
-		Thread.sleep(2000);
 		Assert.assertEquals(admin.getAccount().getLogin(),
 				adminHomePage.getLoginAccountText());
-		// Test Steps.
-		//adminHomePage.setFocusUsers();
-		adminHomePage.clickUsers(); 
-		Thread.sleep(2000);
-		// Return to previous state.
 		adminHomePage.logout();
-		//
-		Thread.sleep(2000);
-		//application.quit();
 		application.quit();
 	}
 

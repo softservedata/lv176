@@ -1,5 +1,6 @@
 package com.softserve.edu.atqc.controls;
 
+
 import com.softserve.edu.atqc.tools.ControlLocation;
 import com.softserve.edu.atqc.tools.ControlSearch;
 import com.softserve.edu.atqc.tools.ControlWrapper;
@@ -38,6 +39,13 @@ public abstract class ABaseComponent<TComponent> {
 
     public TComponent getByTagName(String tagName) {
         return get(ControlLocation.getByTagName(tagName));
+    }
+    
+    
+ // TODO 
+    public TComponent getByControlWrapper(ControlWrapper controlWrapper){
+    	this.controlWrapper = controlWrapper;
+    	return tComponent;
     }
 
     private TComponent get(ControlLocation controlLocation) {
@@ -79,6 +87,11 @@ public abstract class ABaseComponent<TComponent> {
     protected void setTComponent(TComponent tComponent) {
         this.tComponent = tComponent;
     }
+    
+    //TODO
+//    protected void setListTcomponent(TComponent tComponent){
+//    	this.tComponent= tComponent;
+//    }
 
     public boolean isInvisibleWebElementById(String id) {
         return ControlSearch.get().isInvisibleWebElementById(id);
