@@ -1,6 +1,7 @@
 package com.softserve.edu.atqc.data.apps;
 
 import com.softserve.edu.atqc.tools.BrowserUtils;
+import com.softserve.edu.atqc.tools.ControlSearch;
 
 public abstract class ABaseApplication<TApplication> {
 	private ApplicationSources applicationSources;
@@ -17,17 +18,22 @@ public abstract class ABaseApplication<TApplication> {
 		return this.applicationSources;
 	}
 
+	protected void setSearchStrategy() {
+		ControlSearch.get(getApplicationSources());
+	}
+
 	public TApplication load() {
-		if (BrowserUtils.get().getBrowser().getCurrentUrl().contains(applicationSources.getServerUrl())
-				&& (!BrowserUtils.get().getBrowser().getCurrentUrl().contains(applicationSources.getLoginUrl()))) {
+		if (BrowserUtils.get().getBrowser().getCurrentUrl().contains(getApplicationSources().getServerUrl())
+				&& (!BrowserUtils.get().getBrowser().getCurrentUrl().contains(getApplicationSources().getLoginUrl()))) {
 			logout();
 		}
-		BrowserUtils.get().getBrowser().loadPage(applicationSources.getLoginUrl());
+		BrowserUtils.get().getBrowser().loadPage(getApplicationSources().getLoginUrl());
+		setSearchStrategy();
 		return getStartPage();
 	}
 
 	public TApplication logout() {
-		BrowserUtils.get().getBrowser().loadPage(applicationSources.getLogoutUrl());
+		BrowserUtils.get().getBrowser().loadPage(getApplicationSources().getLogoutUrl());
 		return getStartPage();
 	}
 

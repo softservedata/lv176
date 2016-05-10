@@ -1,6 +1,8 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.support.ui.Select;
+import com.softserve.edu.atqc.controls.ILabelClickable;
+import com.softserve.edu.atqc.controls.ISelect;
+import com.softserve.edu.atqc.controls.Select;
 
 public abstract class TopPage {
 
@@ -26,10 +28,11 @@ public abstract class TopPage {
 	private class TopPageUIMap {
     	//public final Select changeLanguage;
     	// TODO Develop select component
-    	public Select changeLanguage;
+    	public ISelect changeLanguage;
     	
     	public TopPageUIMap() {
-    		//this.changeLanguage = new Select(driver.findElement(By.id("changeLanguage")));
+    		this.changeLanguage = Select.get().getById("changeLanguage"); 
+    		//new Select(driver.findElement(By.id("changeLanguage")));
     	}
     }
 
@@ -46,18 +49,26 @@ public abstract class TopPage {
 
 	// Get Elements
 
-	public Select getChangeLanguage() {
+	public ISelect getChangeLanguage() {
 		return this.controls.changeLanguage;
 	}
 
+	public ILabelClickable getChangeLanguageSelected() {
+		return getChangeLanguage().getFirstSelectedOption();
+	}
+
 	public String getChangeLanguageSelectedText() {
-		return getChangeLanguage().getFirstSelectedOption().getText();
+		return getChangeLanguageSelected().getText();
 	}
 
 	// Set Data
 
 	public void setChangeLanguage(ChangeLanguageFields language) {
 		getChangeLanguage().selectByVisibleText(language.toString());
+	}
+
+	public void setChangeLanguageByPartialText(String partialText) {
+		getChangeLanguage().selectByPartialText(partialText);
 	}
 
 }

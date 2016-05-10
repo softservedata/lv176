@@ -5,18 +5,27 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import com.softserve.edu.atqc.data.apps.ApplicationSources;
+
 public class ControlSearch {
+	private final String EXPLICIT = "explicit";
+	private final String IMPLICIT = "implicit";
+	//
     private static volatile ControlSearch instance = null;
     private ASearchContext context;
 
     private ControlSearch() {
         // Set Strategy by Default.
-    	this.context = ContextRepository.get().getSearchDefault();
+    	//this.context = ContextRepository.get().getSearchDefault();
         //this.context = ContextRepository.get().getSearchExplicit();
         //this.context = ContextRepository.get().getSearchImplicit();
     }
 
-    public static ControlSearch get() {
+	public static ControlSearch get() {
+		return get(null); 
+	}
+
+    public static ControlSearch get(ApplicationSources applicationSources) {
         if (instance == null) {
             synchronized (ControlSearch.class) {
                 if (instance == null) {
@@ -24,9 +33,40 @@ public class ControlSearch {
                 }
             }
         }
+        instance.checkStatus(applicationSources);
         return instance;
     }
 
+	private void checkStatus(ApplicationSources applicationSources) {
+		/*-
+				AS		searchStrategy		context	Action
+				+		+					+/-		set (check, else default)
+		 *		+		-					+		-
+		 *		+		-					-		defaul
+		 *		-		-					+		-
+		 *		-		-					-		defaul
+		 */		
+		if ((applicationSources != null)
+				&& (applicationSources.getSearchStrategy() != null)
+				&& !applicationSources.getSearchStrategy().isEmpty()) {
+			if (applicationSources.getSearchStrategy().toLowerCase().contains(EXPLICIT)) {
+				setExplicitStrategy(applicationSources.getExplicitTimeOut());
+			} else if (applicationSources.getSearchStrategy().toLowerCase().contains(IMPLICIT)) {
+				setImplicitStrategy(applicationSources.getImplicitTimeOut());
+			} else {
+				setContext(ContextRepository.get().getSearchDefault());
+			}
+		} else {
+			if (getContext() == null) {
+				setContext(ContextRepository.get().getSearchDefault());
+			}
+		}
+	}
+	
+	private ASearchContext getContext() {
+		return this.context;
+	}
+	
     // Set Strategy.
     ControlSearch setContext(ASearchContext context) {
         synchronized (ControlSearch.class) {
@@ -39,8 +79,20 @@ public class ControlSearch {
         return setContext(ContextRepository.get().getSearchImplicit());
     }
 
+    public ControlSearch setImplicitStrategy(long implicitlyWaitTimeout) {
+    	ASearchContext searchImplicit = ContextRepository.get().getSearchImplicit();
+    	searchImplicit.setWaitTimeout(implicitlyWaitTimeout);
+        return setContext(searchImplicit);
+    }
+
     public ControlSearch setExplicitStrategy() {
         return setContext(ContextRepository.get().getSearchExplicit());
+    }
+
+    public ControlSearch setExplicitStrategy(long explicitlyWaitTimeout) {
+    	ASearchContext searchExplicit = ContextRepository.get().getSearchExplicit(); 
+    	searchExplicit.setWaitTimeout(explicitlyWaitTimeout);
+        return setContext(searchExplicit);
     }
 
     // TODO

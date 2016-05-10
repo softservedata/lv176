@@ -31,6 +31,10 @@ class SearchExplicit extends ASearchContext {
         return instance;
     }
 
+    void setWaitTimeout(long waitTimeout) {
+    	setExplicitlyWaitTimeout(waitTimeout);
+    }
+    
     void setExplicitlyWaitTimeout(long explicitlyWaitTimeout) {
         this.explicitlyWaitTimeout = explicitlyWaitTimeout;
     }

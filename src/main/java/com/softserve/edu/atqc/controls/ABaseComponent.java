@@ -40,7 +40,14 @@ public abstract class ABaseComponent<TComponent> {
         return get(ControlLocation.getByTagName(tagName));
     }
 
-    private TComponent get(ControlLocation controlLocation) {
+    TComponent getByControl(ControlWrapper controlWrapper, ControlLocation controlLocation) {
+        this.controlLocation = controlLocation;
+        // TODO Set strategy for Searching Elements
+        this.controlWrapper = controlWrapper;
+        return tComponent;
+    }
+
+    TComponent get(ControlLocation controlLocation) {
         this.controlLocation = controlLocation;
         // TODO Set strategy for Searching Elements
         this.controlWrapper = ControlWrapper.getVisibleWebElement(controlLocation);

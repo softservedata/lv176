@@ -6,11 +6,6 @@ import com.softserve.edu.atqc.data.apps.ApplicationSources;
 import com.softserve.edu.atqc.tools.BrowserRepository.BrowserList;
 
 public final class BrowserUtils {
-	private final String NO_SUCH_METHOD = "No such method.";
-	private final String DEFAULT_BROWSER = "getDefaultBrowser";
-	private final String EXPLICIT = "explicit";
-	private final String IMPLICIT = "implicit";
-	//
 	private static volatile BrowserUtils instance = null;
 	private final HashMap<Long, ABrowser> browsers;
 
@@ -105,23 +100,5 @@ public final class BrowserUtils {
 	private void startBrowser(BrowserList browserList, ApplicationSources applicationSources) {
 		this.browsers.put(Thread.currentThread().getId(), browserList.getInstance(applicationSources));
 	}
-	
-	///////////////////////////////////////////////////////////////////////////////
-	
-//	private void setSearchStrategy(StartData startData) {
-//		if ((startData.getSearchStrategy() != null) && (startData.getSearchStrategy().length() > 0)) {
-//			if (startData.getSearchStrategy().toLowerCase().contains(EXPLICIT)) {
-//				// ControlSearch.get().setExplicitStrategy();
-//				ControlSearch.get().setContext(ContextRepository.get().getSearchExplicit());
-//			} else if (startData.getSearchStrategy().toLowerCase().contains(IMPLICIT)) {
-//				// ControlSearch.get().setImplicitStrategy();
-//				ControlSearch.get().setContext(ContextRepository.get().getSearchImplicit());
-//			} else {
-//				ControlSearch.get().setContext(ContextRepository.get().getSearchDefault());
-//			}
-//		} else {
-//			ControlSearch.get().setContext(ContextRepository.get().getSearchDefault());
-//		}
-//	}
 
 }

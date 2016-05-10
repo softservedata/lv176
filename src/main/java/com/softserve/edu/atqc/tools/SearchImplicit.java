@@ -32,6 +32,10 @@ class SearchImplicit extends ASearchContext {
         return instance;
     }
 
+    void setWaitTimeout(long waitTimeout) {
+    	setImplicitlyWaitTimeout(waitTimeout);
+    }
+
     void setImplicitlyWaitTimeout(long implicitlyWaitTimeout) {
         this.implicitlyWaitTimeout = implicitlyWaitTimeout;
         BrowserUtils.get().getBrowser().getWebDriver()
