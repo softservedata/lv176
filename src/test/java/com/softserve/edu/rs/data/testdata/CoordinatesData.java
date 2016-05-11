@@ -112,10 +112,4 @@ public final class CoordinatesData implements Ip1LatitudeGrad, Ip1LongitudedeGra
 		return p3LongitudedeGrad;
 	}
 	
-	
-	
-	
-
-	
-	
 }

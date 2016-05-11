@@ -1,10 +1,7 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
+import com.softserve.edu.atqc.controls.ISelect;
+import com.softserve.edu.atqc.controls.SelectField;
 
 public abstract class TopPage {
 
@@ -25,22 +22,32 @@ public abstract class TopPage {
         }
     }
 	
-	protected WebDriver driver;
-	//
-	@FindBy(id = "changeLanguage")
-	private WebElement changeLanguage;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-	public TopPage(WebDriver driver) {
-		this.driver = driver;
-		//
-		//this.changeLanguage = new Select(driver.findElement(By.id("changeLanguage")));
-		PageFactory.initElements(driver, this);
+	private class TopPageUIMap {
+ 
+    	public final ISelect changeLanguage;
+    	
+    	public TopPageUIMap() {
+    		this.changeLanguage = SelectField.get().getById("changeLanguage");
+    	}
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	
+    // Elements
+    private TopPageUIMap controls;
+
+	public TopPage() {
+		this.controls = new TopPageUIMap();
 	}
+
+    // PageObject - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	// Get Elements
 
-	public Select getChangeLanguage() {
-		return new Select(changeLanguage);
+	public ISelect getChangeLanguage() {
+		return this.controls.changeLanguage;
 	}
 
 	public String getChangeLanguageSelectedText() {

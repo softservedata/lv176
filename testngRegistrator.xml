@@ -11,8 +11,8 @@
 					<include name="procurationOneClick" />
 					<include name="procurationTwoClick" />
 					<include name="mapInstructionVerify" />
-					<include name="passportoneClick" />
 					<include name="addNewResource" />	
+					<include name="invalidRegistratorNumber" />	
 				</methods>
 			</class>
 		</classes>

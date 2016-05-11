@@ -1,61 +1,111 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import com.softserve.edu.atqc.controls.ILabelClickable;
+import com.softserve.edu.atqc.controls.ILink;
+import com.softserve.edu.atqc.controls.LabelClickable;
+import com.softserve.edu.atqc.controls.Link;
 
 public abstract class CommonPage extends TopPage {
-	//protected WebDriver driver;
-	//
-	
-	@FindBy(xpath = "//button[@class='btn btn-primary btn-sm']")
-	private WebElement loginAccount;
-	@FindBy(xpath = "//button[@data-toggle='dropdown']")
-	private WebElement menulogout;
-	@FindBy(xpath = "//a[contains(@href,'/logout')]")
-	private WebElement logout;
 
-	public CommonPage(WebDriver driver) {
-		super(driver);
-		//this.driver = driver;
-		//
-		/*
-		this.loginAccount=driver.findElement(By.xpath("//button[@class='btn btn-primary btn-sm']"));
-		this.menulogout = driver.findElement(By.xpath("//button[@data-toggle='dropdown']"));
-		this.logout=driver.findElement(By.xpath("//a[contains(@href,'/logout')]")); */
-		
-		PageFactory.initElements(driver, this);
-		
+	private class CommonPageUIMap {
+    	public final ILabelClickable loginAccount;
+    	public final ILabelClickable menuAccount;
+    	
+    	public CommonPageUIMap() {
+    		this.loginAccount = LabelClickable.get().getByXpath("//button[@class='btn btn-primary btn-sm']");
+    		this.menuAccount = LabelClickable.get().getByCssSelector(".btn.btn-primary.btn-sm.dropdown-toggle");
+    	}
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	
+	private class MenuPageUIMap {
+    	public final ILink changePassword;
+    	public final ILink resetPassword;
+    	public final ILink logout;
+    	
+    	public MenuPageUIMap() {
+    		this.changePassword = Link.get().getByCssSelector("a.change-password");
+    		this.resetPassword = Link.get().getByCssSelector("a.reset-my-password");
+    		this.logout = Link.get().getByXpath("//a[contains(@href,'/logout')]");
+    	}
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	// Elements
+    private CommonPageUIMap controls;
+    private MenuPageUIMap menuControls;
+
+	public CommonPage() {
+		//super();
+		this.controls = new CommonPageUIMap();
 	}
+
+    // PageObject - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	// Get Elements
 	
-	public WebElement getLoginAccount() {
-		return this.loginAccount;
+	public ILabelClickable getLoginAccount() {
+		return this.controls.loginAccount;
 	}
 	
-	public WebElement getMenuLogout() {
-		return this.menulogout;
-	}
-	
-	
-	public WebElement getLogout() {
-		return this.logout;
+	public String getLoginAccountText() {
+		return getLoginAccount().getText();
 	}
 
-	public String getLoginAccountText() {
-		return this.loginAccount.getText();
+	public ILabelClickable getMenuAccount() {
+		return this.controls.menuAccount;
 	}
 	
+	public ILink getChangePassword() {
+		clickMenuAccount();
+		return this.menuControls.changePassword;
+	}
+
+	public String getChangePasswordText() {
+		return getChangePassword().getText();
+	}
+	
+	public ILink getResetPassword() {
+		clickMenuAccount();
+		return this.menuControls.resetPassword;
+	}
+
+	public String getResetPasswordText() {
+		return getResetPassword().getText();
+	}
+
+	public ILink getLogout() {
+		clickMenuAccount();
+		return this.menuControls.logout;
+	}
+
+	public String getLogoutText() {
+		return getLogout().getText();
+	}
+
 	// Set Data
-	
-	public void clickMenuLogout() {
-		getMenuLogout().click();
+
+	public void clickLoginAccount() {
+		getLoginAccount().click();
 	}
-	
-	public void clickLogout(){
-		clickMenuLogout();
+
+	public void clickMenuAccount() {		
+		clickLoginAccount();
+		getMenuAccount().click();
+		this.menuControls = new MenuPageUIMap();
+	}
+
+	public void clickChangePassword() {
+		getChangePassword().click();
+	}
+
+	public void clickResetPassword() {
+		getResetPassword().click();
+	}
+
+	public void clickLogout() {
 		getLogout().click();
 	}
 

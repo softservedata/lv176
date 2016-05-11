@@ -1,49 +1,58 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
+import com.softserve.edu.atqc.controls.Button;
+import com.softserve.edu.atqc.controls.IButton;
+import com.softserve.edu.atqc.controls.ITextField;
+import com.softserve.edu.atqc.controls.TextField;
 import com.softserve.edu.rs.data.users.IUser;
-import com.softserve.edu.rs.pages.regist.RegistratorHomePage;
+
 
 public class LoginPage extends TopPage {
-	//private WebDriver driver;
-	//
-	private WebElement login;
-	private WebElement password;
-	private WebElement signin;
 
-	public LoginPage(WebDriver driver) {
-		super(driver);
-		//this.driver = driver;
-		//
-		this.login = driver.findElement(By.id("login"));
-		this.password = driver.findElement(By.id("password"));
-		this.signin = driver.findElement(By.cssSelector("button.btn.btn-primary"));
+	private class LoginPageUIMap {
+		public final ITextField login;
+		public final ITextField password;
+		public final IButton signin;
+    	
+    	public LoginPageUIMap() {
+    		this.login = TextField.get().getById("login");
+    		this.password = TextField.get().getById("password");
+    		this.signin = Button.get().getByCssSelector("button.btn.btn-primary");
+    	}
+    }
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	
+    // Elements
+    private LoginPageUIMap controls;
+
+	public LoginPage() {
+		//super();
+		controls = new LoginPageUIMap();
 	}
 
-	// Page Object - - - - - - - - - -
+    // PageObject - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 	// Get Elements
 
-	public WebElement getLogin() {
-		return this.login;
+	public ITextField getLogin() {
+		return this.controls.login;
 	}
 
-	public WebElement getPassword() {
-		return this.password;
+	public ITextField getPassword() {
+		return this.controls.password;
 	}
 
-	public WebElement getSignin() {
-		return this.signin;
+	public IButton getSignin() {
+		return this.controls.signin;
 	}
 
 	public String getLoginText() {
-		return this.login.getText();
+		return getLogin().getText();
 	}
 
 	public String getPasswordText() {
-		return this.password.getText();
+		return getPassword().getText();
 	}
 
 	// Set Data
@@ -52,8 +61,16 @@ public class LoginPage extends TopPage {
 		getLogin().sendKeys(login);
 	}
 
+	public void setLoginClear(String login) {
+		getLogin().sendKeysClear(login);
+	}
+
 	public void setPassword(String password) {
 		getPassword().sendKeys(password);
+	}
+
+	public void setPasswordClear(String password) {
+		getPassword().sendKeysClear(password);
 	}
 
 	public void clearLogin() {
@@ -76,46 +93,43 @@ public class LoginPage extends TopPage {
 		getSignin().click();
 	}
 
-	// Business Logic
+    // business - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 	// Functional
 	
     public LoginPage changeLanguage(ChangeLanguageFields language) {
     	setChangeLanguage(language);
         // Return a new page object representing the destination.
-        return new LoginPage(driver);
+        return new LoginPage();
     }
 
     private void setLoginData(IUser user) {
-		clickLogin();
-		clearLogin();
-		setLogin(user.getAccount().getLogin());
-		clickPassword();
-		clearPassword();
-		setPassword(user.getAccount().getPassword());
+		setLoginClear(user.getAccount().getLogin());
+		setPasswordClear(user.getAccount().getPassword());
 		clickSignin();
 	}
 
-    public HomePage successUserLogin(IUser user) {
-        setLoginData(user);
-        // Return a new page object representing the destination.
-        return new HomePage(driver);
-    }
+//    public HomePage successUserLogin(IUser user) {
+//        setLoginData(user);
+//        // Return a new page object representing the destination.
+//        return new HomePage();
+//    }
 
     public AdminHomePage successAdminLogin(IUser admin) {
 		setLoginData(admin);
 		// Return a new page object representing the destination.
-		return new AdminHomePage(driver);
+		return new AdminHomePage();
 	}
 
 	public RegistratorHomePage successRegistratorLogin(IUser registrator) {
 		setLoginData(registrator);
 		// Return a new page object representing the destination.
-		return new RegistratorHomePage(driver);
+		return new RegistratorHomePage();
 	}
-
-	public LoginValidatorPage unsuccessfulLogin(IUser invalidUser) {
-		setLoginData(invalidUser);
-		return new LoginValidatorPage(driver); // return this;
-	}
+//
+//	public LoginValidatorPage unsuccessfulLogin(IUser invalidUser) {
+//		setLoginData(invalidUser);
+//		return new LoginValidatorPage(); // return this;
+//	}
 
 }

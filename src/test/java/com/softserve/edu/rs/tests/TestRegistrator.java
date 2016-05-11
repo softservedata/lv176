@@ -8,8 +8,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
-
+import com.softserve.edu.rs.data.apps.Application;
 import com.softserve.edu.rs.data.apps.ApplicationSourcesRepository;
 import com.softserve.edu.rs.data.testdata.CoordinatesData;
 import com.softserve.edu.rs.data.testdata.CoordinatesDataRepository;
@@ -19,52 +18,51 @@ import com.softserve.edu.rs.data.testdata.TestData;
 import com.softserve.edu.rs.data.testdata.TestDataRepository;
 import com.softserve.edu.rs.data.users.IUser;
 import com.softserve.edu.rs.data.users.UserRepository;
-import com.softserve.edu.rs.pages.Application;
-import com.softserve.edu.rs.pages.regist.AddNewResourceHomePage;
-import com.softserve.edu.rs.pages.regist.SquarePerimetrPage;
-import com.softserve.edu.rs.pages.regist.MapPage;
-import com.softserve.edu.rs.pages.regist.PointsPage;
-import com.softserve.edu.rs.pages.regist.AddNewResourceHomePage.ChangeObjectSubclas;
+import com.softserve.edu.rs.pages.AddNewResourceHomePage;
+import com.softserve.edu.rs.pages.AddNewResourceValidatorPage;
+import com.softserve.edu.rs.pages.MapPage;
+import com.softserve.edu.rs.pages.PointsPage;
+import com.softserve.edu.rs.pages.ResourcePage;
+
 
 public class TestRegistrator {
-
+	
 	private Application application;
-	private SoftAssert softAssert;
 	private AddNewResourceHomePage addNewResourceHomePage;
 
 	@BeforeClass
 	public void oneTimeSetUp() {
-		application = new Application(ApplicationSourcesRepository.get()
-				.getLocalHostByFirefox());
-		softAssert = new SoftAssert();
+		
+		application = Application.get
+				(ApplicationSourcesRepository.get().getLocalHostByFirefoxTemporary());
+
 	}
 
 	@AfterClass
 	public void oneTimeTearDown() {
-		application.quitAll();
-		
+		application.quit();
 	}
 	
 	@BeforeMethod 
     public void setUp() {
 		addNewResourceHomePage = application.load()
-				.successRegistratorLogin(UserRepository.get().getRegistrator())
-				.gotoAddNewResource();
-		
-    }
-    
-    @AfterMethod
-    public void tearDown() {
-    	addNewResourceHomePage.logout();
-    	
+		                        .successRegistratorLogin(UserRepository.get().getRegistrator())
+		                        .gotoAddNewResource();
     }
 	
+	@AfterMethod
+	public void tearDown() {
+	    application.logout();
+	    	
+	}
+
 	@DataProvider
     public Object[][] testData() {
           return new Object[][] {
-                { TestDataRepository.get().getTestData()},
+                {TestDataRepository.get().getTestData()},
                 };
     }
+	
 	
 	@DataProvider
     public Object[][] dataResource() {
@@ -73,22 +71,32 @@ public class TestRegistrator {
                 ResourceDataRepository.get().getResourceData(),	CoordinatesDataRepository.get().getCoordinatesData()},
                 };
     }
+	
+	@DataProvider
+    public Object[][] invalidDataResource() {
+          return new Object[][] {
+                {UserRepository.get().getCoOwner(), UserRepository.get().getRegistrator(),
+                ResourceDataRepository.get().getUnseccesData(),	CoordinatesDataRepository.get().getCoordinatesData()},
+                };
+    }
  
 	// Test Methods 
 	
 	
-	@Test(dataProvider = "testData")  // SMOKE TEST
+	// SMOKE TEST
+	@Test(dataProvider = "testData") 
 	public void registratorLogin(TestData testData){
-				
+		
 		PointsPage pointsPage = addNewResourceHomePage.gotoPointsPage();
 	
 		Assert.assertEquals(pointsPage.getDellAllTerText(),
 				testData.getDeleteTeritories());
-				
-		
+	
 	}
 	
-	@Test(dataProvider = "testData")  // verify one click on PROCURATION
+	
+	// verify one click on PROCURATION
+	@Test(dataProvider = "testData") 
 	public void procurationOneClick(TestData testData){
 
 		Assert.assertEquals(addNewResourceHomePage.oneClicProcurations(),
@@ -96,58 +104,57 @@ public class TestRegistrator {
 
 	}
 	
-	@Test(dataProvider = "testData")  // verify two click on PROCURATION
+	// verify two click on PROCURATION
+	@Test(dataProvider = "testData")  
 	public void procurationTwoClick(TestData testData){
 
-		softAssert.assertEquals(addNewResourceHomePage.oneClicProcurations(),
+		Assert.assertEquals(addNewResourceHomePage.oneClicProcurations(),
 				testData.getProcuration());
 		
-		softAssert.assertEquals(addNewResourceHomePage.twoClicProcurations(),
+		Assert.assertEquals(addNewResourceHomePage.twoClicProcurations(),
 				testData.getEmptyField());
-		
-		softAssert.assertAll();
-	
-	}
-	
-	@Test(dataProvider = "testData")  // verify one click on PASSPORT
-	public void passportoneClick(TestData testData){
-
-		softAssert.assertEquals(addNewResourceHomePage.oneClicPassport(),
-				testData.getPassport());
-		softAssert.assertAll();
 
 	}
 	
-	@Test(dataProvider = "testData")  // verify click MAPINSTRUCTION
+	// verify click MAPINSTRUCTION
+	@Test(dataProvider = "testData")  
 	public void mapInstructionVerify(TestData testData){
-	
+
 		MapPage mapPage = addNewResourceHomePage.gotoMapPage();
 				
 		Assert.assertEquals(mapPage.verifyInstrUsingMap(),
 						testData.getMapInstruction());
 
 	}
-		
-	@Test(dataProvider = "dataResource")  // verify adding new resource
+	 
+	
+	// verify adding new resource
+	@Test(dataProvider = "dataResource") 
     public void addNewResource(IUser user, IUser registrator,
     		 ResourceData resources, CoordinatesData coordinates){
-
-		PointsPage pointsPage = addNewResourceHomePage.setDataGoPointPage(user, registrator, resources);
 		
-		pointsPage.enterPoints(coordinates);
+		ResourcePage resourcePage = addNewResourceHomePage.successGotoResource(user, registrator, resources, coordinates);
 		
-		String square = pointsPage.gotoMapPage().getSquareTerrText();
-		String perimetr = pointsPage.gotoMapPage().getPerimetrTerrText();
-		
-		SquarePerimetrPage squarePerimetrPage =(SquarePerimetrPage) pointsPage
-				.selectObjectSubclas(ChangeObjectSubclas.LANDED);
-		
-		squarePerimetrPage.setDataPerSq(square, perimetr);
-		
-		Assert.assertEquals(squarePerimetrPage.gotoResource().getResorceNameText(),
+		Assert.assertEquals(resourcePage.getResorceNumberText(),
 				registrator.getAccount().getRegistratorNumber()+resources.getResourceNumber());
-		
+
+		resourcePage.clickOk();
 	}
+	
+	
+	// verify adding invalid registrator number 
+	@Test(dataProvider = "invalidDataResource") 
+    public void invalidRegistratorNumber(IUser user, IUser registrator,
+    		 ResourceData invalidresources, CoordinatesData coordinates){
+		
+		AddNewResourceValidatorPage addNewResourceValidatorPage = 
+				addNewResourceHomePage.unsuccessRegistratorNumber(user, registrator, invalidresources, coordinates);
+		
+		Assert.assertEquals(addNewResourceValidatorPage.getStartValidatorText(), 
+				AddNewResourceValidatorPage.START_VALIDATOR_MESSAGE);
+
+	}
+	
 	
 }
 

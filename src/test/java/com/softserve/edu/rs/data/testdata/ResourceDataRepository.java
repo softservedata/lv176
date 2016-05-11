@@ -23,4 +23,10 @@ public class ResourceDataRepository {
 				.setResourceNumber("0004");
 	}
 	
+	public ResourceData getUnseccesData(){
+		return ResourceData.get()
+				.setResourceName("озеро")
+				.setResourceNumber("0000000000");
+	}
+	
 }
