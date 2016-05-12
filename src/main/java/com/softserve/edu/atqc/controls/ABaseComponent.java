@@ -1,5 +1,6 @@
 package com.softserve.edu.atqc.controls;
 
+import com.softserve.edu.atqc.tools.BrowserUtils;
 import com.softserve.edu.atqc.tools.ControlLocation;
 import com.softserve.edu.atqc.tools.ControlSearch;
 import com.softserve.edu.atqc.tools.ControlWrapper;
@@ -87,6 +88,8 @@ public abstract class ABaseComponent<TComponent> {
         this.tComponent = tComponent;
     }
 
+    // implements common methods
+
     public boolean isInvisibleWebElementById(String id) {
         return ControlSearch.get().isInvisibleWebElementById(id);
     }
@@ -94,5 +97,9 @@ public abstract class ABaseComponent<TComponent> {
     public boolean isInvisibleWebElementByPartialLinkText(String partialLinkText) {
         return ControlSearch.get().isInvisibleWebElementByPartialLinkText(partialLinkText);
     }
+
+    public Object runJavaScript(String script) {
+		return BrowserUtils.get().getBrowser().runJavaScript(script);
+	}
 
 }

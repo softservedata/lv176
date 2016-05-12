@@ -16,6 +16,8 @@ public final class ApplicationSources {
 	private long explicitTimeOut;
 	// Search Strategy
 	private String searchStrategy;
+	// Logger Strategy
+	private String loggerStrategy;
 	// URLs
 	private String loginUrl;
 	private String logoutUrl;
@@ -32,7 +34,9 @@ public final class ApplicationSources {
 		this.implicitTimeOut = 5;
 		this.explicitTimeOut = 5;
 		// Search Strategy
-		this.searchStrategy = "";
+		this.searchStrategy = "Explicit Waits";
+		// Logger Strategy
+		this.loggerStrategy = "";
 		// URLs
 		this.loginUrl = loginUrl;
 		this.logoutUrl = logoutUrl;
@@ -53,7 +57,7 @@ public final class ApplicationSources {
 	// get
 
 	public String getBrowserName() {
-		return browserName;
+		return this.browserName;
 	}
 
 	public void setBrowserName(String browserName) {
@@ -61,7 +65,7 @@ public final class ApplicationSources {
 	}
 
 	public String getDriverPath() {
-		return driverPath;
+		return this.driverPath;
 	}
 
 	public void setDriverPath(String driverPath) {
@@ -69,7 +73,7 @@ public final class ApplicationSources {
 	}
 
 	public String getBrowserPath() {
-		return browserPath;
+		return this.browserPath;
 	}
 
 	public void setBrowserPath(String browserPath) {
@@ -77,7 +81,7 @@ public final class ApplicationSources {
 	}
 
 	public String getDefaulProfile() {
-		return defaulProfile;
+		return this.defaulProfile;
 	}
 
 	public void setDefaulProfile(String defaulProfile) {
@@ -85,7 +89,7 @@ public final class ApplicationSources {
 	}
 
 	public long getImplicitTimeOut() {
-		return implicitTimeOut;
+		return this.implicitTimeOut;
 	}
 
 	public void setImplicitTimeOut(long implicitTimeOut) {
@@ -93,7 +97,7 @@ public final class ApplicationSources {
 	}
 
 	public long getExplicitTimeOut() {
-		return explicitTimeOut;
+		return this.explicitTimeOut;
 	}
 
 	public void setExplicitTimeOut(long explicitTimeOut) {
@@ -101,11 +105,19 @@ public final class ApplicationSources {
 	}
 
 	public String getSearchStrategy() {
-		return searchStrategy;
+		return this.searchStrategy;
 	}
 
 	public void setSearchStrategy(String searchStrategy) {
 		this.searchStrategy = searchStrategy;
+	}
+
+	public String getLoggerStrategy() {
+		return this.loggerStrategy;
+	}
+
+	public void setLoggerStrategy(String loggerStrategy) {
+		this.loggerStrategy = loggerStrategy;
 	}
 
 	public String getLoginUrl() {

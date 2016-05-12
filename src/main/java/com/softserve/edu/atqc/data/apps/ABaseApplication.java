@@ -1,5 +1,6 @@
 package com.softserve.edu.atqc.data.apps;
 
+import com.softserve.edu.atqc.loggers.LoggerUtils;
 import com.softserve.edu.atqc.tools.BrowserUtils;
 import com.softserve.edu.atqc.tools.ControlSearch;
 
@@ -22,6 +23,10 @@ public abstract class ABaseApplication<TApplication> {
 		ControlSearch.get(getApplicationSources());
 	}
 
+	protected void setLoggerStrategy() {
+		LoggerUtils.get(getApplicationSources());
+	}
+
 	public TApplication load() {
 		if (BrowserUtils.get().getBrowser().getCurrentUrl().contains(getApplicationSources().getServerUrl())
 				&& (!BrowserUtils.get().getBrowser().getCurrentUrl().contains(getApplicationSources().getLoginUrl()))) {
@@ -29,6 +34,7 @@ public abstract class ABaseApplication<TApplication> {
 		}
 		BrowserUtils.get().getBrowser().loadPage(getApplicationSources().getLoginUrl());
 		setSearchStrategy();
+		setLoggerStrategy();
 		return getStartPage();
 	}
 

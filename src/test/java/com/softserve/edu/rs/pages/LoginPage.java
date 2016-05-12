@@ -1,6 +1,7 @@
 package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.Button;
+import com.softserve.edu.atqc.controls.Component;
 import com.softserve.edu.atqc.controls.IButton;
 import com.softserve.edu.atqc.controls.ITextField;
 import com.softserve.edu.atqc.controls.TextField;
@@ -17,6 +18,10 @@ public class LoginPage extends TopPage {
     		this.login = TextField.get().getById("login");
     		this.password = TextField.get().getById("password");
     		this.signin = Button.get().getByCssSelector("button.btn.btn-primary");
+    	}
+    	
+    	public void showAlert(String message) {
+    		Component.get().runJavaScript(String.format("alert('Hello %s')", message));
     	}
     }
 
@@ -94,6 +99,10 @@ public class LoginPage extends TopPage {
 
     // business - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+	public void showAlert(String message) {
+		this.controls.showAlert(message);
+	}
+	
 	// Functional
 	
     public LoginPage changeLanguage(ChangeLanguageFields language) {

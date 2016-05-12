@@ -21,7 +21,7 @@ public class SmokeAppTest {
                 };
     }
  
-	@Test(dataProvider = "getApplicationSources")
+	//@Test(dataProvider = "getApplicationSources")
 	public void adminLogin(ApplicationSources applicationSources, IUser admin) throws Exception {
 		// Preconditions.
 		Application application = Application.get(applicationSources);
@@ -37,6 +37,18 @@ public class SmokeAppTest {
 		Thread.sleep(2000);
 		// Return to previous state.
 		adminHomePage.logout();
+		//
+		Thread.sleep(2000);
+		//application.quit();
+		application.quit();
+	}
+
+	@Test(dataProvider = "getApplicationSources")
+	public void adminLoginHello(ApplicationSources applicationSources, IUser admin) throws Exception {
+		// Preconditions.
+		Application application = Application.get(applicationSources);
+		// Test Steps.
+		application.load().showAlert("ADMIN");
 		//
 		Thread.sleep(2000);
 		//application.quit();
