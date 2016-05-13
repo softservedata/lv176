@@ -1,50 +1,54 @@
 package com.softserve.edu.rs.pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
+import com.softserve.edu.atqc.controls.Button;
+import com.softserve.edu.atqc.controls.Component;
+import com.softserve.edu.atqc.controls.IButton;
+import com.softserve.edu.atqc.controls.ITextField;
+import com.softserve.edu.atqc.controls.TextField;
 import com.softserve.edu.rs.data.users.IUser;
-import com.softserve.edu.rs.pages.admin.AdminHomePage;
-import com.softserve.edu.rs.pages.registrator.RegistratorHomePage;
 
-public class LoginPage extends TopPage {	
+public class LoginPage extends TopPage {
 
-	private WebElement login;
-	private WebElement password;
-	private WebElement signin;
-	private WebElement loginLabel;
-	private WebElement passwordLabel;
+	private class LoginPageUIMap {
+		public final ITextField login;
+		public final ITextField password;
+		public final IButton signin;
+    	
+    	public LoginPageUIMap() {
+    		this.login = TextField.get().getById("login");
+    		this.password = TextField.get().getById("password");
+    		this.signin = Button.get().getByCssSelector("button.btn.btn-primary");
+    	}
+    	
+    	public void showAlert(String message) {
+    		Component.get().runJavaScript(String.format("alert('Hello %s')", message));
+    	}
+    }
 
-	public LoginPage(WebDriver driver) {
-		super(driver);
-		this.login = findById("login");
-		this.password = findById("password");
-		this.signin = findByCss("button.btn.btn-primary");
-		this.loginLabel = findByXpath("//label[@for = 'inputEmail']");
-		this.passwordLabel = findByXpath("//label[@for = 'inputPassword']");
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	
+    // Elements
+    private LoginPageUIMap controls;
+
+	public LoginPage() {
+		//super();
+		controls = new LoginPageUIMap();
 	}
 
-	// Page Object - - - - - - - - - -
+    // PageObject - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 	// Get Elements
 
-	public WebElement getLogin() {
-		return this.login;
+	public ITextField getLogin() {
+		return this.controls.login;
 	}
 
-	public WebElement getPassword() {
-		return this.password;
+	public ITextField getPassword() {
+		return this.controls.password;
 	}
 
-	public WebElement getSignin() {
-		return this.signin;
-	}
-
-	public WebElement getLoginLabel() {
-		return this.loginLabel;
-	}
-
-	public WebElement getPasswordLabel() {
-		return this.passwordLabel;
+	public IButton getSignin() {
+		return this.controls.signin;
 	}
 
 	public String getLoginText() {
@@ -55,22 +59,22 @@ public class LoginPage extends TopPage {
 		return getPassword().getText();
 	}
 
-	public String getLoginLabelText() {
-		return getLoginLabel().getText();
-	}
-
-	public String getPasswordLabelText() {
-		return getPasswordLabel().getText();
-	}
-
 	// Set Data
 
 	public void setLogin(String login) {
 		getLogin().sendKeys(login);
 	}
 
+	public void setLoginClear(String login) {
+		getLogin().sendKeysClear(login);
+	}
+
 	public void setPassword(String password) {
 		getPassword().sendKeys(password);
+	}
+
+	public void setPasswordClear(String password) {
+		getPassword().sendKeysClear(password);
 	}
 
 	public void clearLogin() {
@@ -93,42 +97,58 @@ public class LoginPage extends TopPage {
 		getSignin().click();
 	}
 
-	// Business Logic
+    // business - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	public void showAlert(String message) {
+		this.controls.showAlert(message);
+	}
+	
 	// Functional
 	
-    public LoginPage changeLanguage(ChangeLanguageFields language) {
+	public LoginPage changeLanguage(ChangeLanguageFields language) {
     	setChangeLanguage(language);
-        return new LoginPage(driver);
+        return new LoginPage();
     }
 
     private void setLoginData(IUser user) {
-		clickLogin();
-		clearLogin();
-		setLogin(user.getAccount().getLogin());
-		clickPassword();
-		clearPassword();
-		setPassword(user.getAccount().getPassword());
+		setLoginClear(user.getAccount().getLogin());
+		setPasswordClear(user.getAccount().getPassword());
 		clickSignin();
 	}
 
     public HomePage successUserLogin(IUser user) {
         setLoginData(user);
-        return new HomePage(driver);
+        return new HomePage();
+    }
+    
+    public LoginValidatorPage unsuccessUserLogin(IUser user) {
+        setLoginData(user);
+        return new LoginValidatorPage();
     }
 
     public AdminHomePage successAdminLogin(IUser admin) {
 		setLoginData(admin);
-		return new AdminHomePage(driver);
+		return new AdminHomePage();
 	}
 
+	public CommissionerHomePage successCommissionerLogin(IUser commissioner) {
+		setLoginData(commissioner);
+		return new CommissionerHomePage();
+	}
+	
 	public RegistratorHomePage successRegistratorLogin(IUser registrator) {
 		setLoginData(registrator);
-		return new RegistratorHomePage(driver);
+		return new RegistratorHomePage();
+	}
+	
+	public UserHomePage successUserPageLogin(IUser user) {
+		setLoginData(user);
+		return new UserHomePage();
 	}
 
 	public LoginValidatorPage unsuccessfulLogin(IUser invalidUser) {
 		setLoginData(invalidUser);
-		return new LoginValidatorPage(driver);
+		return new LoginValidatorPage();
 	}
 
 }

@@ -40,6 +40,15 @@ public class Account implements ILogin, IPassword, IRole, IStatus, ICommunity, I
 		this.data = new String();
 	}
 
+	// Delete
+	// public Account(String login, String password, String community, String
+	// data) {
+	// this.login = login;
+	// this.password = password;
+	// this.community = community;
+	// this.data = data;
+	// }
+
 	// static factory - - - - - - - - - -
 	
 	public static ILogin get() {
