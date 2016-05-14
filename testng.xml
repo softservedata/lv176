@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Suite12">
+<suite name="Suite">
 	<parameter name="loginurl"
 		value="http://registrator.herokuapp.com/login" />
 	<parameter name="logouturl"
@@ -11,9 +11,9 @@
 	<test verbose="5" name="Test">
 		<parameter name="number" value="2" />
 		<classes>
-			<class name="com.softserve.edu.rs.tests.SmokeTest">
+			<class name="com.softserve.edu.AppTest">
 				<methods>
-					<include name="adminLogin12" />
+					<include name="testApp" />
 				</methods>
 			</class>
 		</classes>
