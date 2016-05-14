@@ -145,5 +145,44 @@ public final class UserRepository {
 							.setPublished("")
 							);
 	}
+
+	public IUser getRegistrator() {
+		return User.get()
+				.setPerson(Person.get()
+								.setFirstname("Пилип")
+								.setLastname("Караган")
+								.setEmail("rex@hh.ua")
+								.build()
+								.setMiddlename("Петрович")
+								.setPhonenumber("")
+						)
+				.setAccount(Account.get()
+								.setLogin("rex123")
+								.setPassword("rex123")
+								.setRole("Регістратор")
+								.setStatus("Активний")
+								.setCommunity("Україна")
+								.build()
+								.setData("")
+								.setRegisterNumber("0")
+								.setRegistratorNumber("35445345")
+								.setVolumeNumber("35445345")
+						)
+				.build()
+				.setAddress(Address.get()
+						.setRegion("Львівська")
+						.setDistrict("Шевченківський")
+						.setCity("Львів")
+						.setStreet("Мазепи")
+						.setBuilding("12")
+						.setFlat("4")
+						.setPostcode("")
+						)
+				.setPassport(Passport.get()
+						.setSeria("КА")
+						.setNumber("343553")
+						.setPublished("Народом України")
+						);
+	}
 	
 }

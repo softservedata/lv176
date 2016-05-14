@@ -120,11 +120,11 @@ public class LoginPage extends TopPage {
 		return new AdminHomePage();
 	}
 
-//	public RegistratorHomePage successRegistratorLogin(IUser registrator) {
-//		setLoginData(registrator);
-//		// Return a new page object representing the destination.
-//		return new RegistratorHomePage();
-//	}
+    public RegistratorHomePage successRegistratorLogin(IUser registrator) {
+		setLoginData(registrator);
+		// Return a new page object representing the destination.
+		return new RegistratorHomePage();
+	}
 //
 //	public LoginValidatorPage unsuccessfulLogin(IUser invalidUser) {
 //		setLoginData(invalidUser);

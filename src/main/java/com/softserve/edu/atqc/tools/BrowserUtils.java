@@ -40,7 +40,7 @@ public final class BrowserUtils {
 			//for (ABrowser browser : instance.browsers.values()) {
 				//browser.quit();
 				if (instance.browsers.get(threadId) != null) {
-					instance.browsers.get(threadId).quit();
+					instance.browsers.get(threadId).close();
 					instance.browsers.put(threadId, null);
 				}
 			}
@@ -52,7 +52,7 @@ public final class BrowserUtils {
 	}
 
 	public void quitBrowser() {
-		getBrowser().quit();
+		getBrowser().close();
 		this.browsers.put(Thread.currentThread().getId(), null);
 	}
 

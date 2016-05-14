@@ -24,7 +24,7 @@ public abstract class ABrowser {
 	}
 
 	// TODO +++ Set Package Access
-	WebDriver getWebDriver() {
+	public WebDriver getWebDriver() {
 		if (driver != null) {
 			return driver;
 		} else {

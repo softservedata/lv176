@@ -1,6 +1,9 @@
 package com.softserve.edu.rs.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
+
+import com.softserve.edu.atqc.tools.BrowserUtils;
 
 public abstract class TopPage {
 
@@ -29,7 +32,13 @@ public abstract class TopPage {
     	public Select changeLanguage;
     	
     	public TopPageUIMap() {
-    		//this.changeLanguage = new Select(driver.findElement(By.id("changeLanguage")));
+//    		try {
+//				Thread.sleep(5000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+    		this.changeLanguage = new Select(BrowserUtils.get().getBrowser().getWebDriver().findElement(By.id("changeLanguage")));
     	}
     }
 

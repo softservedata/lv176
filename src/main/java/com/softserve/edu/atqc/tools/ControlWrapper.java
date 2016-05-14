@@ -1,5 +1,8 @@
 package com.softserve.edu.atqc.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -26,13 +29,13 @@ public final class ControlWrapper {
 	}
 
 	// TODO
-//	public static List<ControlWrapper> getVisibleWebElements(ControlLocation controlLocation) {
-//		List<ControlWrapper> controlWrappers = new ArrayList<ControlWrapper>();
-//		for (WebElement webElement : ControlSearch.get().getVisibleWebElements(controlLocation)) {
-//			controlWrappers.add(new ControlWrapper(webElement));
-//		}
-//		return controlWrappers;
-//	}
+	public static List<ControlWrapper> getVisibleWebElements(ControlLocation controlLocation) {
+		List<ControlWrapper> controlWrappers = new ArrayList<ControlWrapper>();
+		for (WebElement webElement : ControlSearch.get().getVisibleWebElements(controlLocation)) {
+			controlWrappers.add(new ControlWrapper(webElement));
+		}
+		return controlWrappers;
+	}
 
 	public static ControlWrapper getPresentWebElement(ControlLocation controlLocation) {
 		return new ControlWrapper(ControlSearch.get().getPresentWebElement(controlLocation));

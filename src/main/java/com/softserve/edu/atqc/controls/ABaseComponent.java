@@ -1,5 +1,11 @@
 package com.softserve.edu.atqc.controls;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import com.softserve.edu.atqc.tools.BrowserUtils;
 import com.softserve.edu.atqc.tools.ControlLocation;
 import com.softserve.edu.atqc.tools.ControlSearch;
 import com.softserve.edu.atqc.tools.ControlWrapper;
@@ -12,8 +18,9 @@ public abstract class ABaseComponent<TComponent> {
     protected ABaseComponent() {
         // TODO Create tComponent using Reflection API
         // tComponent = this;
+    	 
     }
-    
+  
     // Search Visible Elements
     
     public TComponent getById(String id) {
@@ -87,5 +94,30 @@ public abstract class ABaseComponent<TComponent> {
     public boolean isInvisibleWebElementByPartialLinkText(String partialLinkText) {
         return ControlSearch.get().isInvisibleWebElementByPartialLinkText(partialLinkText);
     }
+    
+    //Temporary methods for getting Lists of WebElements
+    public List<WebElement> getElementsById(String id) {
+    	return  BrowserUtils.get().getBrowser().getWebDriver().findElements(By.id(id));
+       
+    }
 
+    public List<WebElement> getElementsByName(String name) {
+    	return  BrowserUtils.get().getBrowser().getWebDriver().findElements(By.name(name));
+    }
+
+    public List<WebElement> getElementsByXpath(String xpath) {
+    	return  BrowserUtils.get().getBrowser().getWebDriver().findElements(By.xpath(xpath));
+    }
+
+    public List<WebElement> getElementsByPartialLinkText(String partialLinkText) {
+       return  BrowserUtils.get().getBrowser().getWebDriver().findElements(By.partialLinkText(partialLinkText));
+    }
+
+    public List<WebElement>  getElementsByCssSelector(String cssSelector) {
+    	  return  BrowserUtils.get().getBrowser().getWebDriver().findElements(By.cssSelector(cssSelector));
+    }
+
+    public TComponent getElementsByTagName(String tagName) {
+        return get(ControlLocation.getByTagName(tagName));
+    }
 }
