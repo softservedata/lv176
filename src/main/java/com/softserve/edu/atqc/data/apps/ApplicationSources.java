@@ -1,7 +1,103 @@
 package com.softserve.edu.atqc.data.apps;
 
+interface IApplicationFactory {
+	void setParameter(String parameter, ApplicationSources applicationSources);
+}
+
+
+class BrowserNameFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setBrowserName(parameter);
+	}
+}
+
+class DriverPathFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setDriverPath(parameter);
+	}
+}
+
+class BrowserPathFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setBrowserPath(parameter);
+	}
+}
+
+class DefaulProfileFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setDefaulProfile(parameter);
+	}
+}
+
+class ImplicitTimeOutFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setImplicitTimeOut(Long.parseLong(parameter));
+	}
+}
+
+class ExplicitTimeOutFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setExplicitTimeOut(Long.parseLong(parameter));
+	}
+}
+
+class SearchStrategyFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setSearchStrategy(parameter);
+	}
+}
+
+class LoggerStrategyFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setLoggerStrategy(parameter);
+	}
+}
+
+class LoginUrlFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setLoginUrl(parameter);
+	}
+}
+
+class LogoutUrlFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setLogoutUrl(parameter);
+	}
+}
+
 // TODO Use Builder
 public final class ApplicationSources {
+	
+	public static enum ParameterList {
+		BROWSER_NAME("browserName", new BrowserNameFactory()),
+		DRIVER_PATH("driverPath", new DriverPathFactory()),
+		BROWSER_PATH("browserPath", new BrowserPathFactory()),
+		DEFAUL_PROFILE("defaulProfile", new DefaulProfileFactory()),
+		IMPLICIT_TIMEOUT("implicitTimeOut", new ImplicitTimeOutFactory()),
+		EXPLICIT_TIMEOUT("explicitTimeOut", new ExplicitTimeOutFactory()),
+		SEARCH_STRATEGY("searchStrategy", new SearchStrategyFactory()),
+		LOGGER_STRATEGY("loggerStrategy", new LoggerStrategyFactory()),
+		LOGIN_URL("loginUrl", new LoginUrlFactory()),
+		LOGOUT_URL("logoutUrl", new LogoutUrlFactory());
+        //
+		private String field;
+        private IApplicationFactory applicationFactory;
+
+        private ParameterList(String field, IApplicationFactory applicationFactory) {
+        	this.field = field;
+            this.applicationFactory = applicationFactory;
+        }
+
+        public void setParameter(String parameter, ApplicationSources applicationSources) {
+        	applicationFactory.setParameter(parameter, applicationSources);
+        }
+        
+        @Override
+        public String toString() {
+            return this.field;
+        }
+    }
+
 	private final String SLASH = "/";
 	private final String SEPARATOR = "://";
 	private final int AFTER_SEPARATOR = 3;
