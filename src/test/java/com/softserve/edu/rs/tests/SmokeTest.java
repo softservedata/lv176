@@ -5,6 +5,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.softserve.edu.atqc.data.ListUtils;
 import com.softserve.edu.atqc.data.apps.ApplicationSources;
 import com.softserve.edu.atqc.specs.FlexAssert;
 import com.softserve.edu.atqc.test.ParameterUtils;
@@ -25,13 +26,18 @@ public class SmokeTest {
 
     @DataProvider//(parallel = true)
     public Object[][] getApplicationSources(ITestContext context) {
-        return new Object[][] {
-                //{ ApplicationSourcesRepository.get().getJavaTrainingLocalByFirefoxTemporary(), UserRepository.get().getAdmin() },
-                //{ ApplicationSourcesRepository.get().getHerokuByFirefoxTemporary(), UserRepository.get().getAdmin() },
-            	//{ ApplicationSourcesRepository.get().getJavaTrainingLocalByChromeTemporary(), UserRepository.get().getAdmin() },
-                { ParameterUtils.get().updateAllApplicationSources(ApplicationSourcesRepository.get().getHerokuByFirefoxTemporary(), context),
-                		UserRepository.get().getAdmin() },
-                };
+    	return ListUtils.get().toMultiArrayNumber(
+    			ParameterUtils.get().updateAllApplicationSources(
+    				ApplicationSourcesRepository.get()
+    					.getHerokuByFirefoxTemporary(), context),
+    			UserRepository.get().getExistUsersCVS());
+//        return new Object[][] {
+//                //{ ApplicationSourcesRepository.get().getJavaTrainingLocalByFirefoxTemporary(), UserRepository.get().getAdmin() },
+//                //{ ApplicationSourcesRepository.get().getHerokuByFirefoxTemporary(), UserRepository.get().getAdmin() },
+//            	//{ ApplicationSourcesRepository.get().getJavaTrainingLocalByChromeTemporary(), UserRepository.get().getAdmin() },
+//                { ParameterUtils.get().updateAllApplicationSources(ApplicationSourcesRepository.get().getHerokuByFirefoxTemporary(), context),
+//                		UserRepository.get().getAdmin() },
+//                };
     }
 
 	@Test(dataProvider = "getApplicationSources")

@@ -47,6 +47,7 @@ public final class BrowserUtils {
 	}
 
 	public void quitBrowser() {
+	
 		getBrowser().quit();
 		this.browsers.put(Thread.currentThread().getId(), null);
 	}
