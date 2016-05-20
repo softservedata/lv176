@@ -1,5 +1,6 @@
 package com.softserve.edu.atqc.tools;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 import com.softserve.edu.atqc.data.apps.ApplicationSources;
@@ -48,6 +49,10 @@ public abstract class ABrowser {
 
 	public void loadPage(String url) {
 		getWebDriver().get(url);
+	}
+
+	public Object runJavaScript(String script) {
+		return ((JavascriptExecutor) getWebDriver()).executeScript(script);
 	}
 
 	public void refreshPage() {

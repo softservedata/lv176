@@ -19,8 +19,6 @@ public final class UserRepository {
 
     // TODO
 	//public IUser getAdmin()
-	//public IUser getRegistrator()
-	//public IUser getCommissioner()
 	//public IUser getCoOwner()
 	//public IUser getNewUser()
 	//

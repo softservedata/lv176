@@ -1,5 +1,4 @@
 package com.softserve.edu.atqc.controls;
-
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -47,7 +46,14 @@ public abstract class ABaseComponent<TComponent> {
         return get(ControlLocation.getByTagName(tagName));
     }
 
-    private TComponent get(ControlLocation controlLocation) {
+    TComponent getByControl(ControlWrapper controlWrapper, ControlLocation controlLocation) {
+        this.controlLocation = controlLocation;
+        // TODO Set strategy for Searching Elements
+        this.controlWrapper = controlWrapper;
+        return tComponent;
+    }
+
+    TComponent get(ControlLocation controlLocation) {
         this.controlLocation = controlLocation;
         // TODO Set strategy for Searching Elements
         this.controlWrapper = ControlWrapper.getVisibleWebElement(controlLocation);
@@ -87,6 +93,8 @@ public abstract class ABaseComponent<TComponent> {
         this.tComponent = tComponent;
     }
 
+    // implements common methods
+
     public boolean isInvisibleWebElementById(String id) {
         return ControlSearch.get().isInvisibleWebElementById(id);
     }
@@ -120,4 +128,8 @@ public abstract class ABaseComponent<TComponent> {
     public TComponent getElementsByTagName(String tagName) {
         return get(ControlLocation.getByTagName(tagName));
     }
+    public Object runJavaScript(String script) {
+		return BrowserUtils.get().getBrowser().runJavaScript(script);
+	}
+
 }

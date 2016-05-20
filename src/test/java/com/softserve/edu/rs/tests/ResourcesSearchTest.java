@@ -184,11 +184,4 @@ public class ResourcesSearchTest {
 		assertEquals(spage.getSearchResultDiv().getText(), UNSUCCESSFUL_SEARCH_LABEL_UKR,
 				"No unsuccessful search by point(click map) text label found");
 	}
-
-	private void executeJS(ResourceSearchPage spage, Coordinate latitude, Coordinate longitude) {
-		JavascriptExecutor js = (JavascriptExecutor) spage.getJsExecutor();
-		js.executeScript("var myCenter=new google.maps.LatLng(" + latitude.toString() + "," + longitude.toString()
-				+ ");" + "var marker=new google.maps.Marker({ position:myCenter,});"
-				+ "marker.setMap(map);  map.setCenter(myCenter); " + "map.setZoom(9);" + " searchOnMapByPoint(marker)");
-	}
 }

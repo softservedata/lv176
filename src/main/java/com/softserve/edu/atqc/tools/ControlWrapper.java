@@ -7,6 +7,9 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import com.softserve.edu.atqc.exceptions.GeneralCustomException;
+import com.softserve.edu.atqc.exceptions.ScreenCapturingCustomException;
+
 public final class ControlWrapper {
 	private final String ELEMENT_NOT_CLICKABLE = "Element is not clickable %s";
 	private final String ERROR_ON_CLICK = "Error on click";
@@ -74,8 +77,8 @@ public final class ControlWrapper {
 			return getWebElement().getAttribute(ATTRIBUTE_HREF);
 		} else {
 			// TODO
-			// throw new GeneralCustomException(INVALID_TAG);
-			throw new RuntimeException(INVALID_TAG);
+			throw new GeneralCustomException(INVALID_TAG);
+			//throw new RuntimeException(INVALID_TAG);
 		}
 	}
 
@@ -103,16 +106,16 @@ public final class ControlWrapper {
 					Thread.sleep(ASearchContext.ONE_SECOND / 2);
 				} catch (InterruptedException e1) {
 					// TODO Develop Custom Exception
-					// throw new ScreenCapturingCustomException(
-					// String.format(ELEMENT_NOT_CLICKABLE,
-					// getWebElement().getTagName()));
-					throw new RuntimeException(String.format(ELEMENT_NOT_CLICKABLE, getWebElement().getTagName()));
+					throw new ScreenCapturingCustomException(
+							String.format(ELEMENT_NOT_CLICKABLE,
+									getWebElement().getTagName()));
+					//throw new RuntimeException(String.format(ELEMENT_NOT_CLICKABLE, getWebElement().getTagName()));
 				}
 			} catch (Exception e) {
-				// throw new ScreenCapturingCustomException(
-				// String.format(ELEMENT_NOT_CLICKABLE,
-				// getWebElement().getTagName()));
-				throw new RuntimeException(String.format(ELEMENT_NOT_CLICKABLE, getWebElement().getTagName()));
+				throw new ScreenCapturingCustomException(
+						String.format(ELEMENT_NOT_CLICKABLE,
+								getWebElement().getTagName()));
+				//throw new RuntimeException(String.format(ELEMENT_NOT_CLICKABLE, getWebElement().getTagName()));
 			}
 		}
 		if (clickDone) {
@@ -122,13 +125,13 @@ public final class ControlWrapper {
 		try {
 			getWebElement().click();
 		} catch (WebDriverException e) {
-			// throw new ScreenCapturingCustomException(
-			// String.format(ELEMENT_NOT_CLICKABLE,
-			// getWebElement().getTagName()));
-			throw new RuntimeException(String.format(ELEMENT_NOT_CLICKABLE, getWebElement().getTagName()));
+			throw new ScreenCapturingCustomException(
+					String.format(ELEMENT_NOT_CLICKABLE,
+							getWebElement().getTagName()));
+			//throw new RuntimeException(String.format(ELEMENT_NOT_CLICKABLE, getWebElement().getTagName()));
 		} catch (Exception e) {
-			// throw new ScreenCapturingCustomException(ERROR_ON_CLICK, e);
-			throw new RuntimeException(ERROR_ON_CLICK, e);
+			throw new ScreenCapturingCustomException(ERROR_ON_CLICK, e);
+			//throw new RuntimeException(ERROR_ON_CLICK, e);
 		}
 	}
 
