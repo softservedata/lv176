@@ -51,4 +51,13 @@ public abstract class ABaseApplication<TApplication> {
 		BrowserUtils.quitAll();
 	}
 
+//	public void addEventsPageLoadComplete() {
+//		PageObserveLoad.get().addLoadCompleteEvent(new PageLoadComplete());
+//		// PageObserveLoad.get().addLoadCompleteEvent(new PageLoadComplete2());
+//	}
+//
+//	public void clearEventsPageLoadComplete() {
+//		PageObserveLoad.get().deleteLoadCompleteEvents();
+//	}
+
 }

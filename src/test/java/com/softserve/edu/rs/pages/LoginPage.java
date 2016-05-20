@@ -25,6 +25,8 @@ public class LoginPage extends TopPage {
     	}
     }
 
+	//private class LoginPageLoaded implements IObserveLoad {}
+	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	
     // Elements
@@ -32,6 +34,7 @@ public class LoginPage extends TopPage {
 
 	public LoginPage() {
 		//super();
+		// TODO Add Observe
 		controls = new LoginPageUIMap();
 	}
 
