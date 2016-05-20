@@ -26,11 +26,11 @@ public class SmokeTest {
 
     @DataProvider//(parallel = true)
     public Object[][] getApplicationSources(ITestContext context) {
-    	return ListUtils.get().toMultiArrayNumber(
+    	return ListUtils.get().toMultiArrayNumberParams(
     			ParameterUtils.get().updateAllApplicationSources(
     				ApplicationSourcesRepository.get()
     					.getHerokuByFirefoxTemporary(), context),
-    			UserRepository.get().getExistUsersCVS());
+    			UserRepository.get().getExistUsersExcel());
 //        return new Object[][] {
 //                //{ ApplicationSourcesRepository.get().getJavaTrainingLocalByFirefoxTemporary(), UserRepository.get().getAdmin() },
 //                //{ ApplicationSourcesRepository.get().getHerokuByFirefoxTemporary(), UserRepository.get().getAdmin() },

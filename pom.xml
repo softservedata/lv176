@@ -105,8 +105,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
@@ -174,10 +174,12 @@
 						<!-- <phase>pre-integration-test</phase> -->
 						<configuration>
 							<!-- <executable>calc.exe</executable> -->
+							<!--
 							<executable>${testng.exec.path}/exec.bat</executable>
 							<arguments>
 								<argument>PreIntegration</argument>
 							</arguments>
+							  -->
 						</configuration>
 					</execution>
 					<execution>
@@ -187,6 +189,7 @@
 						</goals>
 						<phase>post-integration-test</phase>
 						<!-- <phase>post-integration-test</phase> -->
+						<!--
 						<configuration>
 							<executable>java</executable>
 							<arguments>
@@ -199,6 +202,7 @@
 									post-integration-test</argument>
 							</arguments>
 						</configuration>
+						 -->
 					</execution>
 
 				</executions>

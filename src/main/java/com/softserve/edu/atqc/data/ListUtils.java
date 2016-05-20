@@ -65,7 +65,6 @@ public final class ListUtils {
 	}
 
 	public Object[][] toMultiArrayNumber(ApplicationSources applicationSources, List<?> list) {
-		System.out.println("toMultiArrayNumber Start");
 		Object[][] array = toMultiArrayNumber(2, list);
 		for (int i = 0; i < list.size(); i++) {
 			array[i][0] = applicationSources;
@@ -104,8 +103,8 @@ public final class ListUtils {
 		for (int i = 0; i < list[0].size(); i++) {
 			array[i][0] = applicationSources;
 			//array[i][columnsNumber - 1] = list.get(i);
-			for (int j = 1; j <= list.length; j++)
-				array[i][j] = list[j].get(i);
+			for (int j = 0; j < list.length; j++)
+				array[i][j+1] = list[j].get(i);
 		}
 		return array;
 	}
