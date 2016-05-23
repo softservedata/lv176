@@ -1,4 +1,7 @@
-package com.softserve.edu.rs.tests;
+package com.softserve.edu.rs.data;
+
+import java.util.Arrays;
+import java.util.HashSet;
 
 import com.softserve.edu.atqc.tools.Coordinate;
 
@@ -46,4 +49,24 @@ public class DataTestRepository {
 						new Coordinate(24, 0, 0) }, };
 	    	
 	    }
+
+		public Object[][] getShowAll() {
+			return new Object[][] {
+				{ new HashSet<String>
+				(Arrays.asList("123:44:35:445:34567:3459", 
+						"123:66:99:678:78868:1235","123:44:35:445:34567:3457"))
+					,"Showing 1 to 3 of 3 entries",
+					}
+				 };
+		}
+
+		public Object[][] getShowAllSelect() {
+			return new Object[][] {
+				{ new HashSet<String>
+				(Arrays.asList("298:67:78:999:58791:4757", 
+						"123:33:33:333:33333:2222"))
+					,"Showing 1 to 2 of 2 entries",
+					}
+				 };
+		}
 }

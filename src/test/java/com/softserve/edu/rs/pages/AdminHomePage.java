@@ -137,7 +137,7 @@ public class AdminHomePage extends CommonPage {
 	}
 
 	public void clickUsers() {
-		setFocusUsers();
+		//setFocusUsers();
 		getUsers().click();
 		statusUsersControls = new StatusUsersPageUIMap();
 	}

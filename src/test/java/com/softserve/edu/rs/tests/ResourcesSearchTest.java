@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import com.softserve.edu.atqc.data.apps.ABaseApplication;
 import com.softserve.edu.atqc.data.apps.ApplicationSources;
+import com.softserve.edu.rs.data.DataTestRepository;
 import com.softserve.edu.rs.data.apps.Application;
 import com.softserve.edu.rs.data.apps.ApplicationSourcesRepository;
 import com.softserve.edu.rs.data.users.IUser;
@@ -23,6 +24,7 @@ import com.softserve.edu.rs.data.users.UserRepository;
 import com.softserve.edu.atqc.tools.Coordinate;
 import com.softserve.edu.rs.pages.RegistratorHomePage;
 import com.softserve.edu.rs.pages.ResourceSearchPage;
+import com.softserve.edu.rs.pages.ResourceSearchPage.ObjectSubclasses;
 import com.softserve.edu.rs.pages.TopPage.ChangeLanguageFields;
 
 public class ResourcesSearchTest {
@@ -44,8 +46,10 @@ public class ResourcesSearchTest {
 		return new Object[][] { { ApplicationSourcesRepository.get().getLocalHostByFirefoxTemporary(),
 				UserRepository.get().getRegistrator() }, };
 	}
+	
+	
 
-	@BeforeClass(groups = { "main", "JScript" })
+	@BeforeClass(groups = { "main", "JScript","params" })
 	public void oneTimeSetUp() {
 
 		IUser registrator = UserRepository.get().getRegistrator();
@@ -58,7 +62,7 @@ public class ResourcesSearchTest {
 		expectedIdsSearch = new HashSet<String>(Arrays.asList(RESOURCE_ID_SEARCH));
 	}
 
-	@AfterClass(groups = { "main", "JScript" })
+	@AfterClass(groups = { "main", "JScript","params" })
 	public void oneTimeTearDown() {
 		application.quitAll();
 	}
@@ -183,5 +187,41 @@ public class ResourcesSearchTest {
 		spage.initElementsAfterUnsuccessfulSearch();
 		assertEquals(spage.getSearchResultDiv().getText(), UNSUCCESSFUL_SEARCH_LABEL_UKR,
 				"No unsuccessful search by point(click map) text label found");
+	}
+	
+	@DataProvider
+	public Object[][] testShowAll() {
+		return DataTestRepository.get().getShowAll();
+	}
+	
+	@Test(groups = "params", dataProvider = "testShowAll")
+	public void testFindAll(HashSet<String> expectedIds,String textInfo) {
+		spage = resourcesSearchPage.clickSearchByParameters();
+		spage.getSearchByParametersComponent().getBtnShowAll().click();
+		List<String> tablevalues = spage.initElementsAfterSuccessfulSearch().getSearchResultsTable().getSearchResultIdValues();
+		Set<String> ids = new HashSet<>(tablevalues);
+		assertTrue(expectedIds.equals(ids), "Search by area results are not correct");
+		assertEquals(spage.getSearchResultsTable().getSearchResultRows().size(), expectedIds.size(),
+				"Number of search by area results are not correct");
+		assertEquals(spage.getSearchResultsTable().getDataTextInfo().getText(),textInfo,
+				"Search by area result text info incorrect");
+	}
+	
+	@DataProvider
+	public Object[][] testShowAllSelect() {
+		return DataTestRepository.get().getShowAllSelect();
+	}
+	@Test(groups = "params", dataProvider = "testShowAllSelect")
+	public void testFindAllSelect(HashSet<String> expectedIds,String textInfo) throws InterruptedException {
+		spage = resourcesSearchPage.clickSearchByParameters();
+		spage.getSearchByParametersComponent().setListObjectSubclasses(ObjectSubclasses.RADIO);
+		spage.getSearchByParametersComponent().getBtnShowAll().click();
+		List<String> tablevalues = spage.initElementsAfterSuccessfulSearch().getSearchResultsTable().getSearchResultIdValues();
+		Set<String> ids = new HashSet<>(tablevalues);
+		assertTrue(expectedIds.equals(ids), "Search by area results are not correct");
+		assertEquals(spage.getSearchResultsTable().getSearchResultRows().size(), expectedIds.size(),
+				"Number of search by area results are not correct");
+		assertEquals(spage.getSearchResultsTable().getDataTextInfo().getText(),textInfo,
+				"Search by area result text info incorrect");
 	}
 }

@@ -1,15 +1,20 @@
-package com.softserve.edu.atqc.tools;
+package com.softserve.edu.atqc.data.apps;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import com.softserve.edu.atqc.exceptions.GeneralCustomException;
+import com.softserve.edu.atqc.tools.BrowserUtils;
+import com.softserve.edu.atqc.tools.ControlSearch;
 
 public class PageObserveLoad {
+	public static final long ONE_SECOND = 1000L;
     public static final String ERROR_LOAD_FAILED = "Web Page Load Failed. Url is %s";
+    //
     private static volatile PageObserveLoad instance = null;
     private final HashMap<Long, List<IObserveLoad>> observeLoad;
+    private long observeLoadWaitTimeout = 30L;
 
     private PageObserveLoad() {
         this.observeLoad = new HashMap<Long, List<IObserveLoad>>(); 
@@ -25,7 +30,11 @@ public class PageObserveLoad {
         }
         return instance;
     }
-
+    
+    public long getObserveLoadWaitTimeout() {
+    	return this.observeLoadWaitTimeout;
+    }
+    
     private List<IObserveLoad> getCurrentEvents() {
         List<IObserveLoad> currentEvents = this.observeLoad.get(Thread.currentThread().getId());
         if (currentEvents == null) {
@@ -44,30 +53,38 @@ public class PageObserveLoad {
     }
 
     public boolean isLoadComplete() {
-        int countLoadCompletePages = 0;
+        int countCompleteEvents = 0;
         long beginTime;
+        boolean eventDone = false;
         for (IObserveLoad currentObserveLoad : getCurrentEvents()) {
             beginTime = System.currentTimeMillis();
-            while (System.currentTimeMillis() - beginTime < ASearchContext.ONE_SECOND
-                    * SearchExplicit.get().getExplicitlyWaitTimeout()) {
+            eventDone = false;
+            while (System.currentTimeMillis() - beginTime < ONE_SECOND
+                    * getObserveLoadWaitTimeout()) {
                 if (currentObserveLoad.loadComplete()) {
-                    countLoadCompletePages++;
+                	countCompleteEvents++;
+                    eventDone = true;
                     break;
                 }
                 try {
-                    Thread.sleep(ASearchContext.ONE_SECOND / 2);
+                    Thread.sleep(ONE_SECOND / 2);
                 } catch (Exception e) {
+                	// TODO Change Exception
                     throw new GeneralCustomException(String.format(PageObserveLoad.ERROR_LOAD_FAILED,
-                            BrowserUtils.get().getBrowser().getWebDriver().getCurrentUrl()));
+                            BrowserUtils.get().getBrowser().getCurrentUrl()));
                 }
             }
+            if (!eventDone) {
+                throw new GeneralCustomException(String.format(PageObserveLoad.ERROR_LOAD_FAILED,
+                        BrowserUtils.get().getBrowser().getCurrentUrl()));
+            }
         }
-        if (countLoadCompletePages !=  getCurrentEvents().size()) {
+        if (countCompleteEvents !=  getCurrentEvents().size()) {
             throw new GeneralCustomException(String.format(PageObserveLoad.ERROR_LOAD_FAILED,
-                    BrowserUtils.get().getBrowser().getWebDriver().getCurrentUrl()));
+                    BrowserUtils.get().getBrowser().getCurrentUrl()));
         }
         // TODO
-        //return countLoadCompletePages == getCurrentEvents().size();
+        //return countCompleteEvents == getCurrentEvents().size();
         return true;
     }
 

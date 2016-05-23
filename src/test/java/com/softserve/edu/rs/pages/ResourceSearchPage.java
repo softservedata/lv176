@@ -8,7 +8,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
+//import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.softserve.edu.atqc.controls.Component;
@@ -16,32 +16,49 @@ import com.softserve.edu.atqc.controls.IButton;
 import com.softserve.edu.atqc.controls.IComponent;
 import com.softserve.edu.atqc.controls.ILabel;
 import com.softserve.edu.atqc.controls.ILabelClickable;
+import com.softserve.edu.atqc.controls.ISelect;
 import com.softserve.edu.atqc.controls.ITextField;
 import com.softserve.edu.atqc.controls.Label;
 import com.softserve.edu.atqc.controls.LabelClickable;
+import com.softserve.edu.atqc.controls.Select;
 import com.softserve.edu.atqc.controls.TextField;
 import com.softserve.edu.atqc.tools.BrowserUtils;
+import com.softserve.edu.rs.pages.TopPage.ChangeLanguageFields;
 
 public class ResourceSearchPage extends RegistratorCommonPage {
+	public static enum ObjectSubclasses {
+		LAND("земельний"), RADIO("радіочастотний");
+
+		private String field;
+
+		private ObjectSubclasses(String field) {
+			this.field = field;
+		}
+
+		@Override
+		public String toString() {
+			return this.field;
+		}
+	}
 
 	private class SearchResultsTable implements ISearchResultsTable {
 		private IComponent tableOfResults;
 		private ILabel dataTextInfo;
 		private ILabel paginateInfo;
 		private ITextField searchTableTextInput;
-		//private WebDriver driver;
-		
+		// private WebDriver driver;
+
 		public ITextField getSearchTableTextInput() {
 			return searchTableTextInput;
 		}
 
-		public SearchResultsTable(){
+		public SearchResultsTable() {
 			tableOfResults = Component.get().getById("datatable");
-			searchTableTextInput=TextField.get().getByCssSelector("#datatable_filter input");
+			searchTableTextInput = TextField.get().getByCssSelector("#datatable_filter input");
 			dataTextInfo = Label.get().getById("datatable_info");
 			paginateInfo = Label.get().getById("datatable_paginate");
 		}
-		
+
 		public IComponent getTableOfResults() {
 			return tableOfResults;
 		}
@@ -53,7 +70,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		public ILabel getPaginateInfo() {
 			return paginateInfo;
 		}
-		
+
 		public List<WebElement> getSearchResultValues() {
 			return Component.get().getElementsByCssSelector("tbody td");
 		}
@@ -61,7 +78,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		public List<String> getSearchResultTextValues() {
 			List<WebElement> elements = Component.get().getElementsByCssSelector("tbody td");
 			List<String> result = new ArrayList<>();
-			for (WebElement e:elements){
+			for (WebElement e : elements) {
 				result.add(e.getText());
 			}
 			return result;
@@ -71,7 +88,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		public List<String> getSearchResultIdValues() {
 			List<WebElement> elements = Component.get().getElementsByCssSelector(" td:nth-child(3)");
 			List<String> result = new ArrayList<>();
-			for (WebElement e:elements){
+			for (WebElement e : elements) {
 				result.add(e.getText());
 			}
 			return result;
@@ -79,10 +96,10 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		}
 
 		public List<WebElement> getSearchResultRows() {
-			return  Component.get().getElementsByCssSelector("tbody tr");
+			return Component.get().getElementsByCssSelector("tbody tr");
 		}
 	}
-	
+
 	private class SearchByAreaComponent implements ISearchByArea {
 		private static final String SELECTOR_LATITUDE_DEGREES_1 = "#first_point .latitudeDegrees.form-control";
 		private static final String SELECTOR_LATITUDE_MINUTES_1 = "#first_point .latitudeMinutes.form-control";
@@ -290,7 +307,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		public ITextField getSearchByCoordinateLongitudeSeconds() {
 			return searchByCoordinateLongitudeSeconds;
 		}
-		
+
 		public void setLatitudeDegreesClear(String latitudeDegrees) {
 			getSearchByCoordinateLatitudeDegrees().sendKeysClear(latitudeDegrees);
 		}
@@ -302,7 +319,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		public void setLatitudeSecondsClear(String latitudeSeconds) {
 			getSearchByCoordinateLatitudeSeconds().sendKeysClear(latitudeSeconds);
 		}
-		
+
 		public void setLongitudeDegreesClear(String LongitudeDegrees) {
 			getSearchByCoordinateLongitudeDegrees().sendKeysClear(LongitudeDegrees);
 		}
@@ -314,7 +331,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		public void setLongitudeSecondsClear(String LongitudeSeconds) {
 			getSearchByCoordinateLongitudeSeconds().sendKeysClear(LongitudeSeconds);
 		}
-		
+
 		public SearchByPointComponent putPointSearchCoordinate(int latitudeDegrees, int latitudeMinutes,
 				double latitudeSeconds, int longitudeDegrees, int longitudeMinutes, double longitudeSeconds) {
 
@@ -328,53 +345,74 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 			return this;
 		}
 	}
-	
+
 	private class SearchByParametersComponent implements ISearchByParameter {
-		private static final String SELECTOR_INPUT_PERIMETER="div[param_id='1'] .form-control.value";
-		private static final String SELECTOR_INPUT_AREA="div[param_id='2'] .form-control.value";
-		private Select listObjectSubclasses;
+
+		private static final String SELECTOR_INPUT_PERIMETER = "div[param_id='1'] .form-control.value";
+		private static final String SELECTOR_INPUT_AREA = "div[param_id='2'] .form-control.value";
+		// private Select listObjectSubclasses;
+		private ISelect listObjectSubclasses;
 		private ITextField inputPerimeter;
 		private ITextField inputArea;
-		
+		private ILabelClickable btnShowAll;
+
 		public SearchByParametersComponent() {
-			listObjectSubclasses = new Select(BrowserUtils.get().getBrowser().getWebDriver().findElement(By.id("resourcesTypeSelect")));
+			listObjectSubclasses = Select.get().getById("resourcesTypeSelect");
+
 			inputPerimeter = TextField.get().getByCssSelector(SELECTOR_INPUT_PERIMETER);
 			inputArea = TextField.get().getByCssSelector(SELECTOR_INPUT_AREA);
 		}
 
-		public Select getListObjectSubclasses() {
+		public ISelect getListObjectSubclasses() {
 			return listObjectSubclasses;
 		}
 
-		public ITextField  getInputPerimeter() {
+		public ILabelClickable getListObjectSubclassesSelected() {
+			return getListObjectSubclasses().getFirstSelectedOption();
+		}
+
+		public String getListObjectSubclassesSelectedText() {
+			return getListObjectSubclasses().getText();
+		}
+
+		public void setListObjectSubclasses(ObjectSubclasses subclass) {
+			getListObjectSubclasses().selectByVisibleText(subclass.toString());
+		}
+
+		public void setListObjectSubclassesByPartialText(String partialText) {
+			getListObjectSubclasses().selectByPartialText(partialText);
+		}
+
+		public ITextField getInputPerimeter() {
 			return inputPerimeter;
 		}
 
-		public ITextField  getInputArea() {
+		public ITextField getInputArea() {
 			return inputArea;
 		}
-	}
 
+		public ILabelClickable getBtnShowAll() {
+			return btnShowAll;
+		}
+	}
 
 	private ILabelClickable searchByCoordinate;
 	private ILabelClickable searchByArea;
 	private ILabelClickable searchByParameters;
 	private ILabelClickable btnSearch;
 	private ILabelClickable btnSearchArea;
-	private ILabelClickable btnShowAll;
+
 	private SearchResultsTable searchResultsTable;
 	private ILabelClickable searchResultDiv;
 	private SearchByAreaComponent searchByAreaComponent;
 	private SearchByParametersComponent searchByParametersComponent;
 	private SearchByPointComponent searchByPointComponent;
 	private JavascriptExecutor jsExecutor;
-	
+
 	public ISearchResultsTable getSearchResultsTable() {
 
 		return searchResultsTable;
 	}
-
-	
 
 	public ISearchByPoint getSearchByPointComponent() {
 		return searchByPointComponent;
@@ -388,16 +426,14 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		return searchByParametersComponent;
 	}
 
-	
-
-	public  ResourceSearchPage() {
+	public ResourceSearchPage() {
 		searchByCoordinate = LabelClickable.get().getById("searchByPointButton");
-		searchByArea =  LabelClickable.get().getById("searchByAreaButton");
-		searchByParameters =  LabelClickable.get().getById("searchByParameterButton");
+		searchByArea = LabelClickable.get().getById("searchByAreaButton");
+		searchByParameters = LabelClickable.get().getById("searchByParameterButton");
 		jsExecutor = (JavascriptExecutor) BrowserUtils.get().getBrowser().getWebDriver();
 
 	}
-	
+
 	public ILabelClickable getSearchByCoordinate() {
 		return searchByCoordinate;
 	}
@@ -418,10 +454,6 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		return btnSearchArea;
 	}
 
-	public ILabelClickable getBtnShowAll() {
-		return btnShowAll;
-	}
-
 	public JavascriptExecutor getJsExecutor() {
 		return jsExecutor;
 	}
@@ -436,14 +468,14 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 	public ResourceSearchPage clickSearchByArea() {
 		getSearchByArea().click();
 		searchByAreaComponent = new SearchByAreaComponent();
-		btnSearchArea =  LabelClickable.get().getById("searchOnMapButton_area");
+		btnSearchArea = LabelClickable.get().getById("searchOnMapButton_area");
 		return this;
 	}
 
 	public ResourceSearchPage clickSearchByParameters() {
 		getSearchByParameters().click();
 		searchByParametersComponent = new SearchByParametersComponent();
-		btnShowAll =  LabelClickable.get().getById("showAllResources");
+		searchByParametersComponent.btnShowAll = LabelClickable.get().getById("showAllResources");
 		return this;
 	}
 
@@ -453,7 +485,8 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 	}
 
 	public ResourceSearchPage clickSearchAreaButton() {
-		if(getBtnSearchArea()==null) System.out.println("NULL!");
+		if (getBtnSearchArea() == null)
+			System.out.println("NULL!");
 		getBtnSearchArea().click();
 		return this;
 	}
@@ -461,8 +494,8 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 	public ILabelClickable getSearchResultDiv() {
 		return searchResultDiv;
 	}
-	
-	public ResourceSearchPage  initElementsAfterSuccessfulSearch() {
+
+	public ResourceSearchPage initElementsAfterSuccessfulSearch() {
 		searchResultsTable = new SearchResultsTable();
 		return this;
 	}
@@ -476,13 +509,15 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		clickHomeItem();
 		return new RegistratorHomePage();
 	}
-	public ResourceSearchPage searchTableByText(String searchText){
+
+	public ResourceSearchPage searchTableByText(String searchText) {
 		searchResultsTable.getSearchTableTextInput().clear();
 		searchResultsTable.getSearchTableTextInput().sendKeys(searchText);
 		return this;
 	}
-	public ResourceSearchPage putPointSearchCoordinate(int latitudeDegrees, int latitudeMinutes,
-			double latitudeSeconds, int longitudeDegrees, int longitudeMinutes, double longitudeSeconds) {
+
+	public ResourceSearchPage putPointSearchCoordinate(int latitudeDegrees, int latitudeMinutes, double latitudeSeconds,
+			int longitudeDegrees, int longitudeMinutes, double longitudeSeconds) {
 		searchByPointComponent.putPointSearchCoordinate(latitudeDegrees, latitudeMinutes, latitudeSeconds,
 				longitudeDegrees, longitudeMinutes, longitudeSeconds);
 
