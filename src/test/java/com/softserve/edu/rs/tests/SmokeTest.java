@@ -15,6 +15,7 @@ import com.softserve.edu.rs.data.users.IUser;
 import com.softserve.edu.rs.data.users.UserRepository;
 import com.softserve.edu.rs.pages.AdminHomePage;
 import com.softserve.edu.rs.pages.LoginPage;
+import com.softserve.edu.rs.pages.LoginPage.LoginPageText;
 
 public class SmokeTest {
 	
@@ -40,7 +41,32 @@ public class SmokeTest {
 //                };
     }
 
-	@Test(dataProvider = "getApplicationSources")
+	//@Test(dataProvider = "getApplicationSources")
+	public void adminLogin(ApplicationSources applicationSources, IUser admin) throws Exception {
+		// Preconditions.
+		Application application = Application.get(applicationSources);
+		// Test Steps.
+		LoginPage loginPage = application.load(); 
+		// Checking.
+		Thread.sleep(2000);
+		FlexAssert.get()
+			.forElement(loginPage.getLogin())
+				.attributeMatch("name", "login")
+				.attributeMatch("id", "login")
+				.isVisible()
+				.next()
+			.forElement(loginPage.getPassword())
+				.attributeMatch("name", "password")
+				.attributeMatch("id", "password")
+				.isVisible();
+		//
+		//application.quit();
+		// Check
+		FlexAssert.get()
+			.check();
+	}
+
+	//@Test(dataProvider = "getApplicationSources")
 	public void adminLoginAdv(ApplicationSources applicationSources, IUser admin) throws Exception {
 		// Preconditions.
 		Application application = Application.get(applicationSources);
@@ -73,6 +99,31 @@ public class SmokeTest {
 				.attributeMatch("name", "password")
 				.attributeMatch("id", "password")
 				.isVisible();
+		//
+		//application.quit();
+		// Check
+		FlexAssert.get()
+			.check();
+	}
+
+	@Test(dataProvider = "getApplicationSources")
+	public void adminLoginLocalization(ApplicationSources applicationSources, IUser admin) throws Exception {
+		// Preconditions.
+		Application application = Application.get(applicationSources);
+		// Test Steps.
+		LoginPage loginPage = application.load(); 
+		// Checking.
+		Thread.sleep(2000);
+		FlexAssert.get()
+			.forElement(loginPage.getLoginLabelText())
+				.valueMatch(LoginPageText.LOGIN_LABEL.getLocalization(application.getChangeLanguageFields()))
+				.next()
+			.forElement(loginPage.getPasswordLabelText())
+				.valueMatch(LoginPageText.PASSWORD_LABEL.getLocalization(application.getChangeLanguageFields()))
+				.next()
+			.forElement(loginPage.getSigninText())
+				.valueMatch(LoginPageText.SUBMIT_BUTTON.getLocalization(application.getChangeLanguageFields()));
+		Thread.sleep(2000);
 		//
 		//application.quit();
 		// Check

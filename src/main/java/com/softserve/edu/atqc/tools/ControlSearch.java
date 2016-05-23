@@ -99,6 +99,7 @@ public class ControlSearch {
     // TODO
     private boolean isLoadComplete() {
         //return true;
+    	// TODO Sleep for Demo
     	//Thread.sleep(500);
         return PageObserveLoad.get().isLoadComplete();
     }

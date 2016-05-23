@@ -41,6 +41,12 @@ class ExplicitTimeOutFactory implements IApplicationFactory {
 	}
 }
 
+class LanguageFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setLanguage(parameter);
+	}
+}
+
 class SearchStrategyFactory implements IApplicationFactory {
 	public void setParameter(String parameter, ApplicationSources applicationSources) {
 		applicationSources.setSearchStrategy(parameter);
@@ -75,6 +81,7 @@ public final class ApplicationSources {
 		DEFAUL_PROFILE("defaulProfile", new DefaulProfileFactory()),
 		IMPLICIT_TIMEOUT("implicitTimeOut", new ImplicitTimeOutFactory()),
 		EXPLICIT_TIMEOUT("explicitTimeOut", new ExplicitTimeOutFactory()),
+		LANGUAGE_STRATEGY("language", new LanguageFactory()),
 		SEARCH_STRATEGY("searchStrategy", new SearchStrategyFactory()),
 		LOGGER_STRATEGY("loggerStrategy", new LoggerStrategyFactory()),
 		LOGIN_URL("loginUrl", new LoginUrlFactory()),
@@ -110,6 +117,8 @@ public final class ApplicationSources {
 	// Implicit and Explicit Waits
 	private long implicitTimeOut;
 	private long explicitTimeOut;
+	// Localization Strategy
+	private String language;
 	// Search Strategy
 	private String searchStrategy;
 	// Logger Strategy
@@ -118,7 +127,6 @@ public final class ApplicationSources {
 	private String loginUrl;
 	private String logoutUrl;
 	private String serverUrl;
-	// TODO Logger Strategy
 	// TODO Sleep for Demo
 
 	public ApplicationSources(String loginUrl, String logoutUrl) {
@@ -129,6 +137,8 @@ public final class ApplicationSources {
 		// Implicit and Explicit Waits
 		this.implicitTimeOut = 5;
 		this.explicitTimeOut = 5;
+		// Localization Strategy
+		this.language = "українська";
 		// Search Strategy
 		this.searchStrategy = "Explicit Waits";
 		// Logger Strategy
@@ -199,7 +209,15 @@ public final class ApplicationSources {
 	public void setExplicitTimeOut(long explicitTimeOut) {
 		this.explicitTimeOut = explicitTimeOut;
 	}
+	
+	public String getLanguage() {
+		return this.language;
+	}
 
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+	
 	public String getSearchStrategy() {
 		return this.searchStrategy;
 	}
