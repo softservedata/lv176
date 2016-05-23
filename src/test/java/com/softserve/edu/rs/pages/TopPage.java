@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import com.softserve.edu.atqc.controls.ILabelClickable;
 import com.softserve.edu.atqc.controls.ISelect;
 import com.softserve.edu.atqc.controls.Select;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 import com.softserve.edu.atqc.tools.BrowserUtils;
 
@@ -53,6 +54,8 @@ public abstract class TopPage {
     private TopPageUIMap controls;
 
 	public TopPage() {
+		// TODO Add Observe
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		this.controls = new TopPageUIMap();
 	}
 

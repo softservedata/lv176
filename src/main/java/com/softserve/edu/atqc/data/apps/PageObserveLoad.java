@@ -9,6 +9,7 @@ import com.softserve.edu.atqc.tools.BrowserUtils;
 import com.softserve.edu.atqc.tools.ControlSearch;
 
 public class PageObserveLoad {
+	// TODO Develop class for ONE_SECOND, sleep(), etc.
 	public static final long ONE_SECOND = 1000L;
     public static final String ERROR_LOAD_FAILED = "Web Page Load Failed. Url is %s";
     //
@@ -34,7 +35,11 @@ public class PageObserveLoad {
     public long getObserveLoadWaitTimeout() {
     	return this.observeLoadWaitTimeout;
     }
-    
+
+    public void setObserveLoadWaitTimeout(long observeLoadWaitTimeout) {
+    	this.observeLoadWaitTimeout = observeLoadWaitTimeout;
+    }
+
     private List<IObserveLoad> getCurrentEvents() {
         List<IObserveLoad> currentEvents = this.observeLoad.get(Thread.currentThread().getId());
         if (currentEvents == null) {
@@ -52,6 +57,12 @@ public class PageObserveLoad {
         getCurrentEvents().clear();
     }
 
+    public void refreshLoadCompleteEvent(IObserveLoad observeLoad){
+    	deleteLoadCompleteEvents();
+    	addLoadCompleteEvent(observeLoad);
+    }
+
+    // If all Events Done
     public boolean isLoadComplete() {
         int countCompleteEvents = 0;
         long beginTime;
@@ -74,6 +85,7 @@ public class PageObserveLoad {
                             BrowserUtils.get().getBrowser().getCurrentUrl()));
                 }
             }
+            // TODO USe Strategy
             if (!eventDone) {
                 throw new GeneralCustomException(String.format(PageObserveLoad.ERROR_LOAD_FAILED,
                         BrowserUtils.get().getBrowser().getCurrentUrl()));
