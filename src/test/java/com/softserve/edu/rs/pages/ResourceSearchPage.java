@@ -52,9 +52,11 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 			return searchTableTextInput;
 		}
 
-		public SearchResultsTable() {
+		public SearchResultsTable(boolean b) {
 			tableOfResults = Component.get().getById("datatable");
+			if (b)
 			searchTableTextInput = TextField.get().getByCssSelector("#datatable_filter input");
+			else 	searchTableTextInput = TextField.get().getByCssSelector("input[aria-controls='datatable']");
 			dataTextInfo = Label.get().getById("datatable_info");
 			paginateInfo = Label.get().getById("datatable_paginate");
 		}
@@ -353,6 +355,8 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		// private Select listObjectSubclasses;
 		private ISelect listObjectSubclasses;
 		private ITextField inputPerimeter;
+		
+
 		private ITextField inputArea;
 		private ILabelClickable btnShowAll;
 
@@ -362,7 +366,10 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 			inputPerimeter = TextField.get().getByCssSelector(SELECTOR_INPUT_PERIMETER);
 			inputArea = TextField.get().getByCssSelector(SELECTOR_INPUT_AREA);
 		}
-
+		public SearchByParametersComponent(boolean bool) {
+			if (bool) 
+			listObjectSubclasses = Select.get().getById("resourcesTypeSelect");
+		}
 		public ISelect getListObjectSubclasses() {
 			return listObjectSubclasses;
 		}
@@ -393,6 +400,14 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 
 		public ILabelClickable getBtnShowAll() {
 			return btnShowAll;
+		}
+		
+		public void setInputPerimeter(ITextField inputPerimeter) {
+			this.inputPerimeter = inputPerimeter;
+		}
+
+		public void setInputArea(ITextField inputArea) {
+			this.inputArea = inputArea;
 		}
 	}
 
@@ -496,7 +511,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 	}
 
 	public ResourceSearchPage initElementsAfterSuccessfulSearch() {
-		searchResultsTable = new SearchResultsTable();
+		searchResultsTable = new SearchResultsTable(true);
 		return this;
 	}
 
@@ -531,6 +546,18 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		searchByAreaComponent.putAreaSearchCoordinate(latitudeDegrees1, latitudeMinutes1, latitudeSeconds1,
 				longitudeDegrees1, longitudeMinutes1, longitudeSeconds1, latitudeDegrees2, latitudeMinutes2,
 				latitudeSeconds2, longitudeDegrees2, longitudeMinutes2, longitudeSeconds2);
+		return this;
+	}
+
+	public ResourceSearchPage changeParameters() {
+		ResourceSearchPage rsp= new ResourceSearchPage();
+	rsp.searchByParametersComponent=new SearchByParametersComponent(true);
+	rsp.searchByParametersComponent.btnShowAll = LabelClickable.get().getById("showAllResources");
+	return rsp;
+	}
+
+	public ResourceSearchPage initElementsAfterSuccessfulSearch1() {
+		searchResultsTable = new SearchResultsTable(false);
 		return this;
 	}
 

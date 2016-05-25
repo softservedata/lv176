@@ -33,7 +33,7 @@ public class AppTest {
 	@Test
 	public void test2() throws Exception {
 		Application application = Application
-				.get(ApplicationSourcesRepository.get().getJavaTrainingLocalByFirefoxTemporary());
+				.get(ApplicationSourcesRepository.get().getLocalHostByFirefoxTemporary());
 		//LoginPage loginPage = application.load();
 		application.load();
 		Thread.sleep(2000);
