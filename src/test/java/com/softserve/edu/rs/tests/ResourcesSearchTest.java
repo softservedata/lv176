@@ -76,21 +76,15 @@ public class ResourcesSearchTest {
 	}
 
 	@Test(groups = "params", dataProvider = "testShowAllSelect")
-	public void testFindAllSelect(HashSet<String> expectedIds, String textInfo) throws InterruptedException {
+	public void testFindAllSelect(HashSet<String> expectedIds, String textInfo) {
 		spage = resourcesSearchPage.clickSearchByParameters();
 		spage.getSearchByParametersComponent().setListObjectSubclasses(ObjectSubclasses.RADIO);
 		spage = spage.changeParameters();
 
-		Actions actions = new Actions(BrowserUtils.get().getBrowser().getWebDriver());
-		System.out.println("here1");
+		//Actions actions = new Actions(BrowserUtils.get().getBrowser().getWebDriver());
 	//	actions.moveToElement(BrowserUtils.get().getBrowser().getWebDriver().findElement(By.id("showAllResources")), 1,
 	//			1).click().build().perform();
-		System.out.println("here2");
-		ILabelClickable ilc = spage.getSearchByParametersComponent().getBtnShowAll();
-		ilc.click();
-
-		System.out.println("ttthere");
-		//Thread.sleep(2000);
+		spage.getSearchByParametersComponent().getBtnShowAll().click();
 		BrowserUtils.get().getBrowser().getWebDriver().manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 		List<String> tablevalues = spage.initElementsAfterSuccessfulSearch1().getSearchResultsTable()
 				.getSearchResultIdValues();
@@ -205,6 +199,21 @@ public class ResourcesSearchTest {
 				"Search in result table text info incorrect");
 	}
 
+	@DataProvider
+	public Object[][] testPaginationNumberResults() {
+		return DataTestRepository.get().getPaginationNumberResults();
+	}
+	@Test(groups = "params", dataProvider = "testPaginationNumberResults")
+	public void testPaginationNumberResults(Coordinate latitude1, Coordinate longitude1, Coordinate latitude2,
+			Coordinate longitude2, String messageTableFooterBy10,String messageTableFooterBy25) {
+		spage = resourcesSearchPage.clickSearchByArea()
+				.putAreaSearchCoordinate(latitude1.getDegrees(), latitude1.getMinutes(), latitude1.getSeconds(),
+						longitude1.getDegrees(), longitude1.getMinutes(), longitude1.getSeconds(),
+						latitude2.getDegrees(), latitude2.getMinutes(), latitude2.getSeconds(), longitude2.getDegrees(),
+						longitude2.getMinutes(), longitude2.getSeconds());
+		assertEquals(spage.getSearchResultsTable().getDataTextInfo().getText(), messageTableFooterBy10,
+				"Search by area result text info incorrect");
+	}
 	// tests with Javascript injection
 
 	@Test(groups = "JScript", dataProvider = "testCoordinates")

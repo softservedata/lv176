@@ -1,6 +1,7 @@
 package com.softserve.edu.rs.pages;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -46,6 +47,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		private ILabel dataTextInfo;
 		private ILabel paginateInfo;
 		private ITextField searchTableTextInput;
+		private ISelect numberResultsByPage;
 		// private WebDriver driver;
 
 		public ITextField getSearchTableTextInput() {
@@ -55,8 +57,10 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		public SearchResultsTable(boolean b) {
 			tableOfResults = Component.get().getById("datatable");
 			if (b)
-			searchTableTextInput = TextField.get().getByCssSelector("#datatable_filter input");
-			else 	searchTableTextInput = TextField.get().getByCssSelector("input[aria-controls='datatable']");
+				searchTableTextInput = TextField.get().getByCssSelector("#datatable_filter input");
+			else
+				searchTableTextInput = TextField.get().getByCssSelector("input[aria-controls='datatable']");
+			numberResultsByPage=Select.get().getByCssSelector("#datatable_length select");
 			dataTextInfo = Label.get().getById("datatable_info");
 			paginateInfo = Label.get().getById("datatable_paginate");
 		}
@@ -352,24 +356,82 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 
 		private static final String SELECTOR_INPUT_PERIMETER = "div[param_id='1'] .form-control.value";
 		private static final String SELECTOR_INPUT_AREA = "div[param_id='2'] .form-control.value";
+		private static final String SELECTOR_MAX_POWER = "div[param_id='3'] .form-control.value";
 		// private Select listObjectSubclasses;
 		private ISelect listObjectSubclasses;
-		private ITextField inputPerimeter;
-		
 
-		private ITextField inputArea;
+		private ISearchParameters searchParameters;
+
+		private class LandResourceParameters implements ISearchParameters {
+			private ITextField inputPerimeter;
+
+			private ITextField inputArea;
+
+			@Override
+			public void init() {
+				inputPerimeter = TextField.get().getByCssSelector(SELECTOR_INPUT_PERIMETER);
+				inputArea = TextField.get().getByCssSelector(SELECTOR_INPUT_AREA);
+
+			}
+
+			@Override
+			public void input(String... args) {
+				if (args.length != 2)
+					throw new IllegalArgumentException("Wrong number of parameters");
+				inputPerimeter.sendKeysClear(args[0]);
+				inputPerimeter.sendKeysClear(args[1]);
+				// if (args.length==2) searchByArea.
+			}
+
+			@Override
+			public List<ILabelClickable> getElements() {
+
+				return new ArrayList<ILabelClickable>(Arrays.asList(inputPerimeter, inputArea));
+			}
+
+		}
+
+		private class RadioResourceParameters implements ISearchParameters {
+			private ITextField inputMaxPower;
+
+			@Override
+			public void init() {
+				inputMaxPower = TextField.get().getByCssSelector(SELECTOR_MAX_POWER);
+
+			}
+
+			@Override
+			public void input(String... args) {
+				if (args.length != 1)
+					throw new IllegalArgumentException("Wrong number of parameters");
+				inputMaxPower.sendKeysClear(args[0]);
+			}
+
+			@Override
+			public List<ILabelClickable> getElements() {
+
+				return new ArrayList<ILabelClickable>(Arrays.asList(inputMaxPower));
+			}
+
+		}
+
 		private ILabelClickable btnShowAll;
 
-		public SearchByParametersComponent() {
+		public SearchByParametersComponent(ObjectSubclasses subclass) {
 			listObjectSubclasses = Select.get().getById("resourcesTypeSelect");
+			switch (subclass){
+			case LAND: searchParameters = new LandResourceParameters();break;
+			case RADIO: searchParameters = new RadioResourceParameters();break;
+			}
+			searchParameters.init();
 
-			inputPerimeter = TextField.get().getByCssSelector(SELECTOR_INPUT_PERIMETER);
-			inputArea = TextField.get().getByCssSelector(SELECTOR_INPUT_AREA);
 		}
-		public SearchByParametersComponent(boolean bool) {
-			if (bool) 
-			listObjectSubclasses = Select.get().getById("resourcesTypeSelect");
-		}
+
+//		public SearchByParametersComponent(boolean bool) {
+//			if (bool)
+//				listObjectSubclasses = Select.get().getById("resourcesTypeSelect");
+//		}
+
 		public ISelect getListObjectSubclasses() {
 			return listObjectSubclasses;
 		}
@@ -391,23 +453,27 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		}
 
 		public ITextField getInputPerimeter() {
-			return inputPerimeter;
+			if (searchParameters.getElements().get(0) instanceof ITextField)
+				return (ITextField) searchParameters.getElements().get(0);
+			return null;
 		}
 
 		public ITextField getInputArea() {
-			return inputArea;
+			if (searchParameters.getElements().get(1) instanceof ITextField)
+				return (ITextField) searchParameters.getElements().get(1);
+			return null;
 		}
 
 		public ILabelClickable getBtnShowAll() {
 			return btnShowAll;
 		}
-		
-		public void setInputPerimeter(ITextField inputPerimeter) {
-			this.inputPerimeter = inputPerimeter;
+
+		public void setInputPerimeter(String inputPerimeter) {
+			searchParameters.input(inputPerimeter, "");
 		}
 
-		public void setInputArea(ITextField inputArea) {
-			this.inputArea = inputArea;
+		public void setInputArea(String inputArea) {
+			searchParameters.input("", inputArea);
 		}
 	}
 
@@ -489,7 +555,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 
 	public ResourceSearchPage clickSearchByParameters() {
 		getSearchByParameters().click();
-		searchByParametersComponent = new SearchByParametersComponent();
+		searchByParametersComponent = new SearchByParametersComponent(ObjectSubclasses.LAND);
 		searchByParametersComponent.btnShowAll = LabelClickable.get().getById("showAllResources");
 		return this;
 	}
@@ -550,10 +616,10 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 	}
 
 	public ResourceSearchPage changeParameters() {
-		ResourceSearchPage rsp= new ResourceSearchPage();
-	rsp.searchByParametersComponent=new SearchByParametersComponent(true);
-	rsp.searchByParametersComponent.btnShowAll = LabelClickable.get().getById("showAllResources");
-	return rsp;
+		ResourceSearchPage rsp = new ResourceSearchPage();
+		rsp.searchByParametersComponent = new SearchByParametersComponent(ObjectSubclasses.RADIO);
+		rsp.searchByParametersComponent.btnShowAll = LabelClickable.get().getById("showAllResources");
+		return rsp;
 	}
 
 	public ResourceSearchPage initElementsAfterSuccessfulSearch1() {

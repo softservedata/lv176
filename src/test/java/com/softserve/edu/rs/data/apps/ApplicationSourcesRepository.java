@@ -21,35 +21,35 @@ public final class ApplicationSourcesRepository {
 	
 	public ApplicationSources getLocalHostByDefaultBrowser() {
 		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources/login",
-				"http://localhost:8080/resources/logout");
+				"http://localhost:8080/resources2/logout");
 		applicationSources.setBrowserName("Browser default");
 		return applicationSources;
 	}
 
 	public ApplicationSources getLocalHostByFirefoxTemporary() {
-		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources/login",
-				"http://localhost:8080/resources/logout");
+		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources2/login",
+				"http://localhost:8080/resources2/logout");
 		applicationSources.setBrowserName("Firefox temporary");
 		return applicationSources;
 	}
 
 	public ApplicationSources getLocalHostByFirefoxDefault() {
-		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources/login",
-				"http://localhost:8080/resources/logout");
+		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources2/login",
+				"http://localhost:8080/resources2/logout");
 		applicationSources.setBrowserName("Firefox default");
 		return applicationSources;
 	}
 
 	public ApplicationSources getLocalHostByChromeTemporary() {
-		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources/login",
-				"http://localhost:8080/resources/logout");
+		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources2/login",
+				"http://localhost:8080/resources2/logout");
 		applicationSources.setBrowserName("Chrome temporary");
 		return applicationSources;
 	}
 
 	public ApplicationSources getLocalHostByIETemporary() {
-		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources/login",
-				"http://localhost:8080/resources/logout");
+		ApplicationSources applicationSources = new ApplicationSources("http://localhost:8080/resources2/login",
+				"http://localhost:8080/resources2/logout");
 		applicationSources.setBrowserName("Internet Explorer temporary");
 		return applicationSources;
 	}

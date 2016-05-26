@@ -14,8 +14,8 @@ public interface ISearchByParameter {
 	String getListObjectSubclassesSelectedText();
 	void setListObjectSubclasses(ObjectSubclasses subclass);
 	void setListObjectSubclassesByPartialText(String partialText);
-	public void setInputPerimeter(ITextField inputPerimeter) ;
+	public void setInputPerimeter(String inputPerimeter) ;
 
-	public void setInputArea(ITextField inputArea) ;
+	public void setInputArea(String  inputArea) ;
 	
 }

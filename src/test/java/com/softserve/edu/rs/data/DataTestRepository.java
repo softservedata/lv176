@@ -59,14 +59,14 @@ public class DataTestRepository {
 				(Arrays.asList("123:44:35:445:34567:3459",
 						"123:66:99:678:78868:1235",
 						"123:44:35:445:34567:3457",
-						"123:66:99:678:78868:3000",
+						"123:44:35:445:34567:1096",
 						"123:66:99:678:78868:3100",
 						"123:66:99:678:78868:3101",
 						"123:66:99:678:78868:3103",
 						"123:44:35:445:34567:1380",
 						"123:44:35:445:34567:1321",
 						"123:66:99:678:78868:1123"))
-					,"Showing 1 to 10 of 15 entries",
+					,"Showing 1 to 10 of 14 entries",
 					}
 				 };
 		}
@@ -89,5 +89,12 @@ public class DataTestRepository {
 				{ new Coordinate(49, 45, 11.8), new Coordinate(24, 40, 7.7), new Coordinate(49, 5, 6.34),
 						new Coordinate(24, 0, 48.96342) ,new HashSet<String>(Arrays.asList("123:44:35:445:34567:3457", 
 								"123:44:35:445:34567:1096","123:66:99:678:78868:1222"))} };
+		}
+
+		public Object[][] getPaginationNumberResults() {
+			return new Object[][] {
+				{ new Coordinate(47, 0, 0), new Coordinate(23, 0, 0), new Coordinate(51, 0, 0),
+						new Coordinate(27, 0, 0), "Showing 1 to 10 of 14 entries", "Showing 1 to 14 of 14 entries"},
+			 };
 		}
 }
