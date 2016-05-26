@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.softserve.edu.atqc.exceptions.GeneralCustomException;
 import com.softserve.edu.rs.entity.IEntity;
 
 public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
@@ -17,6 +18,7 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
     
     protected ADao() {
         this.sqlQueries = new HashMap<String, Enum<?>>();
+        // TODO Call init
     }
     
     // TODO Use Builder
@@ -24,20 +26,26 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
 
     protected abstract String[] getFields(TEntity entity);
     
+    // TODO Create abstract method init
+    
     // Create
     public boolean insert(TEntity entity) {
         boolean result = false;
         Statement statement = null;
         String query = sqlQueries.get("INSERT").toString();
         if (query == null) {
-            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+            throw new GeneralCustomException(String.format(QUERY_NOT_FOUND,
                     "INSERT"));
+//            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+//                    "INSERT"));
         }
         try {
             statement = ConnectionUtils.get().getConnection().createStatement();
+            // TODO CHECK!
             result = statement.execute(String.format(query, getFields(entity)));
         } catch (SQLException e) {
-            throw new RuntimeException(DATABASE_READING_ERROR, e);
+            throw new GeneralCustomException(DATABASE_READING_ERROR, e);
+//            throw new RuntimeException(DATABASE_READING_ERROR, e);
         } finally {
             if (statement != null) {
                 try {
@@ -60,8 +68,10 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
         String[] queryResult;
         int i;
         if (query == null) {
-            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+            throw new GeneralCustomException(String.format(QUERY_NOT_FOUND,
                     "GET_BY_ID"));
+//            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+//                    "GET_BY_ID"));
         }
         try {
             statement = ConnectionUtils.get().getConnection().createStatement();
@@ -73,11 +83,14 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
                 }
                 entity = createInstance(queryResult);
             } else {
-                throw new RuntimeException(String.format(EMPTY_RESULTSET,
+                throw new GeneralCustomException(String.format(EMPTY_RESULTSET,
                         query));
+//                throw new RuntimeException(String.format(EMPTY_RESULTSET,
+//                        query));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(DATABASE_READING_ERROR, e);
+            throw new GeneralCustomException(DATABASE_READING_ERROR, e);
+//            throw new RuntimeException(DATABASE_READING_ERROR, e);
         } finally {
             if (resultSet != null) {
                 try {
@@ -105,8 +118,10 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
         String[] queryResult;
         int i;
         if (query == null) {
-            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+            throw new GeneralCustomException(String.format(QUERY_NOT_FOUND,
                     "GET_BY_FIELD"));
+//            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+//                    "GET_BY_FIELD"));
         }
         try {
             statement = ConnectionUtils.get().getConnection().createStatement();
@@ -120,7 +135,8 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
                 all.add(createInstance(queryResult));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(DATABASE_READING_ERROR, e);
+            throw new GeneralCustomException(DATABASE_READING_ERROR, e);
+//            throw new RuntimeException(DATABASE_READING_ERROR, e);
         } finally {
             if (resultSet != null) {
                 try {
@@ -138,7 +154,8 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
             }
         }
         if (all.isEmpty()) {
-            throw new RuntimeException(String.format(EMPTY_RESULTSET, query));
+            throw new GeneralCustomException(String.format(EMPTY_RESULTSET, query));
+//            throw new RuntimeException(String.format(EMPTY_RESULTSET, query));
         }
         return all;
     }
@@ -151,8 +168,10 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
         String[] queryResult;
         int i;
         if (query == null) {
-            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+            throw new GeneralCustomException(String.format(QUERY_NOT_FOUND,
                     "GET_ALL"));
+//            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+//                    "GET_ALL"));
         }
         try {
             statement = ConnectionUtils.get().getConnection().createStatement();
@@ -165,7 +184,8 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
                 all.add(createInstance(queryResult));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(DATABASE_READING_ERROR, e);
+            throw new GeneralCustomException(DATABASE_READING_ERROR, e);
+//            throw new RuntimeException(DATABASE_READING_ERROR, e);
         } finally {
             if (resultSet != null) {
                 try {
@@ -183,7 +203,8 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
             }
         }
         if (all.isEmpty()) {
-            throw new RuntimeException(String.format(EMPTY_RESULTSET, query));
+            throw new GeneralCustomException(String.format(EMPTY_RESULTSET, query));
+//            throw new RuntimeException(String.format(EMPTY_RESULTSET, query));
         }
         return all;
     }
@@ -194,14 +215,18 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
         Statement statement = null;
         String query = sqlQueries.get("UPDATE_BY_FIELD").toString();
         if (query == null) {
-            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+            throw new GeneralCustomException(String.format(QUERY_NOT_FOUND,
                     "UPDATE_BY_FIELD"));
+//            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+//                    "UPDATE_BY_FIELD"));
         }
         try {
             statement = ConnectionUtils.get().getConnection().createStatement();
+            // TODO Use statement.executeUpdate
             result = statement.execute(String.format(query, fieldName, text));
         } catch (SQLException e) {
-            throw new RuntimeException(DATABASE_READING_ERROR, e);
+            throw new GeneralCustomException(DATABASE_READING_ERROR, e);
+//            throw new RuntimeException(DATABASE_READING_ERROR, e);
         } finally {
             if (statement != null) {
                 try {
@@ -217,13 +242,15 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
 
     // Delete
     public boolean deleteById(Long id) {
-        System.out.println("\t\t\tdeleteById DONE");
+        //System.out.println("\t\t\tdeleteById DONE");
         boolean result = false;
         Statement statement = null;
         String query = sqlQueries.get("DELETE_BY_ID").toString();
         if (query == null) {
-            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+            throw new GeneralCustomException(String.format(QUERY_NOT_FOUND,
                     "DELETE_BY_ID"));
+//            throw new RuntimeException(String.format(QUERY_NOT_FOUND,
+//                    "DELETE_BY_ID"));
         }
         try {
             statement = ConnectionUtils.get().getConnection().createStatement();
@@ -231,7 +258,8 @@ public abstract class ADao<TEntity extends IEntity> implements IDao<TEntity> {
             result = statement.execute(String.format(query, id));
             System.out.println("DAO result : "+result);
         } catch (SQLException e) {
-            throw new RuntimeException(DATABASE_READING_ERROR, e);
+            throw new GeneralCustomException(DATABASE_READING_ERROR, e);
+//            throw new RuntimeException(DATABASE_READING_ERROR, e);
         } finally {
             if (statement != null) {
                 try {

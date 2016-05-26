@@ -16,6 +16,7 @@ import com.softserve.edu.rs.data.users.UserRepository;
 import com.softserve.edu.rs.pages.AdminHomePage;
 import com.softserve.edu.rs.pages.LoginPage;
 import com.softserve.edu.rs.pages.LoginPage.LoginPageText;
+import com.softserve.edu.rs.services.UserService;
 
 public class SmokeTest {
 	
@@ -106,7 +107,7 @@ public class SmokeTest {
 			.check();
 	}
 
-	@Test(dataProvider = "getApplicationSources")
+	//@Test(dataProvider = "getApplicationSources")
 	public void adminLoginLocalization(ApplicationSources applicationSources, IUser admin) throws Exception {
 		// Preconditions.
 		Application application = Application.get(applicationSources);
@@ -131,4 +132,12 @@ public class SmokeTest {
 			.check();
 	}
 
+	@Test(dataProvider = "getApplicationSources")
+	public void checkDB(ApplicationSources applicationSources, IUser admin) throws Exception {
+		// Preconditions.
+		Application application = Application.get(applicationSources);
+		String userName = UserService.get().getUserFirstnameByLogin("admin");
+		System.out.println("userName = " + userName);
+		
+	}
 }
