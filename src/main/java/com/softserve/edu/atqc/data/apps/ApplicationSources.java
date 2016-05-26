@@ -127,6 +127,7 @@ public final class ApplicationSources {
 	private String loginUrl;
 	private String logoutUrl;
 	private String serverUrl;
+	// TODO Add DataSource Parameters (4 items)
 	// TODO Sleep for Demo
 
 	public ApplicationSources(String loginUrl, String logoutUrl) {
