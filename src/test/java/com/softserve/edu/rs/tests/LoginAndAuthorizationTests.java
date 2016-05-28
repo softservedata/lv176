@@ -1,14 +1,14 @@
 package com.softserve.edu.rs.tests;
 
-import org.testng.Assert;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
+import com.softserve.edu.atqc.specs.FlexAssert;
 import com.softserve.edu.rs.data.apps.Application;
 import com.softserve.edu.rs.data.apps.ApplicationSourcesRepository;
 import com.softserve.edu.rs.data.users.IUser;
@@ -22,7 +22,6 @@ import com.softserve.edu.rs.pages.UserHomePage;
 public class LoginAndAuthorizationTests {
 
 	Application application;
-	SoftAssert s_assert;
 
 	@BeforeClass
 	public void setUpApp() {
@@ -32,12 +31,10 @@ public class LoginAndAuthorizationTests {
 
 	@BeforeMethod
 	public void loginApp() {
-		s_assert = new SoftAssert();
 	}
 
 	@AfterMethod
 	public void logOutApp() {
-		s_assert = null;
 		application.logout();
 	}
 
@@ -45,29 +42,66 @@ public class LoginAndAuthorizationTests {
 	public void shotDownApp() {
 		application.quit();
 	}
+	
+	@DataProvider
+    public Object[][] getAllRolesUsers(ITestContext context) {
+		return new Object[][] { 
+				{ UserRepository.get().getAdmin() },
+				{ UserRepository.get().getCommissioner() },
+				{ UserRepository.get().getCoOwner() },
+				{ UserRepository.get().getRegistrator() }
+		};
+    }
 
 	@DataProvider
 	public Object[][] getAdmin() {
 		return new Object[][] { { UserRepository.get().getAdmin() } };
 	}
 
-	@Test(dataProvider = "getAdmin")
+//	@Test(dataProvider = "getAdmin")
 	public void smokeLoginTest(IUser user) {
 		HomePage homePage = application.load().successAdminLogin(user);
-		Assert.assertEquals(user.getAccount().getLogin(),
-				homePage.getLoginAccountText());
+		FlexAssert.get()
+		.forElement(homePage.getLoginAccount())
+			.isVisible()
+			.valueMatch(user.getAccount().getLogin());
+		FlexAssert.get().check();
+	}
+	
+	@Test(dataProvider = "getAllRolesUsers")
+	public void menuAccountTest(IUser user) {
+		HomePage homePage = application.load().successUserLogin(user);
+		FlexAssert.get()
+		.forElement(homePage.getChangePassword())
+			.isVisible()
+			.next()
+		.forElement(homePage.getResetPassword())
+			.isVisible()
+			.next()
+		.forElement(homePage.getLogout())
+			.isVisible();
+		FlexAssert.get().check();
 	}
 
-	@Test(dependsOnMethods = { "smokeLoginTest" }, dataProvider = "getAdmin")
+//	@Test(dependsOnMethods = { "smokeLoginTest" }, dataProvider = "getAdmin")
 	public void adminAuthorizationTest(IUser user) {
-		AdminHomePage adminHomePage = application.load()
-				.successAdminLogin(user);
-		s_assert.assertTrue(adminHomePage.getUsers().isEnabled());
-		s_assert.assertTrue(adminHomePage.getSettings().isEnabled());
-		s_assert.assertTrue(adminHomePage.getCommunities().isEnabled());
-		s_assert.assertTrue(adminHomePage.getNewUser().isEnabled());
-		s_assert.assertTrue(adminHomePage.getUnblockAll().isClickable());
-		s_assert.assertAll();
+		AdminHomePage adminHomePage = application.load().successAdminLogin(user);
+		FlexAssert.get()
+			.forElement(adminHomePage.getUsers())
+				.isVisible()
+				.next()
+			.forElement(adminHomePage.getSettings())
+				.isVisible()
+				.next()
+			.forElement(adminHomePage.getCommunities())
+				.isVisible()
+				.next()
+			.forElement(adminHomePage.getNewUser())
+				.isVisible()
+				.next()
+			.forElement(adminHomePage.getUnblockAll())
+				.isVisible();
+			FlexAssert.get().check();
 	}
 	
 	@DataProvider
@@ -75,14 +109,21 @@ public class LoginAndAuthorizationTests {
 		return new Object[][] { { UserRepository.get().getCommissioner() } };
 	}
 
-	@Test(dependsOnMethods = { "smokeLoginTest" }, dataProvider = "getComissioner")
+//	@Test(dependsOnMethods = { "smokeLoginTest" }, dataProvider = "getComissioner")
 	public void comissionerAuthorizationTest(IUser user) {
 		CommissionerHomePage commissionerHomePage = application.load()
 				.successCommissionerLogin(user);
-		s_assert.assertEquals(commissionerHomePage.getLoginAccountText(), user.getAccount().getLogin());
-		s_assert.assertTrue(commissionerHomePage.getUsers().isEnabled());
-		s_assert.assertTrue(commissionerHomePage.getNewUser().isEnabled());
-		s_assert.assertAll();
+		FlexAssert.get()
+			.forElement(commissionerHomePage.getLoginAccount())
+					.isVisible()
+					.valueMatch(user.getAccount().getLogin())
+					.next()
+			.forElement(commissionerHomePage.getUsers())
+					.isVisible()
+					.next()
+			.forElement(commissionerHomePage.getNewUser())
+					.isVisible();
+		FlexAssert.get().check();
 	}
 	
 	@DataProvider
@@ -90,16 +131,27 @@ public class LoginAndAuthorizationTests {
 		return new Object[][] { { UserRepository.get().getRegistrator() } };
 	}
 
-	@Test(dependsOnMethods = { "smokeLoginTest" }, dataProvider = "getRegistrator")
+//	@Test(dependsOnMethods = { "smokeLoginTest" }, dataProvider = "getRegistrator")
 	public void registratorAuthorizationTest(IUser user) {
 		RegistratorHomePage registratorHomePage = application.load()
 				.successRegistratorLogin(user);
-		s_assert.assertEquals(registratorHomePage.getLoginAccountText(), user.getAccount().getLogin());
-		s_assert.assertTrue(registratorHomePage.getResourceSearch().isEnabled());
-		s_assert.assertTrue(registratorHomePage.getSubclasses().isEnabled());
-		s_assert.assertTrue(registratorHomePage.getProcurations().isEnabled());
-		s_assert.assertTrue(registratorHomePage.getAddNewResource().isEnabled());
-		s_assert.assertAll();
+		FlexAssert.get()
+			.forElement(registratorHomePage.getLoginAccount())
+				.isVisible()
+				.valueMatch(user.getAccount().getLogin())
+				.next()
+			.forElement(registratorHomePage.getResourceSearch())
+				.isVisible()
+				.next()
+			.forElement(registratorHomePage.getSubclasses())
+				.isVisible()
+				.next()
+			.forElement(registratorHomePage.getProcurations())
+				.isVisible()
+				.next()
+			.forElement(registratorHomePage.getAddNewResource())
+				.isVisible();
+		FlexAssert.get().check();
 	}
 	
 	@DataProvider
@@ -107,14 +159,21 @@ public class LoginAndAuthorizationTests {
 		return new Object[][] { { UserRepository.get().getCoOwner() } };
 	}
 
-	@Test(dependsOnMethods = { "smokeLoginTest" }, dataProvider = "getUser")
+//	@Test(dependsOnMethods = { "smokeLoginTest" }, dataProvider = "getUser")
 	public void userAuthorizationTest(IUser user) {
 		UserHomePage userHomePage = application.load()
 				.successUserPageLogin(user);
-		s_assert.assertEquals(userHomePage.getLoginAccountText(), user.getAccount().getLogin());
-		s_assert.assertTrue(userHomePage.getResourceSearch().isEnabled());
-		s_assert.assertTrue(userHomePage.getProcurations().isEnabled());
-		s_assert.assertAll();
+		FlexAssert.get()
+			.forElement(userHomePage.getLoginAccount())
+				.isVisible()
+				.valueMatch(user.getAccount().getLogin())
+				.next()
+			.forElement(userHomePage.getResourceSearch())
+				.isVisible()
+				.next()
+			.forElement(userHomePage.getProcurations())
+				.isVisible();
+		FlexAssert.get().check();
 	}
 	
 	

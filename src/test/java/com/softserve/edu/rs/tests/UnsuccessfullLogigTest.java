@@ -1,12 +1,12 @@
 package com.softserve.edu.rs.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.softserve.edu.atqc.specs.FlexAssert;
 import com.softserve.edu.rs.data.apps.Application;
 import com.softserve.edu.rs.data.apps.ApplicationSourcesRepository;
 import com.softserve.edu.rs.data.users.IUser;
@@ -32,6 +32,7 @@ public class UnsuccessfullLogigTest {
 	@AfterClass
 	public void shotDownApp(){
 		application.quit();
+		Application.quitAll();
 	}
 
     @DataProvider
@@ -44,7 +45,27 @@ public class UnsuccessfullLogigTest {
 	@Test (dataProvider = "getUsers")
 	public void adminLogin(IUser user){
 		LoginValidatorPage lVPage = application.load().unsuccessUserLogin(user); 
-		Assert.assertEquals(lVPage.getValidatorText(), LoginValidatorPage.START_VALIDATOR_MESSAGE);
+		FlexAssert.get()
+			.forElement(lVPage.getValidator())
+				.isVisible()
+				.valueMatch(LoginValidatorPage.START_VALIDATOR_MESSAGE)
+				.next().check();
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

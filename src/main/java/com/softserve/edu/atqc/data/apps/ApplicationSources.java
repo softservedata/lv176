@@ -1,7 +1,110 @@
 package com.softserve.edu.atqc.data.apps;
 
+interface IApplicationFactory {
+	void setParameter(String parameter, ApplicationSources applicationSources);
+}
+
+
+class BrowserNameFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setBrowserName(parameter);
+	}
+}
+
+class DriverPathFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setDriverPath(parameter);
+	}
+}
+
+class BrowserPathFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setBrowserPath(parameter);
+	}
+}
+
+class DefaulProfileFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setDefaulProfile(parameter);
+	}
+}
+
+class ImplicitTimeOutFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setImplicitTimeOut(Long.parseLong(parameter));
+	}
+}
+
+class ExplicitTimeOutFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setExplicitTimeOut(Long.parseLong(parameter));
+	}
+}
+
+class LanguageFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setLanguage(parameter);
+	}
+}
+
+class SearchStrategyFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setSearchStrategy(parameter);
+	}
+}
+
+class LoggerStrategyFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setLoggerStrategy(parameter);
+	}
+}
+
+class LoginUrlFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setLoginUrl(parameter);
+	}
+}
+
+class LogoutUrlFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setLogoutUrl(parameter);
+	}
+}
+
 // TODO Use Builder
 public final class ApplicationSources {
+	
+	public static enum ParameterList {
+		BROWSER_NAME("browserName", new BrowserNameFactory()),
+		DRIVER_PATH("driverPath", new DriverPathFactory()),
+		BROWSER_PATH("browserPath", new BrowserPathFactory()),
+		DEFAUL_PROFILE("defaulProfile", new DefaulProfileFactory()),
+		IMPLICIT_TIMEOUT("implicitTimeOut", new ImplicitTimeOutFactory()),
+		EXPLICIT_TIMEOUT("explicitTimeOut", new ExplicitTimeOutFactory()),
+		LANGUAGE_STRATEGY("language", new LanguageFactory()),
+		SEARCH_STRATEGY("searchStrategy", new SearchStrategyFactory()),
+		LOGGER_STRATEGY("loggerStrategy", new LoggerStrategyFactory()),
+		LOGIN_URL("loginUrl", new LoginUrlFactory()),
+		LOGOUT_URL("logoutUrl", new LogoutUrlFactory());
+        //
+		private String field;
+        private IApplicationFactory applicationFactory;
+
+        private ParameterList(String field, IApplicationFactory applicationFactory) {
+        	this.field = field;
+            this.applicationFactory = applicationFactory;
+        }
+
+        public void setParameter(String parameter, ApplicationSources applicationSources) {
+        	applicationFactory.setParameter(parameter, applicationSources);
+        }
+        
+        @Override
+        public String toString() {
+            return this.field;
+        }
+    }
+
 	private final String SLASH = "/";
 	private final String SEPARATOR = "://";
 	private final int AFTER_SEPARATOR = 3;
@@ -14,6 +117,8 @@ public final class ApplicationSources {
 	// Implicit and Explicit Waits
 	private long implicitTimeOut;
 	private long explicitTimeOut;
+	// Localization Strategy
+	private String language;
 	// Search Strategy
 	private String searchStrategy;
 	// Logger Strategy
@@ -22,7 +127,7 @@ public final class ApplicationSources {
 	private String loginUrl;
 	private String logoutUrl;
 	private String serverUrl;
-	// TODO Logger Strategy
+	// TODO Add DataSource Parameters (4 items)
 	// TODO Sleep for Demo
 
 	public ApplicationSources(String loginUrl, String logoutUrl) {
@@ -33,6 +138,8 @@ public final class ApplicationSources {
 		// Implicit and Explicit Waits
 		this.implicitTimeOut = 5;
 		this.explicitTimeOut = 5;
+		// Localization Strategy
+		this.language = "українська";
 		// Search Strategy
 		this.searchStrategy = "Explicit Waits";
 		// Logger Strategy
@@ -103,7 +210,15 @@ public final class ApplicationSources {
 	public void setExplicitTimeOut(long explicitTimeOut) {
 		this.explicitTimeOut = explicitTimeOut;
 	}
+	
+	public String getLanguage() {
+		return this.language;
+	}
 
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+	
 	public String getSearchStrategy() {
 		return this.searchStrategy;
 	}

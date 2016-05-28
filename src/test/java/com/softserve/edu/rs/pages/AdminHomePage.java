@@ -3,6 +3,7 @@ package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.ILink;
 import com.softserve.edu.atqc.controls.Link;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 public class AdminHomePage extends HomePage {
 
@@ -49,7 +50,7 @@ public class AdminHomePage extends HomePage {
     private StatusUsersPageUIMap statusUsersControls;
 
     public AdminHomePage() {
-        //super();
+    	PageObserveLoad.get().deleteLoadCompleteEvents();
     	controls = new AdminHomePageUIMap();
     }
 

@@ -1,5 +1,9 @@
 package com.softserve.edu.rs.data.users;
 
+import java.util.List;
+
+import com.softserve.edu.atqc.data.ExcelUtils;
+
 public final class UserRepository {
     private static volatile UserRepository instance = null;
 
@@ -222,5 +226,15 @@ public final class UserRepository {
 							);
 	}
 	
-	
+	public List<IUser> getExistUsersCVS() {
+        return new UserUtils().getAllUsers();
+    }
+
+    public List<IUser> getExistUsersExcel() {
+        return new UserUtils("/users.xlsx", new ExcelUtils()).getAllUsers();
+    }
+    
+    
+    
+    
 }

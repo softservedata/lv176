@@ -17,6 +17,11 @@ public abstract class ABaseComponent<TComponent> {
     
     // Search Visible Elements
     
+    public TComponent getByControlWrapper(ControlWrapper controlWrapper){
+    	this.controlWrapper = controlWrapper;
+    	return tComponent;
+    }
+    
     public TComponent getById(String id) {
         return get(ControlLocation.getById(id));
     }

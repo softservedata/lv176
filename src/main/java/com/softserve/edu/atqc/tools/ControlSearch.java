@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import com.softserve.edu.atqc.data.apps.ApplicationSources;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 public class ControlSearch {
 	private final String EXPLICIT = "explicit";
@@ -97,8 +98,9 @@ public class ControlSearch {
 
     // TODO
     private boolean isLoadComplete() {
-        return true;
-        //return PageObserveLoad.get().isLoadComplete();
+    	// TODO Sleep for Demo
+    	//Thread.sleep(500);
+        return PageObserveLoad.get().isLoadComplete();
     }
     
     /**

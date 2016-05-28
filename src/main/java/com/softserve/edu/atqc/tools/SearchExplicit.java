@@ -11,7 +11,7 @@ import com.softserve.edu.atqc.exceptions.ScreenCapturingCustomException;
 
 class SearchExplicit extends ASearchContext {
     private static volatile SearchExplicit instance = null;
-    private long explicitlyWaitTimeout = 30L; //4L; //30L;
+    private long explicitlyWaitTimeout = 3L; //4L; //30L;
     
     private SearchExplicit() {
     }
@@ -55,19 +55,14 @@ class SearchExplicit extends ASearchContext {
                     .visibilityOfElementLocated(controlLocation.getBy()));
         } catch (Exception e) {
             // TODO Duplicate Code
-            // TODO Save Log 
             throw new ScreenCapturingCustomException(String.format(ASearchContext.ERROR_WEBELEMENT_NOT_FOUND,
                     controlLocation.getLocator()));
-//            throw new RuntimeException(String.format(ASearchContext.ERROR_WEBELEMENT_NOT_FOUND,
-//                    controlLocation.getLocator()));
         }
         if (webElement == null) {
             // TODO Duplicate Code
             // TODO Save Log 
             throw new ScreenCapturingCustomException(String.format(ASearchContext.ERROR_WEBELEMENT_NOT_FOUND,
                     controlLocation.getLocator()));
-//            throw new RuntimeException(String.format(ASearchContext.ERROR_WEBELEMENT_NOT_FOUND,
-//            		controlLocation.getLocator()));
         }
         return webElement;
     }

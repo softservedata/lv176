@@ -11,7 +11,7 @@ import com.softserve.edu.atqc.exceptions.ScreenCapturingCustomException;
 
 class SearchImplicit extends ASearchContext {
     private static volatile SearchImplicit instance = null;
-    private long implicitlyWaitTimeout = 30L; // 30L;
+    private long implicitlyWaitTimeout = 3L; // 30L;
 
     private SearchImplicit() {
     }
