@@ -4,6 +4,7 @@ import com.softserve.edu.atqc.controls.ILabelClickable;
 import com.softserve.edu.atqc.controls.ILink;
 import com.softserve.edu.atqc.controls.LabelClickable;
 import com.softserve.edu.atqc.controls.Link;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 public abstract class CommonPage extends TopPage {
 
@@ -39,6 +40,7 @@ public abstract class CommonPage extends TopPage {
 
 	public CommonPage() {
 		//super();
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		this.controls = new CommonPageUIMap();
 	}
 
@@ -91,7 +93,7 @@ public abstract class CommonPage extends TopPage {
 		getLoginAccount().click();
 	}
 
-	public void clickMenuAccount() {		
+	public void clickMenuAccount() {
 		clickLoginAccount();
 		getMenuAccount().click();
 		this.menuControls = new MenuPageUIMap();

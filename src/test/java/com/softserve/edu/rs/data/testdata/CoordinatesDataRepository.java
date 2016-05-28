@@ -1,5 +1,9 @@
 package com.softserve.edu.rs.data.testdata;
 
+import java.util.List;
+
+import com.softserve.edu.atqc.data.ExcelUtils;
+
 public class CoordinatesDataRepository {
 	private static volatile CoordinatesDataRepository instance = null;
 
@@ -29,4 +33,11 @@ public class CoordinatesDataRepository {
 				.build();
 	}
 	
+	 public List<CoordinatesData> getCoordinatesExcel() {
+	        return new CoordinatesUtils("/coordinates.xlsx", new ExcelUtils()).getAllCoordinatesData();
+	    }
+	 
+	 public List<CoordinatesData> getCoordinatesCsv() {
+	        return new CoordinatesUtils().getAllCoordinatesData();
+	    }
 }

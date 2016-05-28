@@ -1,13 +1,16 @@
 package com.softserve.edu.rs.tests;
 
-
-import org.testng.Assert;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import com.softserve.edu.atqc.data.ListUtils;
+import com.softserve.edu.atqc.specs.FlexAssert;
+import com.softserve.edu.atqc.test.ParameterUtils;
 import com.softserve.edu.rs.data.apps.Application;
 import com.softserve.edu.rs.data.apps.ApplicationSourcesRepository;
 import com.softserve.edu.rs.data.testdata.CoordinatesData;
@@ -31,10 +34,12 @@ public class TestRegistrator {
 	private AddNewResourceHomePage addNewResourceHomePage;
 
 	@BeforeClass
-	public void oneTimeSetUp() {
+	public void oneTimeSetUp(ITestContext context) {
 		
-		application = Application.get
-				(ApplicationSourcesRepository.get().getLocalHostByFirefoxTemporary());
+		application = Application.get(
+		ParameterUtils.get().updateAllApplicationSources(
+				ApplicationSourcesRepository.get()
+					.getLocalHostByFirefoxTemporary(), context));
 
 	}
 
@@ -52,6 +57,7 @@ public class TestRegistrator {
 	
 	@AfterMethod
 	public void tearDown() {
+		FlexAssert.get().check();
 	    application.logout();
 	    	
 	}
@@ -66,77 +72,86 @@ public class TestRegistrator {
 	
 	@DataProvider
     public Object[][] dataResource() {
-          return new Object[][] {
-                {UserRepository.get().getCoOwner(), UserRepository.get().getRegistrator(),
-                ResourceDataRepository.get().getResourceData(),	CoordinatesDataRepository.get().getCoordinatesData()},
-                };
+		return ListUtils.get()
+				.toMultiArrayNumberParams(ResourceDataRepository.get().getResourcesCsv(), CoordinatesDataRepository.get().getCoordinatesCsv(),
+						UserRepository.get().getCoOwnerExcel(), UserRepository.get().getRegistratorExcel());
     }
+	
 	
 	@DataProvider
     public Object[][] invalidDataResource() {
-          return new Object[][] {
-                {UserRepository.get().getCoOwner(), UserRepository.get().getRegistrator(),
-                ResourceDataRepository.get().getUnseccesData(),	CoordinatesDataRepository.get().getCoordinatesData()},
-                };
+		return ListUtils.get()
+				.toMultiArrayNumberParams(ResourceDataRepository.get().getResourcesNegativCsv(), CoordinatesDataRepository.get().getCoordinatesCsv(),
+						UserRepository.get().getCoOwnerExcel(), UserRepository.get().getRegistratorExcel());
+
     }
  
 	// Test Methods 
-	
-	
+
 	// SMOKE TEST
 	@Test(dataProvider = "testData") 
 	public void registratorLogin(TestData testData){
 		
 		PointsPage pointsPage = addNewResourceHomePage.gotoPointsPage();
-	
-		Assert.assertEquals(pointsPage.getDellAllTerText(),
-				testData.getDeleteTeritories());
-	
+		
+		FlexAssert.get()
+		     .forElement(pointsPage.getDelAllter())
+		         .valueMatch(testData.getDeleteTeritories());
+
 	}
 	
 	
 	// verify one click on PROCURATION
 	@Test(dataProvider = "testData") 
 	public void procurationOneClick(TestData testData){
-
-		Assert.assertEquals(addNewResourceHomePage.oneClicProcurations(),
-				testData.getProcuration());
+		addNewResourceHomePage.clickProcurations();
+		FlexAssert.get()
+		     .forElement(addNewResourceHomePage.getTextarea())
+		           .valueBySeparator(";", testData.getProcuration());
 
 	}
 	
 	// verify two click on PROCURATION
 	@Test(dataProvider = "testData")  
 	public void procurationTwoClick(TestData testData){
-
-		Assert.assertEquals(addNewResourceHomePage.oneClicProcurations(),
-				testData.getProcuration());
+		addNewResourceHomePage.clickProcurations();
 		
-		Assert.assertEquals(addNewResourceHomePage.twoClicProcurations(),
-				testData.getEmptyField());
+		FlexAssert.get()
+	     .forElement(addNewResourceHomePage.getTextarea())
+	           .valueBySeparator(";", testData.getProcuration());
+		
+		addNewResourceHomePage.clickProcurations();
+		
+		FlexAssert.get()
+	     .forElement(addNewResourceHomePage.getTextarea())
+	           .valueMatch(testData.getEmptyField());
 
 	}
 	
 	// verify click MAPINSTRUCTION
 	@Test(dataProvider = "testData")  
 	public void mapInstructionVerify(TestData testData){
+		
 
 		MapPage mapPage = addNewResourceHomePage.gotoMapPage();
-				
-		Assert.assertEquals(mapPage.verifyInstrUsingMap(),
-						testData.getMapInstruction());
+		mapPage.clicInstrUsingMapButt();
+		FlexAssert.get()
+	     .forElement(mapPage.getInstrUsingMap())
+	          .valueBySeparator(".", testData.getMapInstruction());
 
 	}
 	 
 	
 	// verify adding new resource
 	@Test(dataProvider = "dataResource") 
-    public void addNewResource(IUser user, IUser registrator,
-    		 ResourceData resources, CoordinatesData coordinates){
-		
+    public void addNewResource(ResourceData resources, CoordinatesData coordinates,
+    		  IUser user, IUser registrator){
+
 		ResourcePage resourcePage = addNewResourceHomePage.successGotoResource(user, registrator, resources, coordinates);
 		
-		Assert.assertEquals(resourcePage.getResorceNumberText(),
-				registrator.getAccount().getRegistratorNumber()+resources.getResourceNumber());
+		FlexAssert.get()
+	     .forElement(resourcePage.getResorceNumber())
+	          .valueMatch(registrator.getAccount().getRegistratorNumber()+resources.getResourceNumber());
 
 		resourcePage.clickOk();
 	}
@@ -144,15 +159,16 @@ public class TestRegistrator {
 	
 	// verify adding invalid registrator number 
 	@Test(dataProvider = "invalidDataResource") 
-    public void invalidRegistratorNumber(IUser user, IUser registrator,
-    		 ResourceData invalidresources, CoordinatesData coordinates){
-		
+    public void invalidRegistratorNumber(ResourceData invalidresources, CoordinatesData coordinates,
+    		     IUser user, IUser registrator){
+		   
 		AddNewResourceValidatorPage addNewResourceValidatorPage = 
 				addNewResourceHomePage.unsuccessRegistratorNumber(user, registrator, invalidresources, coordinates);
 		
-		Assert.assertEquals(addNewResourceValidatorPage.getStartValidatorText(), 
-				AddNewResourceValidatorPage.START_VALIDATOR_MESSAGE);
-
+		FlexAssert.get()
+	     .forElement(addNewResourceValidatorPage.getValidator())
+	          .valueMatch(AddNewResourceValidatorPage.START_VALIDATOR_MESSAGE);
+		
 	}
 	
 	

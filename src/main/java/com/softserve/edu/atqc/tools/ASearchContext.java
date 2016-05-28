@@ -12,6 +12,8 @@ abstract class ASearchContext {
 	static final String ERROR_WEBELEMENT_STILL_VISIBLE = "WebElement is still visible %s";
 	static final String ERROR_TITLE_INVISIBLE = "Title invisible %s";
 
+	abstract void setWaitTimeout(long waitTimeout);
+	
 	abstract WebElement getVisibleWebElement(ControlLocation controlLocation);
 
 	abstract List<WebElement> getVisibleWebElements(ControlLocation controlLocation);

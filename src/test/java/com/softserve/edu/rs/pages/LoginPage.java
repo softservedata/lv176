@@ -1,11 +1,13 @@
 package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.Button;
+import com.softserve.edu.atqc.controls.Component;
 import com.softserve.edu.atqc.controls.IButton;
 import com.softserve.edu.atqc.controls.ITextField;
 import com.softserve.edu.atqc.controls.TextField;
+import com.softserve.edu.atqc.data.apps.IObserveLoad;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 import com.softserve.edu.rs.data.users.IUser;
-
 
 public class LoginPage extends TopPage {
 
@@ -19,15 +21,27 @@ public class LoginPage extends TopPage {
     		this.password = TextField.get().getById("password");
     		this.signin = Button.get().getByCssSelector("button.btn.btn-primary");
     	}
+    	
+    	public void showAlert(String message) {
+    		Component.get().runJavaScript(String.format("alert('Hello %s')", message));
+    	}
     }
 
+	private class LoginPageLoaded implements IObserveLoad {
+		public boolean loadComplete() {
+			return (Boolean)Component.get().runJavaScript("return $('#baseurl')[0].style.opacity  == '';");
+		}
+	}
+	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	
     // Elements
     private LoginPageUIMap controls;
 
-	public LoginPage() {
+    public LoginPage() {
 		//super();
+		// TODO Add Observe
+		PageObserveLoad.get().refreshLoadCompleteEvent(new LoginPageLoaded());
 		controls = new LoginPageUIMap();
 	}
 
@@ -95,6 +109,10 @@ public class LoginPage extends TopPage {
 
     // business - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+	public void showAlert(String message) {
+		this.controls.showAlert(message);
+	}
+	
 	// Functional
 	
     public LoginPage changeLanguage(ChangeLanguageFields language) {
@@ -120,12 +138,18 @@ public class LoginPage extends TopPage {
 		// Return a new page object representing the destination.
 		return new AdminHomePage();
 	}
-
+    
 	public RegistratorHomePage successRegistratorLogin(IUser registrator) {
 		setLoginData(registrator);
 		// Return a new page object representing the destination.
 		return new RegistratorHomePage();
 	}
+
+//	public RegistratorHomePage successRegistratorLogin(IUser registrator) {
+//		setLoginData(registrator);
+//		// Return a new page object representing the destination.
+//		return new RegistratorHomePage();
+//	}
 //
 //	public LoginValidatorPage unsuccessfulLogin(IUser invalidUser) {
 //		setLoginData(invalidUser);

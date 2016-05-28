@@ -2,6 +2,7 @@ package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.ILink;
 import com.softserve.edu.atqc.controls.Link;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 import com.softserve.edu.rs.pages.CommonPage;
 import com.softserve.edu.rs.pages.LoginPage;
 
@@ -24,6 +25,7 @@ public class RegistratorHomePage extends CommonPage {
 
 	public RegistratorHomePage() {
 		// super();
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		this.controls = new RegistratorHomePageUIMap();
 	}
 	

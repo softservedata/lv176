@@ -9,6 +9,7 @@ import com.softserve.edu.atqc.controls.ILabelClickable;
 
 import com.softserve.edu.atqc.controls.Label;
 import com.softserve.edu.atqc.controls.LabelClickable;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 
 
@@ -38,6 +39,7 @@ public class ResourcePage extends RegistratorHomePage {
 	private DialogResoursePageUIMap dialogResource;
 	
 	public ResourcePage() {
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		this.control = new ResourcePageUIMap();
  
 	}

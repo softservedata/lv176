@@ -4,6 +4,7 @@ import com.softserve.edu.atqc.controls.ILabel;
 import com.softserve.edu.atqc.controls.ILabelClickable;
 import com.softserve.edu.atqc.controls.Label;
 import com.softserve.edu.atqc.controls.LabelClickable;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 
 public class MapPage extends AddNewResourceHomePage {
@@ -35,6 +36,7 @@ public class MapPage extends AddNewResourceHomePage {
 	private PerSquLabelUIMap perSquLabel;
 	
 	public MapPage() {
+		PageObserveLoad.get().deleteLoadCompleteEvents();
          controls = new MapPageUIMap();
 	}
 

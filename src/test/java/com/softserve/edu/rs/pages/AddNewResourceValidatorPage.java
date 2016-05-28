@@ -2,6 +2,7 @@ package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.ILabel;
 import com.softserve.edu.atqc.controls.Label;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 public class AddNewResourceValidatorPage extends AddNewResourceHomePage {
 	
@@ -19,6 +20,7 @@ public class AddNewResourceValidatorPage extends AddNewResourceHomePage {
 	
 	private AddNewResourceValidatorUIMap controls;
 	public AddNewResourceValidatorPage(){
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		this.controls = new AddNewResourceValidatorUIMap();
 	}
 	

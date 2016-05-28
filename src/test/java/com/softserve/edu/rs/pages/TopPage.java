@@ -1,7 +1,10 @@
 package com.softserve.edu.rs.pages;
 
+import com.softserve.edu.atqc.controls.ILabelClickable;
 import com.softserve.edu.atqc.controls.ISelect;
-import com.softserve.edu.atqc.controls.SelectField;
+import com.softserve.edu.atqc.controls.Select;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
+
 
 public abstract class TopPage {
 
@@ -25,11 +28,13 @@ public abstract class TopPage {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	private class TopPageUIMap {
- 
-    	public final ISelect changeLanguage;
+    	//public final Select changeLanguage;
+    	// TODO Develop select component
+    	public ISelect changeLanguage;
     	
     	public TopPageUIMap() {
-    		this.changeLanguage = SelectField.get().getById("changeLanguage");
+    		this.changeLanguage = Select.get().getById("changeLanguage"); 
+    		//new Select(driver.findElement(By.id("changeLanguage")));
     	}
     }
 
@@ -38,7 +43,9 @@ public abstract class TopPage {
     // Elements
     private TopPageUIMap controls;
 
-	public TopPage() {
+    public TopPage() {
+		// TODO Add Observe
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		this.controls = new TopPageUIMap();
 	}
 
@@ -50,14 +57,22 @@ public abstract class TopPage {
 		return this.controls.changeLanguage;
 	}
 
+	public ILabelClickable getChangeLanguageSelected() {
+		return getChangeLanguage().getFirstSelectedOption();
+	}
+
 	public String getChangeLanguageSelectedText() {
-		return getChangeLanguage().getFirstSelectedOption().getText();
+		return getChangeLanguageSelected().getText();
 	}
 
 	// Set Data
 
 	public void setChangeLanguage(ChangeLanguageFields language) {
 		getChangeLanguage().selectByVisibleText(language.toString());
+	}
+
+	public void setChangeLanguageByPartialText(String partialText) {
+		getChangeLanguage().selectByPartialText(partialText);
 	}
 
 }

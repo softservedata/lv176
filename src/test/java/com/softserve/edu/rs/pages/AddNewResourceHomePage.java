@@ -8,7 +8,7 @@ import com.softserve.edu.atqc.controls.ISelect;
 import com.softserve.edu.atqc.controls.ITextField;
 import com.softserve.edu.atqc.controls.LabelClickable;
 import com.softserve.edu.atqc.controls.Link;
-import com.softserve.edu.atqc.controls.SelectField;
+import com.softserve.edu.atqc.controls.Select;
 import com.softserve.edu.atqc.controls.TextField;
 import com.softserve.edu.rs.data.testdata.CoordinatesData;
 import com.softserve.edu.rs.data.testdata.ResourceData;
@@ -51,7 +51,7 @@ public class AddNewResourceHomePage extends RegistratorHomePage {
     	public AddNewResourceHomePageUIMap() {
     		this.selectUser = TextField.get().getById("owner_search");
     		this.objectName = TextField.get().getById("w-input-search");
-    		this.objectSubclas = SelectField.get().getById("resourcesTypeSelect"); 
+    		this.objectSubclas = Select.get().getById("resourcesTypeSelect"); 
     		this.numberObject = TextField.get().getById("identifier");
     		this.btnEdit = Button.get().getById("editNumber");
     		this.textarea = TextField.get().getById("reasonInclusion");
@@ -69,7 +69,6 @@ public class AddNewResourceHomePage extends RegistratorHomePage {
     private AddNewResourceHomePageUIMap controls;
 
 	public AddNewResourceHomePage() {
-		//super();
 		this.controls = new AddNewResourceHomePageUIMap();
 	}
 	

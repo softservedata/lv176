@@ -1,5 +1,9 @@
 package com.softserve.edu.rs.data.testdata;
 
+import java.util.List;
+
+import com.softserve.edu.atqc.data.ExcelUtils;
+
 public class ResourceDataRepository {
 	private static volatile ResourceDataRepository instance = null;
 
@@ -28,5 +32,21 @@ public class ResourceDataRepository {
 				.setResourceName("озеро")
 				.setResourceNumber("0000000000");
 	}
+	
+	public List<ResourceData> getResourcesExcel() {
+        return new ResourceUtils("/resourceData.xlsx", new ExcelUtils()).getAllResourcesData();
+    }
+	
+	public List<ResourceData> getResourcesNegativExcel() {
+        return new ResourceUtils("/resourceDataNegativ.xlsx", new ExcelUtils()).getAllResourcesData();
+    }
+	
+	public List<ResourceData> getResourcesCsv() {
+        return new ResourceUtils("/resourceData.csv").getAllResourcesData();
+    }
+	
+	public List<ResourceData> getResourcesNegativCsv() {
+        return new ResourceUtils("/resourceDataNegativ.csv").getAllResourcesData();
+    }
 	
 }

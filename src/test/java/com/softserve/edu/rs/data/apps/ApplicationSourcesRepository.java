@@ -70,6 +70,13 @@ public final class ApplicationSourcesRepository {
 		return applicationSources;
 	}
 
+	public ApplicationSources getJavaTrainingLocalByChromeTemporary() {
+		ApplicationSources applicationSources = new ApplicationSources("http://java.training.local:8080/registrator/login",
+				"http://java.training.local:8080/registrator/logout");
+		applicationSources.setBrowserName("Chrome temporary");
+		return applicationSources;
+	}
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	public ApplicationSources getHerokuByDefaultBrowser() {

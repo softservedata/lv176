@@ -2,6 +2,7 @@ package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.ILink;
 import com.softserve.edu.atqc.controls.Link;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 public class AdminHomePage extends CommonPage {
 
@@ -49,6 +50,7 @@ public class AdminHomePage extends CommonPage {
 
     public AdminHomePage() {
         //super();
+    	PageObserveLoad.get().deleteLoadCompleteEvents();
     	controls = new AdminHomePageUIMap();
     }
 
@@ -137,7 +139,7 @@ public class AdminHomePage extends CommonPage {
 	}
 
 	public void clickUsers() {
-		setFocusUsers();
+		//setFocusUsers();
 		getUsers().click();
 		statusUsersControls = new StatusUsersPageUIMap();
 	}

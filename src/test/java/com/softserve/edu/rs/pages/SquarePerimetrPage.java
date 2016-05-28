@@ -2,6 +2,7 @@ package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.ITextField;
 import com.softserve.edu.atqc.controls.TextField;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 
 
@@ -20,6 +21,7 @@ public class SquarePerimetrPage extends AddNewResourceHomePage {
 	private SquarePerimetrPageUIMap control;
 	
 	public SquarePerimetrPage(){
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		this.control = new SquarePerimetrPageUIMap();
 	}
 	

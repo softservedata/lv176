@@ -4,6 +4,7 @@ import com.softserve.edu.atqc.controls.Button;
 import com.softserve.edu.atqc.controls.IButton;
 import com.softserve.edu.atqc.controls.ITextField;
 import com.softserve.edu.atqc.controls.TextField;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 import com.softserve.edu.rs.data.testdata.CoordinatesData;
 
 
@@ -59,6 +60,7 @@ public class PointsPage extends AddNewResourceHomePage {
 	private ManagePointsUIMap managePointsUIMap;
 
 	public PointsPage() {
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		this.firstPointPageUIMap = new FirstPointPageUIMap();
 		this.managePointsUIMap = new ManagePointsUIMap();
 	}

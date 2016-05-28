@@ -1,7 +1,103 @@
 package com.softserve.edu.atqc.data.apps;
 
+interface IApplicationFactory {
+	void setParameter(String parameter, ApplicationSources applicationSources);
+}
+
+
+class BrowserNameFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setBrowserName(parameter);
+	}
+}
+
+class DriverPathFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setDriverPath(parameter);
+	}
+}
+
+class BrowserPathFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setBrowserPath(parameter);
+	}
+}
+
+class DefaulProfileFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setDefaulProfile(parameter);
+	}
+}
+
+class ImplicitTimeOutFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setImplicitTimeOut(Long.parseLong(parameter));
+	}
+}
+
+class ExplicitTimeOutFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setExplicitTimeOut(Long.parseLong(parameter));
+	}
+}
+
+class SearchStrategyFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setSearchStrategy(parameter);
+	}
+}
+
+class LoggerStrategyFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setLoggerStrategy(parameter);
+	}
+}
+
+class LoginUrlFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setLoginUrl(parameter);
+	}
+}
+
+class LogoutUrlFactory implements IApplicationFactory {
+	public void setParameter(String parameter, ApplicationSources applicationSources) {
+		applicationSources.setLogoutUrl(parameter);
+	}
+}
+
 // TODO Use Builder
 public final class ApplicationSources {
+	
+	public static enum ParameterList {
+		BROWSER_NAME("browserName", new BrowserNameFactory()),
+		DRIVER_PATH("driverPath", new DriverPathFactory()),
+		BROWSER_PATH("browserPath", new BrowserPathFactory()),
+		DEFAUL_PROFILE("defaulProfile", new DefaulProfileFactory()),
+		IMPLICIT_TIMEOUT("implicitTimeOut", new ImplicitTimeOutFactory()),
+		EXPLICIT_TIMEOUT("explicitTimeOut", new ExplicitTimeOutFactory()),
+		SEARCH_STRATEGY("searchStrategy", new SearchStrategyFactory()),
+		LOGGER_STRATEGY("loggerStrategy", new LoggerStrategyFactory()),
+		LOGIN_URL("loginUrl", new LoginUrlFactory()),
+		LOGOUT_URL("logoutUrl", new LogoutUrlFactory());
+        //
+		private String field;
+        private IApplicationFactory applicationFactory;
+
+        private ParameterList(String field, IApplicationFactory applicationFactory) {
+        	this.field = field;
+            this.applicationFactory = applicationFactory;
+        }
+
+        public void setParameter(String parameter, ApplicationSources applicationSources) {
+        	applicationFactory.setParameter(parameter, applicationSources);
+        }
+        
+        @Override
+        public String toString() {
+            return this.field;
+        }
+    }
+
 	private final String SLASH = "/";
 	private final String SEPARATOR = "://";
 	private final int AFTER_SEPARATOR = 3;
@@ -16,6 +112,8 @@ public final class ApplicationSources {
 	private long explicitTimeOut;
 	// Search Strategy
 	private String searchStrategy;
+	// Logger Strategy
+	private String loggerStrategy;
 	// URLs
 	private String loginUrl;
 	private String logoutUrl;
@@ -32,7 +130,9 @@ public final class ApplicationSources {
 		this.implicitTimeOut = 5;
 		this.explicitTimeOut = 5;
 		// Search Strategy
-		this.searchStrategy = "";
+		this.searchStrategy = "Explicit Waits";
+		// Logger Strategy
+		this.loggerStrategy = "";
 		// URLs
 		this.loginUrl = loginUrl;
 		this.logoutUrl = logoutUrl;
@@ -53,7 +153,7 @@ public final class ApplicationSources {
 	// get
 
 	public String getBrowserName() {
-		return browserName;
+		return this.browserName;
 	}
 
 	public void setBrowserName(String browserName) {
@@ -61,7 +161,7 @@ public final class ApplicationSources {
 	}
 
 	public String getDriverPath() {
-		return driverPath;
+		return this.driverPath;
 	}
 
 	public void setDriverPath(String driverPath) {
@@ -69,7 +169,7 @@ public final class ApplicationSources {
 	}
 
 	public String getBrowserPath() {
-		return browserPath;
+		return this.browserPath;
 	}
 
 	public void setBrowserPath(String browserPath) {
@@ -77,7 +177,7 @@ public final class ApplicationSources {
 	}
 
 	public String getDefaulProfile() {
-		return defaulProfile;
+		return this.defaulProfile;
 	}
 
 	public void setDefaulProfile(String defaulProfile) {
@@ -85,7 +185,7 @@ public final class ApplicationSources {
 	}
 
 	public long getImplicitTimeOut() {
-		return implicitTimeOut;
+		return this.implicitTimeOut;
 	}
 
 	public void setImplicitTimeOut(long implicitTimeOut) {
@@ -93,7 +193,7 @@ public final class ApplicationSources {
 	}
 
 	public long getExplicitTimeOut() {
-		return explicitTimeOut;
+		return this.explicitTimeOut;
 	}
 
 	public void setExplicitTimeOut(long explicitTimeOut) {
@@ -101,11 +201,19 @@ public final class ApplicationSources {
 	}
 
 	public String getSearchStrategy() {
-		return searchStrategy;
+		return this.searchStrategy;
 	}
 
 	public void setSearchStrategy(String searchStrategy) {
 		this.searchStrategy = searchStrategy;
+	}
+
+	public String getLoggerStrategy() {
+		return this.loggerStrategy;
+	}
+
+	public void setLoggerStrategy(String loggerStrategy) {
+		this.loggerStrategy = loggerStrategy;
 	}
 
 	public String getLoginUrl() {
