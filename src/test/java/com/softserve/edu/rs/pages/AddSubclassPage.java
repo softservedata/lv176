@@ -13,6 +13,7 @@ import com.softserve.edu.atqc.controls.SelectField;
 import com.softserve.edu.atqc.controls.TextField;
 import com.softserve.edu.atqc.tools.BrowserUtils;
 import com.softserve.edu.rs.data.resources.ISubclass;
+import com.softserve.edu.rs.data.resources.ParameterType;
 
 public class AddSubclassPage extends RegistratorHomePage {
 
@@ -46,9 +47,17 @@ public class AddSubclassPage extends RegistratorHomePage {
 		public final ILabel optionsTable;
 
 		public OptionsSubclassMenuUIMap() {
-			this.descriptionParametrField = TextField.get().getById("myparam0");
-			this.unitOfMeasurementField = TextField.get().getById("myparam1");
-			this.chooseTypeSelect = SelectField.get().getById("myparam2");
+			this.descriptionParametrField = TextField.get().getByName("parameters[0].description");
+			this.unitOfMeasurementField = TextField.get().getByName("parameters[0].unitName");
+			this.chooseTypeSelect = SelectField.get().getByName("parameters[0].parametersType");
+			this.conteinerWithParameters = Label.get().getById("input1");
+			this.optionsTable = Label.get().getByXpath("//*[@id='newrestype']/div[3]");
+		}
+
+		public OptionsSubclassMenuUIMap(int i) {
+			this.descriptionParametrField = TextField.get().getByName("parameters[" + (i - 1) + "].description");
+			this.unitOfMeasurementField = TextField.get().getByName("parameters[" + (i - 1) + "].unitName");
+			this.chooseTypeSelect = SelectField.get().getByName("parameters[" + (i - 1) + "].parametersType");
 			this.conteinerWithParameters = Label.get().getById("input1");
 			this.optionsTable = Label.get().getByXpath("//*[@id='newrestype']/div[3]");
 		}
@@ -62,6 +71,8 @@ public class AddSubclassPage extends RegistratorHomePage {
 	public AddSubclassPage() {
 		controls = new AddSubclassPageUIMap();
 	}
+	
+	
 
 	// PageObject - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -102,27 +113,22 @@ public class AddSubclassPage extends RegistratorHomePage {
 	// ---------------------------------------------------------------------------------
 
 	public ILabel getConteinerWithParameters() {
-		clickShowParameterBtn();
 		return this.optionsSubclassMenuUIMap.conteinerWithParameters;
 	}
 
 	public ILabel getOptionsTable() {
-		clickShowParameterBtn();
 		return this.optionsSubclassMenuUIMap.optionsTable;
 	}
 
 	public ITextField getDescriptionParametrField() {
-		clickShowParameterBtn();
 		return this.optionsSubclassMenuUIMap.descriptionParametrField;
 	}
 
 	public ITextField getUnitOfMeasurementField() {
-		clickShowParameterBtn();
 		return this.optionsSubclassMenuUIMap.unitOfMeasurementField;
 	}
 
 	public ISelect getChooseTypeSelect() {
-		clickShowParameterBtn();
 		return this.optionsSubclassMenuUIMap.chooseTypeSelect;
 	}
 
@@ -133,16 +139,12 @@ public class AddSubclassPage extends RegistratorHomePage {
 	public String getUnitOfMeasurementFieldText() {
 		return getUnitOfMeasurementField().getText();
 	}
-	 
-	public int getElementCount()
-	{
-		return	BrowserUtils.get()
-				.getBrowser()
-				.getWebDriver()
-				.findElement(By.xpath("//*[@id='newrestype']/div[3]"))
+
+	public int getElementCount() {
+		return BrowserUtils.get().getBrowser().getWebDriver().findElement(By.xpath("//*[@id='newrestype']/div[3]"))
 				.findElements(By.tagName("div")).size();
-	} 
-	
+	}
+
 	// Set Data
 
 	public void setSubclass(String subclass) {
@@ -157,6 +159,11 @@ public class AddSubclassPage extends RegistratorHomePage {
 		getUnitOfMeasurementField().sendKeys(unitOfMeasurement);
 	}
 
+	public void setChooseTypeSelect(ParameterType parameterType ) {
+		this.getChooseTypeSelect().selectByValue(parameterType.getValue());
+	}
+
+	
 	public void clearSubclass() {
 		getSubclassField().clear();
 	}
@@ -183,7 +190,7 @@ public class AddSubclassPage extends RegistratorHomePage {
 
 	public void clickShowParameterBtn() {
 		getShowParameterBtn().click();
-		optionsSubclassMenuUIMap = new OptionsSubclassMenuUIMap();
+		this.optionsSubclassMenuUIMap = new OptionsSubclassMenuUIMap();
 	}
 
 	public void clickHideParameterBtn() {
@@ -210,10 +217,10 @@ public class AddSubclassPage extends RegistratorHomePage {
 
 	// Functional
 
-//	public String visibleParametrsBlockVisible() {
-//		String check = getConteinerWithParameters().getCssValue("display");
-//		return check;
-//	}
+	// public String visibleParametrsBlockVisible() {
+	// String check = getConteinerWithParameters().getCssValue("display");
+	// return check;
+	// }
 
 	public String readSubclassField() {
 		return ((JavascriptExecutor) BrowserUtils.get().getBrowser().getWebDriver())
@@ -229,7 +236,6 @@ public class AddSubclassPage extends RegistratorHomePage {
 		return ((JavascriptExecutor) BrowserUtils.get().getBrowser().getWebDriver())
 				.executeScript("return document.getElementById('myparam1').value;").toString();
 	}
-
 
 	public SubclassesOfObjectsPage addNewSubclass(ISubclass subclass) {
 		setSubclass(subclass.getSubclassName());
@@ -254,6 +260,14 @@ public class AddSubclassPage extends RegistratorHomePage {
 		return new AddSubclassPage();
 	}
 
+	public AddSubclassPage clearSubParamUnitField(ISubclass subclass, int parameterNumber) {
+		this.optionsSubclassMenuUIMap = new OptionsSubclassMenuUIMap(parameterNumber);
+		setDescriptionParametr(subclass.getDescriptionParametr());
+		setUnitOfMeasurement(subclass.getUnitOfMeasurement());
+		setChooseTypeSelect(subclass.getParameterType());
+		return new AddSubclassPage();
+	}
+
 	public AddSubclassPage showParameter() {
 		clickShowParameterBtn();
 		return new AddSubclassPage();
@@ -273,15 +287,6 @@ public class AddSubclassPage extends RegistratorHomePage {
 		clickDelParameterBtn();
 		return new AddSubclassPage();
 	}
-
-//	public AddSubclassPage waitHideParameters(){
-//		System.out.println("isDisplayed "+getOptionsTable().isDisplayed());
-//		System.out.println("isEnabled "+getOptionsTable().isEnabled());
-//		System.out.println("isInvisible "+getOptionsTable().isInvisible());			
-//	WebDriverWait webDriverWait = new WebDriverWait(BrowserUtils.get().getBrowser().getWebDriver(), 5);
-//	webDriverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("myparam0")));
-//	return new AddSubclassPage();
-//	}
 
 	public AddSubclassPage fillClearSubParamUnitField(ISubclass subclass) {
 		setSubclass(subclass.getSubclassName());

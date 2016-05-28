@@ -28,13 +28,13 @@ public class ComponentTest {
 				.gotoSubclassPage().gotoAddSubclassPage();
 	}
 
-	@Test
+	//@Test
 	public void showParametersTest() {
 		addSubclassPage.showParameter();
 		Assert.assertTrue(addSubclassPage.getOptionsTable().isDisplayed());
 	}
 
-	@Test
+	//@Test
 	public void hideParametersTest() {
 		addSubclassPage.showParameter().hideParameter();
 		Assert.assertFalse(addSubclassPage.getOptionsTable().isDisplayed());
@@ -46,9 +46,12 @@ public class ComponentTest {
 		int elementsCount = addSubclassPage.getElementCount();
 		int elementsCountAfterAdd = addSubclassPage.addParameter().getElementCount();
 		Assert.assertEquals(elementsCountAfterAdd - 1, elementsCount);
+		
+		addSubclassPage.clearSubParamUnitField(SubclassRepository.get().getRiverSubclass(), 1);
+		addSubclassPage.clearSubParamUnitField(SubclassRepository.get().getRiverSubclass(), 2);
 	}
 
-	@Test
+	//@Test
 	public void delParametersTest() {
 		addSubclassPage.showParameter().addParameter();
 		int elementsCount = addSubclassPage.getElementCount();
@@ -56,7 +59,7 @@ public class ComponentTest {
 		Assert.assertEquals(elementsCountAfterAdd + 1, elementsCount);
 	}
 
-	@Test
+	//@Test
 	public void clearFormTest() {
 		addSubclassPage.showParameter();
 		String textSubclassField = addSubclassPage.readSubclassField();

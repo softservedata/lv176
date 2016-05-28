@@ -8,5 +8,5 @@ public interface ISubclass {
 
 	String getUnitOfMeasurement();
 	
-	
+	ParameterType getParameterType();
 }

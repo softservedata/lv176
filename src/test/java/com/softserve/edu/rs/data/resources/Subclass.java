@@ -13,6 +13,7 @@ public class Subclass implements ISubclassName, IBuildSubclass, ISubclassExt{
 	private String subclassName;
 	private String descriptionParametr;
 	private String unitOfMeasurement;
+	private ParameterType parameterType;
 	
 	private Subclass() {
 		this.descriptionParametr = new String();
@@ -45,6 +46,11 @@ public class Subclass implements ISubclassName, IBuildSubclass, ISubclassExt{
 			this.unitOfMeasurement = unitOfMeasurement;
 			return this;
 		}
+		
+		public ISubclassExt setParameterType(ParameterType parameterType) {
+			this.parameterType = parameterType;
+			return this;
+		}
 
 		// get - - - - - - - - - -
 
@@ -58,6 +64,10 @@ public class Subclass implements ISubclassName, IBuildSubclass, ISubclassExt{
 
 		public String getUnitOfMeasurement() {
 			return unitOfMeasurement;
+		}
+		
+		public ParameterType getParameterType() {
+			return parameterType;
 		}
 		
 		

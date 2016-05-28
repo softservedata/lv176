@@ -33,7 +33,7 @@ public class CreateNewSubclassTest {
 				.gotoAddSubclassPage();
 	}
 	
-	@DataProvider
+	@DataProvider (parallel = true)
     public Object[][] SubclassParametr() {
         return new Object[][] {
                 { SubclassRepository.get().getOneLetterSubclassName() },
@@ -41,7 +41,7 @@ public class CreateNewSubclassTest {
                 { SubclassRepository.get().getOneNumberSubclassName() },
                 { SubclassRepository.get().getNumbersSubclassName() },
                 { SubclassRepository.get().getResCharsSubclass() },
-                /*
+                
                 { SubclassRepository.get().getEqualCharsSubclass() },
                 { SubclassRepository.get().getSlashCharsSubclass() },
                 { SubclassRepository.get().getSeparatorCharsSubclass() },
@@ -58,7 +58,7 @@ public class CreateNewSubclassTest {
                 { SubclassRepository.get().getQuestionMarkCharsSubclass() },
                 { SubclassRepository.get().getLeftBracketCharsSubclass() },
                 { SubclassRepository.get().getRightBracketCharsSubclass() },
-                */
+                
                 { SubclassRepository.get().getRandomSubclassNoParams() },
                 
                 };
@@ -78,7 +78,7 @@ public class CreateNewSubclassTest {
 
 	@AfterClass
 	public void oneTimeTearDown() {
-		application.quit();
+		application.quitAll();
 	}
 
 }

@@ -14,7 +14,7 @@ import com.softserve.edu.rs.pages.RegistratorHomePage;
 
 public class SmokeLoginTest {
     
-    @DataProvider
+    @DataProvider (parallel = true)
     public Object[][] getApplicationSources() {
         	return new Object[][] {
                 { ApplicationSourcesRepository.get().getLocalHostByFirefoxTemporary(), UserRepository.get().getRegistrator() },

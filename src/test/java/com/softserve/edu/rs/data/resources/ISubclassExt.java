@@ -6,4 +6,6 @@ public interface ISubclassExt extends ISubclass {
 	
 	ISubclassExt setUnitOfMeasurement(String unitOfMeasurement);
 	
+	ISubclassExt setParameterType(ParameterType parameterType);
+	
 }

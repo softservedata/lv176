@@ -154,7 +154,8 @@ public class SubclassRepository {
 				.setSubclassName("River")
 				.build()
 				.setDescriptionParametr("long")
-				.setUnitOfMeasurement("meter");
+				.setUnitOfMeasurement("meter")
+				.setParameterType(ParameterType.DISCRETE);
 	}
 	
 	//------------------------------------------------------------------------------------
