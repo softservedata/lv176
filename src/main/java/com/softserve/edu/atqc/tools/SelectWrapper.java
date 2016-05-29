@@ -14,11 +14,6 @@ public final class SelectWrapper {
 		this.selectWebElement = selectWebElement;
 	}
 
-	// TODO
-//	static SelectWrapper get(Select selectWebElement) {
-//		return new SelectWrapper(selectWebElement);
-//	}
-
 	public static SelectWrapper getVisibleSelectWebElement(
 			ControlLocation controlLocation) {
 		return new SelectWrapper(ControlSearch.get()
@@ -83,7 +78,6 @@ public final class SelectWrapper {
 			}
 		}
 		if (isTextNotFound) {
-			// TODO Develop My Exception
 			throw new RuntimeException(String.format(ELEMENT_NOT_FOUND,
 					partialText));
 		}

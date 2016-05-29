@@ -32,7 +32,6 @@ final class FirefoxTemporary extends ABrowser {
 
 	static FirefoxTemporary get() {
 		return get(FIREFOX_TEMPORARY);
-		//return new FirefoxTemporary(new FirefoxDriver(), FIREFOX_TEMPORARY);
 	}
 
 	static FirefoxTemporary get(String browserName) {

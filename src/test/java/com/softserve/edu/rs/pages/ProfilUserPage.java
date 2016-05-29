@@ -2,6 +2,7 @@ package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.Button;
 import com.softserve.edu.atqc.controls.IButton;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 public class ProfilUserPage extends CommonPage {
 	
@@ -16,6 +17,7 @@ public class ProfilUserPage extends CommonPage {
 	private ProfilUserPageUIMap controls;
 	
 	public ProfilUserPage() {
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		controls = new ProfilUserPageUIMap();
 	}
 

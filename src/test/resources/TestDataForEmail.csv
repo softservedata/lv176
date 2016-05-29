@@ -1,9 +1,8 @@
-﻿;testData;messages
-;@gmail.com;Це не емейл
-;test@@gmail.com;Це не емейл
-;(@df;Це не емейл
-;12@com;Це не емейл
-;ivanko@com;Це не емейл
-;ivanko@com.;Це не емейл
-;ivanko@com.123;Це не емейл
-
+﻿testData;messages
+@gmail.com;Це не емейл
+test@@gmail.com;Це не емейл
+(@df;Це не емейл
+12@com;Це не емейл
+ivanko@com;Це не емейл
+ivanko@com.;Це не емейл
+ivanko@com.123;Це не емейл

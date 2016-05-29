@@ -1,0 +1,138 @@
+package com.softserve.edu.users;
+
+interface ILogin {
+	IPassword setLogin(String login);
+}
+
+interface IPassword {
+	IRole setPassword(String password);
+}
+
+interface IRole {
+	IStatus setRole(String role);
+}
+
+interface IStatus {
+	ICommunity setStatus(String status);
+}
+
+interface ICommunity {
+	IBuildAccount setCommunity(String community);
+}
+
+interface IBuildAccount {
+	IAccountExt build();
+}
+
+public class Account implements ILogin, IPassword, IRole, IStatus, ICommunity, IBuildAccount, IAccountExt {
+
+	private String login;
+	private String password;
+	private String role;
+	private String status;
+	private String community;
+	private String date;
+	private String registerNumber;
+	private String registratorNumber;
+	private String volumeNumber;
+
+	private Account() {
+		this.date = new String();
+	}
+
+	// -----static factory -----
+
+	public static ILogin get() {
+		return new Account();
+	}
+
+	// ----- setters -----
+
+	public IPassword setLogin(String login) {
+		this.login = login;
+		return this;
+	}
+
+	public IRole setPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+	public IStatus setRole(String role) {
+		this.role = role;
+		return this;
+	}
+
+	public ICommunity setStatus(String status) {
+		this.status = status;
+		return this;
+	}
+
+	public IBuildAccount setCommunity(String community) {
+		this.community = community;
+		return this;
+	}
+
+	public IAccountExt build() {
+		return this;
+	}
+
+	public IAccountExt setDate(String date) {
+		this.date = date;
+		return this;
+	}
+
+	public IAccountExt setRegisterNumber(String registerNumber) {
+		this.registerNumber = registerNumber;
+		return this;
+	}
+
+	public IAccountExt setRegistratorNumber(String registratorNumber) {
+		this.registratorNumber = registratorNumber;
+		return this;
+	}
+
+	public IAccountExt setVolumeNumber(String volumeNumber) {
+		this.volumeNumber = volumeNumber;
+		return this;
+	}
+
+	// ----- getters -----
+
+	public String getLogin() {
+		return login;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public String getCommunity() {
+		return community;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public String getRegisterNumber() {
+		return registerNumber;
+	}
+
+	public String getRegistratorNumber() {
+		return registratorNumber;
+	}
+
+	public String getVolumeNumber() {
+		return volumeNumber;
+	}
+
+}

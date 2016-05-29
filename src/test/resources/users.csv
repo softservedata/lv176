@@ -1,0 +1,3 @@
+Firstname,Lastname,Email,Middlename,Phonenumber,Login,Password,Role,Status,Community,Data,RegisterNumber,RegistratorNumber,VolumeNumber,Region,District,City,Street,Building,Flat,Postcode,Seria,Number,Published
+Адміністратор,Адміністратор,admin@admin.com,Адміністратор,0321234567,admin,admin,Адміністратор,Активний,Україна,19.05.2016,0,0,0,Львівська,Галицький,Львів,Вітовського,48,31,79000,AA,00000,Народом України
+commissioner,commissioner,commissioner@gmail.com,commissioner,0321234567,commissioner,commissioner,Коммісіонер,Активний,Україна,19.05.2016,0,0,0,Львівська,Галицький,Львів,Вітовського,48,31,79000,AA,00000,Народом України

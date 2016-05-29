@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite">
-	<parameter name="testurl"
-		value = "http://localhost:8080/resources/login" />
+	<parameter name="loginurl" value="http://localhost:8080/resources/login" />
+	<parameter name="logouturl" value="http://localhost:8080/resources/logout" />
 	<listeners>
        <listener class-name="com.softserve.edu.listener.TestListener"/>
     </listeners>
 	<test name="Test">
+		<parameter name="language" value="укр" />
 		<classes>
-			<class name="com.softserve.edu.test.CreateNewUserTest">
-				<methods>
-					<include name="testPageLoadsCorectly" />
-					<include name="testButtonClearWorksCorectly" />
-					<include name="testButtonCancelWorksCorectly" />
-					<include name="testCreateNewUser" />
-				</methods>
-			</class>
-			<class name="com.softserve.edu.test.EditUserTest">
+			<class name="com.softserve.edu.tests.CreateNewUserTest">
+			    <methods>
+				    <include name="testPageLoadsCorectly" />
+				    <include name="testButtonClearWorksCorectly" />
+				    <include name="testButtonCancelWorksCorectly" />
+				    <include name="testCreateNewUser" />
+			    </methods>
+   			</class>
+			<class name="com.softserve.edu.tests.EditUserTest">
 				<methods>
 					<include name="testUnsuccessfulEditFirstName" />
 					<include name="testUnsuccessfulEditLasttName" />

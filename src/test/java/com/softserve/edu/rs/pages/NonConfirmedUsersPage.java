@@ -6,7 +6,8 @@ import com.softserve.edu.atqc.controls.ILabel;
 import com.softserve.edu.atqc.controls.ITextField;
 import com.softserve.edu.atqc.controls.Label;
 import com.softserve.edu.atqc.controls.TextField;
-import com.softserve.edu.entity.IUser;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
+import com.softserve.edu.users.IUser;
 
 public class NonConfirmedUsersPage extends CommonAdminCommissionerHomePage {
 	
@@ -38,6 +39,7 @@ public class NonConfirmedUsersPage extends CommonAdminCommissionerHomePage {
 	private EmptyTableUIMap emptyTableControls;
 	
 	public NonConfirmedUsersPage() {
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		nonConfirmedPageControls = new NonConfirmedUsersPageUIMap();
 	}
 	

@@ -12,7 +12,6 @@ final class ChromeTemporary extends ABrowser {
 	static enum ChromeSettings {
 		NO_PROXY_SERVER("--no-proxy-server"),
 		IGNORE_CERTIFICATE_ERRORS("--ignore-certificate-errors");
-		//
 		private String field;
 
 		private ChromeSettings(String field) {

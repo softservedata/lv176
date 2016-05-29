@@ -5,9 +5,10 @@ import com.softserve.edu.atqc.controls.IButton;
 import com.softserve.edu.atqc.controls.ILabel;
 import com.softserve.edu.atqc.controls.ISelect;
 import com.softserve.edu.atqc.controls.Label;
-import com.softserve.edu.atqc.controls.SelectField;
+import com.softserve.edu.atqc.controls.Select;
 import com.softserve.edu.atqc.controls.TextField;
-import com.softserve.edu.entity.IUser;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
+import com.softserve.edu.users.IUser;
 
 public class EditProfilUserPage extends CommonPage {
 	public static final String EMPTY_FIELD_WARNING = "Поле є обов\'язковим для введення";
@@ -22,7 +23,7 @@ public class EditProfilUserPage extends CommonPage {
 		
 		public EditProfilUserPageUIMap() {
 			this.fieldForLastName = TextField.get().getById("lastname");
-			this.selectStatus = SelectField.get().getById("userStatusId");
+			this.selectStatus = Select.get().getById("userStatusId");
 			this.buttonOK = Button.get().getById("ok");
 		}
 		
@@ -34,6 +35,7 @@ public class EditProfilUserPage extends CommonPage {
 	private EditProfilUserPageUIMap editControls;
 	
 	public EditProfilUserPage() {
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		editControls = new EditProfilUserPageUIMap();
 	}
 	

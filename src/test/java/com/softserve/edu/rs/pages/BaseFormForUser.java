@@ -1,6 +1,7 @@
 package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.ILabel;
+import com.softserve.edu.atqc.controls.ILabelClickable;
 import com.softserve.edu.atqc.controls.ISelect;
 import com.softserve.edu.atqc.controls.ITextField;
 import com.softserve.edu.atqc.controls.TextField;
@@ -45,7 +46,7 @@ public abstract class BaseFormForUser {
 	public ITextField fieldForPassportNumber;
 	public ITextField fieldForPublishedByData;
 	
-	public ILabel labelTerritoryalCommunity;
+	public ILabel labelTerritorialCommunity;
 	public ISelect territorialCommunity;
 
 	public BaseFormForUser() {
@@ -254,11 +255,19 @@ public abstract class BaseFormForUser {
 	}
 	
 	public ILabel getLabelTerritoryalCommunity() {
-		return this.labelTerritoryalCommunity;
+		return this.labelTerritorialCommunity;
 	}
 	
 	public ISelect getTerritorialCommunity() {
 		return this.territorialCommunity;
+	}
+	
+	public ILabelClickable getTerritorialCommunitySelected() {
+		return getTerritorialCommunity().getFirstSelectedOption();
+	}
+	
+	public String getTerritorialCommunitySelectedText() {
+		return getTerritorialCommunitySelected().getText();
 	}
 	
 	public void setFieldForFirstName(String firstName) {

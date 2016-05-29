@@ -2,6 +2,7 @@ package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.ILink;
 import com.softserve.edu.atqc.controls.Link;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 public class CommonAdminCommissionerHomePage extends CommonPage {
 	
@@ -33,6 +34,7 @@ public class CommonAdminCommissionerHomePage extends CommonPage {
 	private StatusUsersPageUIMap statusUsersControls;
 	
 	public CommonAdminCommissionerHomePage() {
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		controls = new CommonAdminCommissionerHomePageUIMap();
 	}
 	

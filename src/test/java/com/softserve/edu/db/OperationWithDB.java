@@ -1,7 +1,7 @@
 package com.softserve.edu.db;
 
-import com.softserve.edu.atqs.tools.loggers.Log4jWrapper;
-import com.softserve.edu.entity.IUser;
+import com.softserve.edu.atqc.loggers.LoggerUtils;
+import com.softserve.edu.users.IUser;
 
 public class OperationWithDB {
 	//for active users
@@ -22,7 +22,7 @@ public class OperationWithDB {
 			ConnectionToDB.getConnection().prepareStatement(String.format(DELETE_TOMES_OF_USER, user.getAccount().getLogin())).executeUpdate();
 			ConnectionToDB.getConnection().prepareStatement(String.format(DELETE_USER, user.getAccount().getLogin())).executeUpdate();
 		} catch (Exception e) {
-			Log4jWrapper.get().info("Some problem with SQL query" + e.getStackTrace());
+			LoggerUtils.get().errorLog("Some problem with SQL query" + e.getStackTrace());
 		}
 	}
 	
@@ -32,7 +32,7 @@ public class OperationWithDB {
 			ConnectionToDB.getConnection().prepareStatement(String.format(DELETE_ADDRESS_OF_NON_CONFIRMED_USER, user.getAccount().getLogin())).executeUpdate();
 			ConnectionToDB.getConnection().prepareStatement(String.format(DELETE_USER, user.getAccount().getLogin())).executeUpdate();
 		} catch (Exception e) {
-			Log4jWrapper.get().info("Some problem with SQL query" + e.getStackTrace());
+			LoggerUtils.get().errorLog("Some problem with SQL query" + e.getStackTrace());
 		}
 	}
 }

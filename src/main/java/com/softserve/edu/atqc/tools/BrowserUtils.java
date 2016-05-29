@@ -32,8 +32,6 @@ public final class BrowserUtils {
 	public static void quitAll() {
 		if (instance != null) {
 			for (Long threadId : instance.browsers.keySet()) {
-			//for (ABrowser browser : instance.browsers.values()) {
-				//browser.quit();
 				if (instance.browsers.get(threadId) != null) {
 					instance.browsers.get(threadId).quit();
 					instance.browsers.put(threadId, null);
@@ -100,23 +98,5 @@ public final class BrowserUtils {
 	private void startBrowser(BrowserList browserList, ApplicationSources applicationSources) {
 		this.browsers.put(Thread.currentThread().getId(), browserList.getInstance(applicationSources));
 	}
-	
-	///////////////////////////////////////////////////////////////////////////////
-	
-//	private void setSearchStrategy(StartData startData) {
-//		if ((startData.getSearchStrategy() != null) && (startData.getSearchStrategy().length() > 0)) {
-//			if (startData.getSearchStrategy().toLowerCase().contains(EXPLICIT)) {
-//				// ControlSearch.get().setExplicitStrategy();
-//				ControlSearch.get().setContext(ContextRepository.get().getSearchExplicit());
-//			} else if (startData.getSearchStrategy().toLowerCase().contains(IMPLICIT)) {
-//				// ControlSearch.get().setImplicitStrategy();
-//				ControlSearch.get().setContext(ContextRepository.get().getSearchImplicit());
-//			} else {
-//				ControlSearch.get().setContext(ContextRepository.get().getSearchDefault());
-//			}
-//		} else {
-//			ControlSearch.get().setContext(ContextRepository.get().getSearchDefault());
-//		}
-//	}
 
 }

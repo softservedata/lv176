@@ -1,16 +1,16 @@
 package com.softserve.edu.rs.pages;
 
 import com.softserve.edu.atqc.controls.Button;
+import com.softserve.edu.atqc.controls.Component;
 import com.softserve.edu.atqc.controls.IButton;
 import com.softserve.edu.atqc.controls.ILabel;
-import com.softserve.edu.atqc.controls.ISelect;
 import com.softserve.edu.atqc.controls.ITextField;
 import com.softserve.edu.atqc.controls.Label;
-import com.softserve.edu.atqc.controls.SelectField;
+import com.softserve.edu.atqc.controls.Select;
 import com.softserve.edu.atqc.controls.TextField;
-import com.softserve.edu.atqc.tools.CheckResult;
-import com.softserve.edu.atqc.tools.JSInjection;
-import com.softserve.edu.entity.IUser;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
+import com.softserve.edu.atqc.specs.FlexAssert;
+import com.softserve.edu.users.IUser;
 
 public class CreateNewUserPage extends CommonPage {
 	private final String EMPTY_STRING = "";
@@ -27,7 +27,6 @@ public class CreateNewUserPage extends CommonPage {
 		public final ILabel labelPhoneNumber;
 		public final ILabel labelDateOfAccession;
 		public final ITextField fieldForPhoneNumber;
-		public final ISelect fieldForTerritorialCommunityDefault;
 		public final ITextField fieldForDateOfAccession;
 
 		// for buttons
@@ -64,12 +63,11 @@ public class CreateNewUserPage extends CommonPage {
 			this.fieldForPublishedByData = TextField.get().getById("published_by_data");
 			this.labelOtherDate = Label.get().getByXpath("//h4[contains(text(),'Інші дані')]");
 			this.labelPhoneNumber = Label.get().getByXpath("//label[@for='phone_number']");
-			this.labelTerritoryalCommunity = Label.get().getByXpath("//label[@for='territorial_Community']");
+			this.labelTerritorialCommunity = Label.get().getByXpath("//label[@for='territorial_Community']");
 			this.labelDateOfAccession = Label.get().getByXpath("//label[@for='dateOfAccession']");		
 			this.fieldForPhoneNumber = TextField.get().getById("phone_number");
-			this.fieldForTerritorialCommunityDefault = SelectField.get().getByXpath("//select[@id='territorial_Community']/option[1]");
 			this.fieldForDateOfAccession = TextField.get().getById("datepicker");
-			this.territorialCommunity = SelectField.get().getById("territorial_Community");
+			this.territorialCommunity = Select.get().getById("territorial_Community");
 			this.buttonSend = Button.get().getById("submit");
 			this.buttonReset = Button.get().getByCssSelector(".btn.btn-warning.reset");
 			this.buttonCancel = Button.get().getByXpath("//button[@class='btn btn-primary']");
@@ -79,6 +77,7 @@ public class CreateNewUserPage extends CommonPage {
 	private CreateNewUserPageUIMap controls;
 	
 	public CreateNewUserPage() {
+		PageObserveLoad.get().deleteLoadCompleteEvents();
 		controls = new CreateNewUserPageUIMap();
 	}
 
@@ -125,21 +124,13 @@ public class CreateNewUserPage extends CommonPage {
 	public String getFieldForPhoneNumberText() {
 		return getFieldForPhoneNumber().getText();
 	}
-
-	public ISelect getFieldForTerritorialCommunityDefault() {
-		return this.controls.fieldForTerritorialCommunityDefault;
-	}
-	
-	public String getFieldForTerritorialCommunityDefaultText() {
-		return getFieldForTerritorialCommunityDefault().getText();
-	}
 	
 	public ITextField getFieldForDateOfAccession() {
 		return this.controls.fieldForDateOfAccession;
 	}
 	
-	public Object getValueFromDateOfAccession() {
-		return	new JSInjection().runScript("return $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();");
+	public String getValueFromDateOfAccession() {
+		return (String)Component.get().runJavaScript("return $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();");
 	}
 
 	public IButton getButtonSend() {
@@ -226,32 +217,31 @@ public class CreateNewUserPage extends CommonPage {
 		controls.setTerritorialCommunity(user.getAccount().getCommunity());
 		return this;
 	}
-
-	public boolean verifyPageForCreateUserIsLoadedCorrectly() {
-		return new CheckResult()
-				// for main information
-				.add(controls.getFieldForFirstNameText(), EMPTY_STRING)
-				.add(controls.getFieldForLastNameText(), EMPTY_STRING)
-				.add(controls.getFieldForMiddleNameText(), EMPTY_STRING)
-				.add(controls.getFieldForEmailText(), EMPTY_STRING)
-				.add(controls.getFieldForLoginText(), EMPTY_STRING)
-				.add(getFieldForPasswordText(), EMPTY_STRING)
-				.add(getFieldForConfirmPasswordText(), EMPTY_STRING)
-				// for address data
-				.add(controls.getFieldForCityText(), EMPTY_STRING)
-				.add(controls.getFieldForRegionText(), EMPTY_STRING)
-				.add(controls.getFieldForDistrictText(), EMPTY_STRING)
-				.add(controls.getFieldForStreetText(), EMPTY_STRING)
-				.add(controls.getFieldForBuildingText(), EMPTY_STRING)
-				.add(controls.getFieldForFlatText(), EMPTY_STRING)
-				.add(controls.getFieldForPostcodeText(), EMPTY_STRING)
-				// for passport data
-				.add(controls.getFieldForPassportSeriaText(), EMPTY_STRING)
-				.add(controls.getFieldForPassportNumberText(), EMPTY_STRING)
-				.add(controls.getFieldForPublishedByDataText(), EMPTY_STRING)
-				// for other data
-				.add(getFieldForPhoneNumberText(), EMPTY_STRING)
-				.add(getFieldForTerritorialCommunityDefaultText(),DEFAULT_COMMUNITY)
-				.check();
+	
+	public void verifyPageForCreateUserIsLoadedCorrectly() {
+		FlexAssert.get()
+			// for main information
+			.forElement(controls.getFieldForFirstNameText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForLastNameText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForMiddleNameText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForEmailText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForLoginText()).valueMatch(EMPTY_STRING).next()
+			.forElement(getFieldForPasswordText()).valueMatch(EMPTY_STRING).next()
+			.forElement(getFieldForConfirmPasswordText()).valueMatch(EMPTY_STRING).next()
+			// for address data
+			.forElement(controls.getFieldForCityText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForRegionText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForDistrictText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForStreetText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForBuildingText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForFlatText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForPostcodeText()).valueMatch(EMPTY_STRING).next()
+			// for passport data
+			.forElement(controls.getFieldForPassportSeriaText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForPassportNumberText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getFieldForPublishedByDataText()).valueMatch(EMPTY_STRING).next()
+			// for other data
+			.forElement(getFieldForPhoneNumberText()).valueMatch(EMPTY_STRING).next()
+			.forElement(controls.getTerritorialCommunitySelectedText()).valueMatch(DEFAULT_COMMUNITY).next();
 	}
 }

@@ -4,6 +4,7 @@ import com.softserve.edu.atqc.controls.ILabelClickable;
 import com.softserve.edu.atqc.controls.ILink;
 import com.softserve.edu.atqc.controls.LabelClickable;
 import com.softserve.edu.atqc.controls.Link;
+import com.softserve.edu.atqc.data.apps.PageObserveLoad;
 
 public abstract class CommonPage {
 	
@@ -33,6 +34,7 @@ public abstract class CommonPage {
     private MenuPageUIMap menuControls;
     
     public CommonPage() {
+    	PageObserveLoad.get().deleteLoadCompleteEvents();
 		this.controls = new CommonPageUIMap();
 	}
     
