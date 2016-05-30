@@ -26,7 +26,7 @@ public class Demo4 {
 	private Application application;
 	private AddNewCommunityPage addNewCommunityPage;
 	private UnsuccessDeleteAtemptPage unsuccessDeleteAtemptPage;
-
+	private static final String UNSUCCESS_ATEMPT = "Lviv";
 	private static final String EDITED_COMMUNITY = "Полтавська територіальна громада";
 	private static final String COMMUNITY_FOR_CHECK_EDIT_OPTION = "Черкаська територіальна громада";
 	private static final String COMMUNITY_WITH_ALHABETICAL_SYMBOLS = "USA Community";
@@ -75,8 +75,8 @@ public class Demo4 {
 	public void AddCommunityForDelete(AddNewCommunity DataForCheckDeleteCommunityOption) {
 		showAllCommunitiesPage = adminHomePage.gotoShowAllCommunitiesPage().gotoAddNewCommunityPage()
 				.successInputData(DataForCheckDeleteCommunityOption).saveCommunityButton();
-		FlexAssert.get().forElement(showAllCommunitiesPage.getProba(COMMUNITY_FOR_CHECK_DELETE_OPTION)).isVisible()
-				.next().forElement(showAllCommunitiesPage.getProbaText(COMMUNITY_FOR_CHECK_DELETE_OPTION))
+		FlexAssert.get().forElement(showAllCommunitiesPage.getCommunityName(COMMUNITY_FOR_CHECK_DELETE_OPTION)).isVisible()
+				.next().forElement(showAllCommunitiesPage.getCommunityNameText(COMMUNITY_FOR_CHECK_DELETE_OPTION))
 				.valueMatch(COMMUNITY_FOR_CHECK_DELETE_OPTION);
 	}
 
@@ -98,7 +98,7 @@ public class Demo4 {
 	public void AddCommunityForEdit(AddNewCommunity DataForChecEditCommunityOption) {
 		showAllCommunitiesPage = adminHomePage.gotoShowAllCommunitiesPage().gotoAddNewCommunityPage()
 				.successInputData(DataForChecEditCommunityOption).saveCommunityButton();
-		FlexAssert.get().forElement(showAllCommunitiesPage.getProbaText(COMMUNITY_FOR_CHECK_EDIT_OPTION))
+		FlexAssert.get().forElement(showAllCommunitiesPage.getCommunityNameText(COMMUNITY_FOR_CHECK_EDIT_OPTION))
 				.valueMatch(COMMUNITY_FOR_CHECK_EDIT_OPTION);
 	}
 
@@ -111,7 +111,7 @@ public class Demo4 {
 	public void CheckEditOption(EditCommunity CheckEditCommunityOption) {
 		showAllCommunitiesPage = adminHomePage.gotoShowAllCommunitiesPage()
 				.gotoEditCommunityPage(COMMUNITY_FOR_CHECK_EDIT_OPTION).successInputData(CheckEditCommunityOption);
-		FlexAssert.get().forElement(showAllCommunitiesPage.getProbaText(EDITED_COMMUNITY)).valueMatch(EDITED_COMMUNITY);
+		FlexAssert.get().forElement(showAllCommunitiesPage.getCommunityNameText(EDITED_COMMUNITY)).valueMatch(EDITED_COMMUNITY);
 	}
 
 	@DataProvider
@@ -141,11 +141,11 @@ public class Demo4 {
 				.successInputData(dataForAlphabeticalCommunity).saveCommunityButton().gotoAddNewCommunityPage()
 				.successInputData(dataForCyrillicCommunity).saveCommunityButton().gotoAddNewCommunityPage()
 				.successInputData(dataForNumericalCommunity).saveCommunityButton();
-		FlexAssert.get().forElement(showAllCommunitiesPage.getProbaText(COMMUNITY_WITH_ALHABETICAL_SYMBOLS))
+		FlexAssert.get().forElement(showAllCommunitiesPage.getCommunityNameText(COMMUNITY_WITH_ALHABETICAL_SYMBOLS))
 				.valueMatch(COMMUNITY_WITH_ALHABETICAL_SYMBOLS).next()
-				.forElement(showAllCommunitiesPage.getProbaText(COMMUNITY_WITH_CYRILLIC_SYMBOLS))
+				.forElement(showAllCommunitiesPage.getCommunityNameText(COMMUNITY_WITH_CYRILLIC_SYMBOLS))
 				.valueMatch(COMMUNITY_WITH_CYRILLIC_SYMBOLS).next()
-				.forElement(showAllCommunitiesPage.getProbaText(COMMUNITY_WITH_ONLY_NUMBER_SYMBOLS))
+				.forElement(showAllCommunitiesPage.getCommunityNameText(COMMUNITY_WITH_ONLY_NUMBER_SYMBOLS))
 				.valueMatch(COMMUNITY_WITH_ONLY_NUMBER_SYMBOLS);
 	}
 
@@ -181,7 +181,7 @@ public class Demo4 {
 
 	@Test
 	public void VerifyCorrectDelete() {
-		unsuccessDeleteAtemptPage = adminHomePage.gotoShowAllCommunitiesPage().clickDeleteButton("Lviv")
+		unsuccessDeleteAtemptPage = adminHomePage.gotoShowAllCommunitiesPage().clickDeleteButton(UNSUCCESS_ATEMPT)
 				.clickConfirmUnsuccessAtempt();
 		FlexAssert.get().forElement(unsuccessDeleteAtemptPage.getValidatorMessageText())
 				.valueMatch(unsuccessDeleteAtemptPage.VALIDATOR_MESSAGE);

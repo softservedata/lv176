@@ -6,20 +6,9 @@ import com.softserve.edu.atqc.controls.Button;
 import com.softserve.edu.atqc.controls.IButton;
 import com.softserve.edu.atqc.controls.ILabel;
 import com.softserve.edu.atqc.controls.Label;
-import com.softserve.edu.atqc.exceptions.GeneralCustomException;
 
 public class ShowAllCommunitiesPage {
-	
-	/*public final String COMMUNITY_FOR_CHECK_EDIT_OPTION = "Черкаська територіальна громада";
-	public final String EDITED_COMMUNITY = "Полтавська територіальна громада";
-	public final String COMMUNITY_WITH_ALHABETICAL_SYMBOLS = "USA Community";
-	public final String COMMUNITY_WITH_CYRILLIC_SYMBOLS = "Зборівська територіальна громада";
-	public final String COMMUNITY_WITH_ONLY_NUMBER_SYMBOLS = "0123456789";
-	public final String COMMUNITY_FOR_CHECK_DELETE_OPTION = "Сумська територіальна громада";
-	*/
-	public final String TITLE_SHOW_ALL_COMMNUNITY_PAGE1 = "Показати всі громади";
-	
-	
+
 	private class ShowAllCommunitiesPageUIMap {
 		public final IButton addNewCommunityButton;
 		public final ILabel nameOfTable;
@@ -29,10 +18,10 @@ public class ShowAllCommunitiesPage {
 			this.nameOfTable = Label.get().getByCssSelector("div[style='text-align: center;'] h4");
 
 		}
-		
-		//TODO
-		public ILabel Proba(String hh) {
-			return Label.get().getByXpath("//td[contains(text(),'" + hh + "')]");
+
+		// TODO
+		public ILabel communityName(String CommunityName) {
+			return Label.get().getByXpath("//td[contains(text(),'" + CommunityName + "')]");
 		}
 
 		public IButton editCommunityButton(String NameOfEditCommunity) {
@@ -83,17 +72,16 @@ public class ShowAllCommunitiesPage {
 	public boolean VerifyDisplayedOfCommunity(String NameOfCommunity) {
 		return this.controls.EnabledOfCommunity(NameOfCommunity);
 	}
-	
-	//TODO
-	public ILabel getProba(String hh) {
-		return this.controls.Proba(hh);
+
+	// TODO
+	public ILabel getCommunityName(String CommunityName) {
+		return this.controls.communityName(CommunityName);
 	}
-	public String  getProbaText(String hh) {
-		return getProba(hh).getText();
+
+	public String getCommunityNameText(String CommunityName) {
+		return getCommunityName(CommunityName).getText();
 	}
-    //======================================
-	
-	
+
 	public void clickAddNewCommunity() {
 		getAddNewCommunity().click();
 	}
@@ -127,21 +115,6 @@ public class ShowAllCommunitiesPage {
 		return result;
 	}
 
-	public ConfirmDecisionPage DeleteCommunity(List<String> CommunityList, List<Button> ButtonDeleteList,
-			String CommunityName) {
-
-		for (String element : CommunityList) {
-			for (Button elementSS : ButtonDeleteList) {
-				if ((element.contains(CommunityName) == true)
-						&& (elementSS.getText().contains(CommunityName) == true)) {
-					break;
-
-				}
-			}
-		}
-		return clickDeleteButton(CommunityName);
-	}
-
 	public ConfirmDecisionPage clickDeleteCommunityButton(String NameOfCommunity) {
 		getDeleteCommunityButton(NameOfCommunity).click();
 		return new ConfirmDecisionPage();
@@ -150,21 +123,6 @@ public class ShowAllCommunitiesPage {
 	public EditCommunityPage clickEditCommunityButton(String NameOfEditCommunity) {
 		getEditCommunityButton(NameOfEditCommunity).click();
 		return new EditCommunityPage();
-	}
-
-	public EditCommunityPage EditCommunity(List<String> CommunityList, List<Button> ButtonEditList,
-			String CommunityName) {
-		for (String element : CommunityList) {
-			for (Button elementSS : ButtonEditList) {
-				if ((element.contains(CommunityName) == true)
-						&& (elementSS.getText().contains(CommunityName) == true)) {
-					break;
-
-				}
-			}
-		}
-
-		return clickEditCommunityButton(CommunityName);
 	}
 
 }
