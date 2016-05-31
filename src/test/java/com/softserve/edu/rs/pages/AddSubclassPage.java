@@ -1,7 +1,6 @@
 package com.softserve.edu.rs.pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 
 import com.softserve.edu.atqc.controls.Button;
 import com.softserve.edu.atqc.controls.IButton;
@@ -72,8 +71,6 @@ public class AddSubclassPage extends RegistratorHomePage {
 		controls = new AddSubclassPageUIMap();
 	}
 	
-	
-
 	// PageObject - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	// Get Elements
@@ -119,7 +116,7 @@ public class AddSubclassPage extends RegistratorHomePage {
 	public ILabel getOptionsTable() {
 		return this.optionsSubclassMenuUIMap.optionsTable;
 	}
-
+	
 	public ITextField getDescriptionParametrField() {
 		return this.optionsSubclassMenuUIMap.descriptionParametrField;
 	}
@@ -142,7 +139,7 @@ public class AddSubclassPage extends RegistratorHomePage {
 
 	public int getElementCount() {
 		return BrowserUtils.get().getBrowser().getWebDriver().findElement(By.xpath("//*[@id='newrestype']/div[3]"))
-				.findElements(By.tagName("div")).size();
+			.findElements(By.tagName("div")).size();
 	}
 
 	// Set Data
@@ -163,6 +160,7 @@ public class AddSubclassPage extends RegistratorHomePage {
 		this.getChooseTypeSelect().selectByValue(parameterType.getValue());
 	}
 
+	// ---------------------------------------------------------------------------------
 	
 	public void clearSubclass() {
 		getSubclassField().clear();
@@ -216,28 +214,8 @@ public class AddSubclassPage extends RegistratorHomePage {
 	// business - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	// Functional
-
-	// public String visibleParametrsBlockVisible() {
-	// String check = getConteinerWithParameters().getCssValue("display");
-	// return check;
-	// }
-
-	public String readSubclassField() {
-		return ((JavascriptExecutor) BrowserUtils.get().getBrowser().getWebDriver())
-				.executeScript("return document.getElementsByName('typeName')[0].value;").toString();
-	}
-
-	public String readDescriptionParametrField() {
-		return ((JavascriptExecutor) BrowserUtils.get().getBrowser().getWebDriver())
-				.executeScript("return document.getElementById('myparam0').value;").toString();
-	}
-
-	public String readUnitOfMeasurementField() {
-		return ((JavascriptExecutor) BrowserUtils.get().getBrowser().getWebDriver())
-				.executeScript("return document.getElementById('myparam1').value;").toString();
-	}
-
-	public SubclassesOfObjectsPage addNewSubclass(ISubclass subclass) {
+	
+	public AddSubclassPage addNewSubclass(ISubclass subclass) {
 		setSubclass(subclass.getSubclassName());
 		if (!(subclass.getDescriptionParametr().equals(null) || subclass.getUnitOfMeasurement().equals(null))) {
 			clickShowParameterBtn();
@@ -248,26 +226,22 @@ public class AddSubclassPage extends RegistratorHomePage {
 				setUnitOfMeasurement(subclass.getUnitOfMeasurement());
 			}
 		}
-		clickAddNewSubclassBtn();
-		return new SubclassesOfObjectsPage();
+		return new AddSubclassPage();
 	}
 
-	public AddSubclassPage clearSubParamUnitField(ISubclass subclass) {
-		setSubclass(subclass.getSubclassName());
-		setDescriptionParametr(subclass.getDescriptionParametr());
-		setUnitOfMeasurement(subclass.getUnitOfMeasurement());
+	public AddSubclassPage clearSubParamUnitField() {
 		clickClearFormBtn();
 		return new AddSubclassPage();
 	}
 
-	public AddSubclassPage clearSubParamUnitField(ISubclass subclass, int parameterNumber) {
+	public AddSubclassPage fillSubParamUnitField(ISubclass subclass, int parameterNumber) {
 		this.optionsSubclassMenuUIMap = new OptionsSubclassMenuUIMap(parameterNumber);
 		setDescriptionParametr(subclass.getDescriptionParametr());
 		setUnitOfMeasurement(subclass.getUnitOfMeasurement());
 		setChooseTypeSelect(subclass.getParameterType());
 		return new AddSubclassPage();
 	}
-
+	
 	public AddSubclassPage showParameter() {
 		clickShowParameterBtn();
 		return new AddSubclassPage();
@@ -288,11 +262,8 @@ public class AddSubclassPage extends RegistratorHomePage {
 		return new AddSubclassPage();
 	}
 
-	public AddSubclassPage fillClearSubParamUnitField(ISubclass subclass) {
-		setSubclass(subclass.getSubclassName());
-		setDescriptionParametr(subclass.getDescriptionParametr());
-		setUnitOfMeasurement(subclass.getUnitOfMeasurement());
-		clickClearFormBtn();
-		return new AddSubclassPage();
+	public SubclassesOfObjectsPage clickAddNewSubclass() {
+		clickAddNewSubclassBtn();
+		return new SubclassesOfObjectsPage();
 	}
 }

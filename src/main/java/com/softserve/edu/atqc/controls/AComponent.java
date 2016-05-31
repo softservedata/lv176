@@ -11,10 +11,6 @@ abstract class AComponent<TComponent> extends ABaseComponent<TComponent> impleme
         
 	// implements interface
 
-    public String getCssValue(String value) {
-		return getControlWrapper().getCssValue(value);
-	}
-    
 	public String getAttribute(String attribute) {
 		return getControlWrapper().getAttribute(attribute);
 	}

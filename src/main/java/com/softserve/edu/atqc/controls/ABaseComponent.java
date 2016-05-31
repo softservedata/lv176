@@ -1,6 +1,6 @@
 package com.softserve.edu.atqc.controls;
 
-
+import com.softserve.edu.atqc.tools.BrowserUtils;
 import com.softserve.edu.atqc.tools.ControlLocation;
 import com.softserve.edu.atqc.tools.ControlSearch;
 import com.softserve.edu.atqc.tools.ControlWrapper;
@@ -16,6 +16,11 @@ public abstract class ABaseComponent<TComponent> {
     }
     
     // Search Visible Elements
+    
+    public TComponent getByControlWrapper(ControlWrapper controlWrapper){
+    	this.controlWrapper = controlWrapper;
+    	return tComponent;
+    }
     
     public TComponent getById(String id) {
         return get(ControlLocation.getById(id));
@@ -40,15 +45,15 @@ public abstract class ABaseComponent<TComponent> {
     public TComponent getByTagName(String tagName) {
         return get(ControlLocation.getByTagName(tagName));
     }
-    
-    
- // TODO 
-    public TComponent getByControlWrapper(ControlWrapper controlWrapper){
-    	this.controlWrapper = controlWrapper;
-    	return tComponent;
+
+    TComponent getByControl(ControlWrapper controlWrapper, ControlLocation controlLocation) {
+        this.controlLocation = controlLocation;
+        // TODO Set strategy for Searching Elements
+        this.controlWrapper = controlWrapper;
+        return tComponent;
     }
 
-    private TComponent get(ControlLocation controlLocation) {
+    TComponent get(ControlLocation controlLocation) {
         this.controlLocation = controlLocation;
         // TODO Set strategy for Searching Elements
         this.controlWrapper = ControlWrapper.getVisibleWebElement(controlLocation);
@@ -87,11 +92,8 @@ public abstract class ABaseComponent<TComponent> {
     protected void setTComponent(TComponent tComponent) {
         this.tComponent = tComponent;
     }
-    
-    //TODO
-//    protected void setListTcomponent(TComponent tComponent){
-//    	this.tComponent= tComponent;
-//    }
+
+    // implements common methods
 
     public boolean isInvisibleWebElementById(String id) {
         return ControlSearch.get().isInvisibleWebElementById(id);
@@ -100,5 +102,9 @@ public abstract class ABaseComponent<TComponent> {
     public boolean isInvisibleWebElementByPartialLinkText(String partialLinkText) {
         return ControlSearch.get().isInvisibleWebElementByPartialLinkText(partialLinkText);
     }
+
+    public Object runJavaScript(String script) {
+		return BrowserUtils.get().getBrowser().runJavaScript(script);
+	}
 
 }

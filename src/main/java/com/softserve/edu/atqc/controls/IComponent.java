@@ -1,27 +1,25 @@
 package com.softserve.edu.atqc.controls;
 
 public interface IComponent {
+ 
+    String getAttribute(String attribute);
 
-	String getAttribute(String attribute);
+    String getAttributeName();
 
-	String getAttributeName();
+    String getContent();
 
-	String getContent();
+    String getTagName();
 
-	String getTagName();
+    boolean isDisplayed();
 
-	String getCssValue(String value);
+    boolean isEnabled();
 
-	boolean isDisplayed();
+    boolean isSelected();
+    
+    boolean isInvisible();
 
-	boolean isEnabled();
-
-	boolean isSelected();
-
-	boolean isInvisible();
-
-	boolean isInvisibleWithText(String text);
-
-	boolean isStatelessOf();
+    boolean isInvisibleWithText(String text);
+    
+    boolean isStatelessOf();
 
 }

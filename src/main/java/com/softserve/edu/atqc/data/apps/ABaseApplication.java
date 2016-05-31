@@ -1,6 +1,8 @@
 package com.softserve.edu.atqc.data.apps;
 
+import com.softserve.edu.atqc.loggers.LoggerUtils;
 import com.softserve.edu.atqc.tools.BrowserUtils;
+import com.softserve.edu.atqc.tools.ControlSearch;
 
 public abstract class ABaseApplication<TApplication> {
 	private ApplicationSources applicationSources;
@@ -17,17 +19,27 @@ public abstract class ABaseApplication<TApplication> {
 		return this.applicationSources;
 	}
 
+	protected void setSearchStrategy() {
+		ControlSearch.get(getApplicationSources());
+	}
+
+	protected void setLoggerStrategy() {
+		LoggerUtils.get(getApplicationSources());
+	}
+
 	public TApplication load() {
-		if (BrowserUtils.get().getBrowser().getCurrentUrl().contains(applicationSources.getServerUrl())
-				&& (!BrowserUtils.get().getBrowser().getCurrentUrl().contains(applicationSources.getLoginUrl()))) {
+		if (BrowserUtils.get().getBrowser().getCurrentUrl().contains(getApplicationSources().getServerUrl())
+				&& (!BrowserUtils.get().getBrowser().getCurrentUrl().contains(getApplicationSources().getLoginUrl()))) {
 			logout();
 		}
-		BrowserUtils.get().getBrowser().loadPage(applicationSources.getLoginUrl());
+		BrowserUtils.get().getBrowser().loadPage(getApplicationSources().getLoginUrl());
+		setSearchStrategy();
+		setLoggerStrategy();
 		return getStartPage();
 	}
 
 	public TApplication logout() {
-		BrowserUtils.get().getBrowser().loadPage(applicationSources.getLogoutUrl());
+		BrowserUtils.get().getBrowser().loadPage(getApplicationSources().getLogoutUrl());
 		return getStartPage();
 	}
 
@@ -38,5 +50,14 @@ public abstract class ABaseApplication<TApplication> {
 	public static void quitAll() {
 		BrowserUtils.quitAll();
 	}
+
+//	public void addEventsPageLoadComplete() {
+//		PageObserveLoad.get().addLoadCompleteEvent(new PageLoadComplete());
+//		// PageObserveLoad.get().addLoadCompleteEvent(new PageLoadComplete2());
+//	}
+//
+//	public void clearEventsPageLoadComplete() {
+//		PageObserveLoad.get().deleteLoadCompleteEvents();
+//	}
 
 }

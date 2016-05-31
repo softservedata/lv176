@@ -149,11 +149,35 @@ public class SubclassRepository {
 	
 	//------------------------------------------------------------------------------------
 	
+	public ISubclass getRiver() {
+		return Subclass.get()
+				.setSubclassName("River")
+				.build();
+	}
+	
 	public ISubclass getRiverSubclass() {
 		return Subclass.get()
 				.setSubclassName("River")
 				.build()
-				.setDescriptionParametr("long")
+				.setDescriptionParametr("length")
+				.setUnitOfMeasurement("meter")
+				.setParameterType(ParameterType.LINEAR);
+	}
+	
+	public ISubclass getRiver2Subclass() {
+		return Subclass.get()
+				.setSubclassName("River")
+				.build()
+				.setDescriptionParametr("width")
+				.setUnitOfMeasurement("meter")
+				.setParameterType(ParameterType.LINEAR);
+	}
+	
+	public ISubclass getRiver3Subclass() {
+		return Subclass.get()
+				.setSubclassName("River")
+				.build()
+				.setDescriptionParametr("depth")
 				.setUnitOfMeasurement("meter")
 				.setParameterType(ParameterType.DISCRETE);
 	}

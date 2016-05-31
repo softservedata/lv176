@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.softserve.edu.atqc.specs.FlexAssert;
 import com.softserve.edu.rs.data.apps.Application;
 import com.softserve.edu.rs.data.apps.ApplicationSourcesRepository;
 import com.softserve.edu.rs.data.resources.SubclassRepository;
@@ -28,16 +29,27 @@ public class ComponentTest {
 				.gotoSubclassPage().gotoAddSubclassPage();
 	}
 
-	//@Test
+	@Test
 	public void showParametersTest() {
 		addSubclassPage.showParameter();
-		Assert.assertTrue(addSubclassPage.getOptionsTable().isDisplayed());
+		Assert.assertTrue(addSubclassPage.getConteinerWithParameters().isDisplayed());
+		FlexAssert.get()
+		.forElement(addSubclassPage.getConteinerWithParameters())
+		.isVisible()
+		.next();
+		FlexAssert.get()
+		.check();
 	}
 
-	//@Test
+	@Test
 	public void hideParametersTest() {
 		addSubclassPage.showParameter().hideParameter();
-		Assert.assertFalse(addSubclassPage.getOptionsTable().isDisplayed());
+		FlexAssert.get()
+		.forElement(addSubclassPage.getConteinerWithParameters())
+		.isInvisible()
+		.next();
+		FlexAssert.get()
+		.check();
 	}
 
 	@Test
@@ -46,12 +58,9 @@ public class ComponentTest {
 		int elementsCount = addSubclassPage.getElementCount();
 		int elementsCountAfterAdd = addSubclassPage.addParameter().getElementCount();
 		Assert.assertEquals(elementsCountAfterAdd - 1, elementsCount);
-		
-		addSubclassPage.clearSubParamUnitField(SubclassRepository.get().getRiverSubclass(), 1);
-		addSubclassPage.clearSubParamUnitField(SubclassRepository.get().getRiverSubclass(), 2);
 	}
 
-	//@Test
+	@Test
 	public void delParametersTest() {
 		addSubclassPage.showParameter().addParameter();
 		int elementsCount = addSubclassPage.getElementCount();
@@ -59,20 +68,22 @@ public class ComponentTest {
 		Assert.assertEquals(elementsCountAfterAdd + 1, elementsCount);
 	}
 
-	//@Test
+	@Test
 	public void clearFormTest() {
 		addSubclassPage.showParameter();
-		String textSubclassField = addSubclassPage.readSubclassField();
-		String textDescriptionParametrField = addSubclassPage.readDescriptionParametrField();
-		String textUnitOfMeasurementField = addSubclassPage.readUnitOfMeasurementField();
-		addSubclassPage.fillClearSubParamUnitField(SubclassRepository.get().getRiverSubclass());
-		String textSubclassFieldAfter = addSubclassPage.readSubclassField();
-		String textDescriptionParametrFieldAfter = addSubclassPage.readDescriptionParametrField();
-		String textUnitOfMeasurementFieldAfter = addSubclassPage.readUnitOfMeasurementField();
-		Assert.assertEquals(textSubclassFieldAfter, textSubclassField);
-		Assert.assertEquals(textDescriptionParametrFieldAfter, textDescriptionParametrField);
-		Assert.assertEquals(textUnitOfMeasurementFieldAfter, textUnitOfMeasurementField);
-
+		addSubclassPage.fillSubParamUnitField(SubclassRepository.get().getRiverSubclass(),1).clearSubParamUnitField();
+		FlexAssert.get()
+			.forElement(addSubclassPage.getSubclassField())
+				.attributeMatch("value", "")
+				.next()
+			.forElement(addSubclassPage.getDescriptionParametrField())
+				.attributeMatch("value", "")
+				.next()
+			.forElement(addSubclassPage.getUnitOfMeasurementField())
+				.attributeMatch("value", "")
+				.next();
+		FlexAssert.get()
+			.check();
 	}
 
 	@AfterMethod

@@ -1,10 +1,11 @@
 package com.softserve.edu.rs.tests;
 
-import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.softserve.edu.atqc.data.apps.ApplicationSources;
+import com.softserve.edu.atqc.specs.FlexAssert;
 import com.softserve.edu.rs.data.apps.Application;
 import com.softserve.edu.rs.data.apps.ApplicationSourcesRepository;
 import com.softserve.edu.rs.data.users.IUser;
@@ -18,7 +19,7 @@ public class SmokeLoginTest {
     public Object[][] getApplicationSources() {
         	return new Object[][] {
                 { ApplicationSourcesRepository.get().getLocalHostByFirefoxTemporary(), UserRepository.get().getRegistrator() },
-                { ApplicationSourcesRepository.get().getHerokuByFirefoxTemporary(), UserRepository.get().getRegistrator() },
+                { ApplicationSourcesRepository.get().getLocalHostByChromeTemporary(), UserRepository.get().getRegistrator() },
                 };
     }
  
@@ -27,10 +28,13 @@ public class SmokeLoginTest {
 		Application application = Application.get(ApplicationSourcesRepository.get().getLocalHostByFirefoxTemporary());
 		RegistratorHomePage registratorHomePage = application.load()
 				.successRegistratorLogin(registrator); 		
-		Assert.assertEquals(registrator.getAccount().getLogin(),
-				registratorHomePage.getLoginAccountText());		
+		FlexAssert.get()
+		.forElement(registratorHomePage.getLoginAccount())
+		.valueMatch(registrator.getAccount().getLogin())
+		.next();
+		FlexAssert.get()
+		.check();
 		registratorHomePage.logout();
-		application.quit();
 	}
 	
 	@Test(dataProvider = "getApplicationSources")
@@ -38,11 +42,29 @@ public class SmokeLoginTest {
 		Application application = Application.get(applicationSources);
 		RegistratorHomePage registratorHomePage = application.load()
 				.successRegistratorLogin(registrator); 		
-		Assert.assertEquals(registrator.getAccount().getLogin(),
-				registratorHomePage.getLoginAccountText());		
+		FlexAssert.get()
+			.forElement(registratorHomePage.getLoginAccount())
+				.valueMatch(registrator.getAccount().getLogin())
+				.next();
+		FlexAssert.get()
+			.check();	
 		LoginPage loginPage = registratorHomePage.logout();		
-		Assert.assertEquals(LoginPage.TITLE, loginPage.getTitle());
-		application.quit();
+		FlexAssert.get()
+		.forElement(loginPage.getLogin())
+			.attributeMatch("name", "login")
+			.attributeMatch("id", "login")
+			.isVisible()
+			.next()
+		.forElement(loginPage.getPassword())
+			.attributeMatch("name", "password")
+			.attributeMatch("id", "password")
+			.isVisible();
+		FlexAssert.get()
+		.check();
 	}
-	
+
+	@AfterClass
+	public void oneTimeTearDown() {
+		Application.quitAll();
+	}
 }

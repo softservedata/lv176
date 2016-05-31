@@ -1,12 +1,12 @@
 package com.softserve.edu.rs.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.softserve.edu.atqc.specs.FlexAssert;
 import com.softserve.edu.rs.data.apps.Application;
 import com.softserve.edu.rs.data.apps.ApplicationSourcesRepository;
 import com.softserve.edu.rs.data.resources.SubclassRepository;
@@ -29,13 +29,18 @@ public class DeleteSubclassTest {
 				.gotoSubclassPage()
 				.gotoAddSubclassPage()
 				.showParameter()
-				.addNewSubclass(SubclassRepository.get().getOneLetterSubclassName());
+				.addNewSubclass(SubclassRepository.get().getOneLetterSubclassName())
+				.clickAddNewSubclass();
 	}
 
 	@Test
-	public void delSubclassTest() {
+	public void delSubclassTest(){
 		subclassesOfObjectsPage.deleteSubclass(SubclassRepository.get().getOneLetterSubclassName());
-		Assert.assertFalse(subclassesOfObjectsPage.visibleDeleteSubclass(SubclassRepository.get().getOneLetterSubclassName()));
+		FlexAssert.get()
+		.forElement(subclassesOfObjectsPage.getDeleteSubclass(SubclassRepository.get().getOneLetterSubclassName().toString()))
+		.isInvisible();
+				FlexAssert.get()
+		.check();
 	}
 	
 	@AfterMethod

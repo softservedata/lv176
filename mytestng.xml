@@ -4,15 +4,13 @@
   <test name="testing">
     <classes>
        <class name="com.softserve.edu.rs.tests.SmokeLoginTest" />
-       <class name="com.softserve.edu.rs.tests.ComponentTest">
-       			<methods>
-					<include name="showParametersTest" />
-					<include name="addParametersTest" />
-					<include name="delParametersTest" />
-					<include name="clearFormTest" />
-				</methods>
-				</class>
-       <class name="com.softserve.edu.rs.tests.CreateNewSubclassTest" />
+       <class name="com.softserve.edu.rs.tests.ComponentTest"/>
+ 	   <class name="com.softserve.edu.rs.tests.CreateNewSubclassTest">
+            <methods>
+       			<include name="addSubclassWithOneParametersTest" />
+       			<include name="addSubclassWithThreeParametersTest" />
+       		</methods>
+       </class>
     </classes>
   </test>
 </suite>

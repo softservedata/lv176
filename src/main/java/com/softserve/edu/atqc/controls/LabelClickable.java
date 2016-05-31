@@ -1,5 +1,4 @@
 package com.softserve.edu.atqc.controls;
-
 public final class LabelClickable extends ALabelClickable<ILabelClickable> {
 
     // implements constructor
