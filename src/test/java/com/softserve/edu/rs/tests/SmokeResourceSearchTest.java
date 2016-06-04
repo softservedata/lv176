@@ -15,12 +15,14 @@ import com.softserve.edu.rs.pages.ResourceSearchPage;
 
 public class SmokeResourceSearchTest {
 
-	@DataProvider (parallel = true)
+	@DataProvider //(parallel = true)
 	public Object[][] getApplicationSources() {
 		return new Object[][] { { ApplicationSourcesRepository.get().getLocalHostByFirefoxTemporary(),
 				UserRepository.get().getRegistrator() },
-			{ ApplicationSourcesRepository.get().getLocalHostByIETemporary(),
-					UserRepository.get().getRegistrator() }
+	//		{ ApplicationSourcesRepository.get().getLocalHostByFirefoxTemporary(),
+	//				UserRepository.get().getCoowner() }
+	//		{ ApplicationSourcesRepository.get().getLocalHostByIETemporary(),
+	//				UserRepository.get().getRegistrator() }
 		};
 	}
 
@@ -38,6 +40,5 @@ public class SmokeResourceSearchTest {
 		Assert.assertTrue(spage.getSearchByParametersComponent().getInputPerimeter().isDisplayed(),"Text input for perimeter isn't displayed");
 		application.quit();
 
-		;
 	}
 }

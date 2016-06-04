@@ -187,6 +187,44 @@ public final class UserRepository {
 						);
 	}
 	
+	public IUser getCoowner() {
+		return User.get()
+				.setPerson(Person.get()
+								.setFirstname("Василь")
+								.setLastname("Ткач")
+								.setEmail("frt@tyu.ua")
+								.build()
+								.setMiddlename("Петрович")
+								.setPhonenumber("")
+						)
+				.setAccount(Account.get()
+								.setLogin("user123")
+								.setPassword("user123")
+								.setRole("Співвласник")
+								.setStatus("Активний")
+								.setCommunity("Україна")
+								.build()
+								.setData("")
+								.setRegisterNumber("0")
+								.setRegistratorNumber("35445345")
+								.setVolumeNumber("35445345")
+						)
+				.build()
+				.setAddress(Address.get()
+						.setRegion("Львівська")
+						.setDistrict("Шевченківський")
+						.setCity("Львів")
+						.setStreet("Мазепи")
+						.setBuilding("12")
+						.setFlat("4")
+						.setPostcode("")
+						)
+				.setPassport(Passport.get()
+						.setSeria("КА")
+						.setNumber("343553")
+						.setPublished("Народом України")
+						);
+	}
     public List<IUser> getExistUsersCVS() {
         return new UserUtils().getAllUsers();
     }

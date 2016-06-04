@@ -1,19 +1,16 @@
 package com.softserve.edu.rs.pages;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-//import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.softserve.edu.atqc.controls.Component;
-import com.softserve.edu.atqc.controls.IButton;
 import com.softserve.edu.atqc.controls.IComponent;
 import com.softserve.edu.atqc.controls.ILabel;
 import com.softserve.edu.atqc.controls.ILabelClickable;
@@ -23,10 +20,9 @@ import com.softserve.edu.atqc.controls.Label;
 import com.softserve.edu.atqc.controls.LabelClickable;
 import com.softserve.edu.atqc.controls.Select;
 import com.softserve.edu.atqc.controls.TextField;
-import com.softserve.edu.atqc.tools.BrowserUtils;
-import com.softserve.edu.rs.pages.TopPage.ChangeLanguageFields;
 
 public class ResourceSearchPage extends RegistratorCommonPage {
+	private static final String SELECTOR_CLASS_TABLE_EMPTY=".dataTables_empty";
 	public static enum ObjectSubclasses {
 		LAND("земельний"), RADIO("радіочастотний");
 
@@ -43,12 +39,47 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 	}
 
 	private class SearchResultsTable implements ISearchResultsTable {
+		
+		private static final String SELECTOR_COLUMN_DATE="thead tr th:nth-child(4)";
+		private static final String SELECTOR_TABLE_SEARCH_TEXT_ID="#datatable_filter input";
+		private static final String SELECTOR_TABLE_SEARCH_TEXT="input[aria-controls='datatable']";
+		private static final String SELECTOR_NUMBER_RESULTS="#datatable_length select";
+		private static final String SELECTOR_DATATABLE_INFO="datatable_info";
+		private static final String SELECTOR_DATATABLE_PAGINATE="datatable_paginate";
+		private static final String SELECTOR_DATATABLE_NEXT="datatable_next";
+		private static final String SELECTOR_DATATABLE_PREVIOUS="datatable_previous";
+		private static final String SELECTOR_CELL="tbody td";
+		private static final String SELECTOR_COLUMN_ID=" td:nth-child(3)";
+		private static final String SELECTOR_HEADER_ID="thead tr th:nth-child(3)";
+		private static final String SELECTOR_ROW="tbody tr";
+		private static final String SELECTOR_COLUMN_DATES=" td:nth-child(4)";
 		private IComponent tableOfResults;
 		private ILabel dataTextInfo;
 		private ILabel paginateInfo;
+		private ILabelClickable btnPaginateNext;
+		public ILabelClickable getBtnPaginateNext() {
+			return btnPaginateNext;
+		}
+
+		public void setBtnPaginateNext(ILabelClickable btnPaginateNext) {
+			this.btnPaginateNext = btnPaginateNext;
+		}
+
+		public ILabelClickable getBtnPaginatePrevious() {
+			return btnPaginatePrevious;
+		}
+		
+		public ILabelClickable getTableColumnDate() {
+			return LabelClickable.get().getByCssSelector(SELECTOR_COLUMN_DATE); 
+		}
+
+		public void setBtnPaginatePrevious(ILabelClickable btnPaginatePrevious) {
+			this.btnPaginatePrevious = btnPaginatePrevious;
+		}
+
+		private ILabelClickable btnPaginatePrevious;
 		private ITextField searchTableTextInput;
 		private ISelect numberResultsByPage;
-		// private WebDriver driver;
 
 		public ITextField getSearchTableTextInput() {
 			return searchTableTextInput;
@@ -57,12 +88,38 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		public SearchResultsTable(boolean b) {
 			tableOfResults = Component.get().getById("datatable");
 			if (b)
-				searchTableTextInput = TextField.get().getByCssSelector("#datatable_filter input");
+				searchTableTextInput = TextField.get().getByCssSelector(SELECTOR_TABLE_SEARCH_TEXT_ID);
 			else
-				searchTableTextInput = TextField.get().getByCssSelector("input[aria-controls='datatable']");
-			numberResultsByPage=Select.get().getByCssSelector("#datatable_length select");
-			dataTextInfo = Label.get().getById("datatable_info");
-			paginateInfo = Label.get().getById("datatable_paginate");
+				searchTableTextInput = TextField.get().getByCssSelector(SELECTOR_TABLE_SEARCH_TEXT);
+			numberResultsByPage=Select.get().getByCssSelector(SELECTOR_NUMBER_RESULTS);
+			dataTextInfo = Label.get().getById(SELECTOR_DATATABLE_INFO);
+			paginateInfo = Label.get().getById(SELECTOR_DATATABLE_PAGINATE);
+			btnPaginateNext=LabelClickable.get().getById(SELECTOR_DATATABLE_NEXT);
+			btnPaginatePrevious=LabelClickable.get().getById(SELECTOR_DATATABLE_PREVIOUS);
+		}
+		public ISelect getNumberResultsByPage() {
+			return numberResultsByPage;
+		}
+		
+		public ILabelClickable getNumberResultsByPageSelected() {
+			return getNumberResultsByPage().getFirstSelectedOption();
+		}
+
+		public void setNumberResultsByPage(ISelect numberResultsByPage) {
+			this.numberResultsByPage = numberResultsByPage;
+		}
+		
+
+		public String getNumberResultsByPageSelectedText() {
+			return getNumberResultsByPage().getText();
+		}
+//
+//		public void setNumberResultsByPage(ObjectSubclasses subclass) {
+//			getNumberResultsByPage().selectByVisibleText(subclass.toString());
+//		}
+//
+		public void setNumberResultsByPageByPartialText(String partialText) {
+			getNumberResultsByPage().selectByPartialText(partialText);
 		}
 
 		public IComponent getTableOfResults() {
@@ -78,11 +135,11 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		}
 
 		public List<WebElement> getSearchResultValues() {
-			return Component.get().getElementsByCssSelector("tbody td");
+			return Component.get().getElementsByCssSelector(SELECTOR_CELL);
 		}
 
 		public List<String> getSearchResultTextValues() {
-			List<WebElement> elements = Component.get().getElementsByCssSelector("tbody td");
+			List<WebElement> elements = Component.get().getElementsByCssSelector(SELECTOR_CELL);
 			List<String> result = new ArrayList<>();
 			for (WebElement e : elements) {
 				result.add(e.getText());
@@ -92,7 +149,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		}
 
 		public List<String> getSearchResultIdValues() {
-			List<WebElement> elements = Component.get().getElementsByCssSelector(" td:nth-child(3)");
+			List<WebElement> elements = Component.get().getElementsByCssSelector(SELECTOR_COLUMN_ID);
 			List<String> result = new ArrayList<>();
 			for (WebElement e : elements) {
 				result.add(e.getText());
@@ -102,7 +159,23 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		}
 
 		public List<WebElement> getSearchResultRows() {
-			return Component.get().getElementsByCssSelector("tbody tr");
+			return Component.get().getElementsByCssSelector(SELECTOR_ROW);
+		}
+
+		@Override
+		public List<Date> getSearchResultDateValues() throws ParseException {
+			DateFormat sourceFormat = new SimpleDateFormat("dd.MM.yyyy");
+			List<WebElement> elements = Component.get().getElementsByCssSelector(SELECTOR_COLUMN_DATES);
+			List<Date> result = new ArrayList<>();
+			for (WebElement e : elements) {
+				result.add(sourceFormat.parse(e.getText()));
+			}
+			return result;
+		}
+
+		@Override
+		public ILabelClickable getTableColumnId() {
+			return LabelClickable.get().getByCssSelector(SELECTOR_HEADER_ID);
 		}
 	}
 
@@ -357,6 +430,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		private static final String SELECTOR_INPUT_PERIMETER = "div[param_id='1'] .form-control.value";
 		private static final String SELECTOR_INPUT_AREA = "div[param_id='2'] .form-control.value";
 		private static final String SELECTOR_MAX_POWER = "div[param_id='3'] .form-control.value";
+		private static final String SELECTOR_RESOURCE_TYPE="resourcesTypeSelect";
 		// private Select listObjectSubclasses;
 		private ISelect listObjectSubclasses;
 
@@ -380,7 +454,6 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 					throw new IllegalArgumentException("Wrong number of parameters");
 				inputPerimeter.sendKeysClear(args[0]);
 				inputPerimeter.sendKeysClear(args[1]);
-				// if (args.length==2) searchByArea.
 			}
 
 			@Override
@@ -392,6 +465,8 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		}
 
 		private class RadioResourceParameters implements ISearchParameters {
+			
+			
 			private ITextField inputMaxPower;
 
 			@Override
@@ -418,7 +493,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		private ILabelClickable btnShowAll;
 
 		public SearchByParametersComponent(ObjectSubclasses subclass) {
-			listObjectSubclasses = Select.get().getById("resourcesTypeSelect");
+			listObjectSubclasses = Select.get().getById(SELECTOR_RESOURCE_TYPE);
 			switch (subclass){
 			case LAND: searchParameters = new LandResourceParameters();break;
 			case RADIO: searchParameters = new RadioResourceParameters();break;
@@ -488,7 +563,6 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 	private SearchByAreaComponent searchByAreaComponent;
 	private SearchByParametersComponent searchByParametersComponent;
 	private SearchByPointComponent searchByPointComponent;
-	private JavascriptExecutor jsExecutor;
 
 	public ISearchResultsTable getSearchResultsTable() {
 
@@ -511,8 +585,6 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		searchByCoordinate = LabelClickable.get().getById("searchByPointButton");
 		searchByArea = LabelClickable.get().getById("searchByAreaButton");
 		searchByParameters = LabelClickable.get().getById("searchByParameterButton");
-		jsExecutor = (JavascriptExecutor) BrowserUtils.get().getBrowser().getWebDriver();
-
 	}
 
 	public ILabelClickable getSearchByCoordinate() {
@@ -535,9 +607,6 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		return btnSearchArea;
 	}
 
-	public JavascriptExecutor getJsExecutor() {
-		return jsExecutor;
-	}
 
 	public ResourceSearchPage clickSearchByCoordinate() {
 		getSearchByCoordinate().click();
@@ -619,6 +688,7 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		ResourceSearchPage rsp = new ResourceSearchPage();
 		rsp.searchByParametersComponent = new SearchByParametersComponent(ObjectSubclasses.RADIO);
 		rsp.searchByParametersComponent.btnShowAll = LabelClickable.get().getById("showAllResources");
+		rsp.explWait();
 		return rsp;
 	}
 
@@ -627,4 +697,9 @@ public class ResourceSearchPage extends RegistratorCommonPage {
 		return this;
 	}
 
+	public ILabel getUnsuccessfulSearchResultLabel() {
+		ILabelClickable notMatchLabel=LabelClickable.get().getByCssSelector(SELECTOR_CLASS_TABLE_EMPTY); 
+		return notMatchLabel;
+	}
+	
 }

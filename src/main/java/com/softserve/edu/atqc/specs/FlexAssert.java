@@ -75,7 +75,9 @@ public class FlexAssert {
     public ITextCriteria forElement(String text) {
         return TextCriteria.get(text);
     }
-
+    public IIntCriteria forElement(int num) {
+        return IntCriteria.get(num);
+    }
     // public ComponentCriteria forElement(IComponent component) {
     // return ComponentCriteria.get(component);
     // }
